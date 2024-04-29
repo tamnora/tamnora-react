@@ -1,6 +1,10 @@
 {
   "name": "tamnora-react",
-  "version": "1.0.1",
+  "version": "1.0.3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamnora/tamnora-react"
+  },
   "description": "Integración de tamnoraJS en react",
   "main": "src/index.js",
   "scripts": {
