@@ -314,7 +314,7 @@ export function defaultClass() {
       header: `flex flex-col items-start sm:flex-row sm:justify-between sm:items-center px-2 pb-3 rounded-t `,
       grid: `grid grid-cols-12 gap-2 py-6 px-2 h-full`,
       navInHeader: `flex w-full text-sm text-neutral-500 dark:text-neutral-500 border-b rounded-t border-neutral-200 dark:border-neutral-700 `,
-      buttonNavInHeader: `inline-block px-4 py-2 rounded-t-lg hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 `,
+      buttonNavInHeader: `inline-block gap-2 px-4 py-2 rounded-t-lg hover:bg-neutral-200 hover:text-neutral-700 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 `,
       footer: `flex items-center justify-between pt-4 gap-2 border-t border-neutral-200 dark:border-neutral-600`,
       inFooter: `flex items-center justify-end gap-2`,
       gridColumns: `col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3`,
