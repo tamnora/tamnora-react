@@ -2,8 +2,6 @@ import React from 'react';
 
 const Button = ({ color='neutral', onClick=()=>{}, size = 'sm', children }) => {
 
- 
-
  const colorTheme = {
     primary: `text-white bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg hover:shadow-xl shadow-blue-600/40 hover:shadow-blue-600/60 dark:from-blue-600 dark:to-blue-700 dark:shadow-blue-800/80`,
     secondary: `text-white bg-gradient-to-r from-gray-500 to-gray-600 shadow-lg hover:shadow-xl shadow-gray-600/40 hover:shadow-gray-600/60 dark:from-gray-600 dark:to-gray-700 dark:shadow-gray-800/80`,

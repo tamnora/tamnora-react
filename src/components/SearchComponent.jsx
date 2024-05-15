@@ -29,4 +29,4 @@ const SearchComponent = ({ onSearchChange }) => {
   );
 };
 
-export default SearchComponent;
+export {SearchComponent};

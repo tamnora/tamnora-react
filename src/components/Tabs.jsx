@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 
 const Tabs = ({ ariaLabel, items, children }) => {
   const [activeTab, setActiveTab] = useState(items[0].id);
@@ -34,25 +33,8 @@ const Tabs = ({ ariaLabel, items, children }) => {
   );
 };
 
-Tabs.propTypes = {
-  ariaLabel: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      label: PropTypes.string.isRequired,
-      content: PropTypes.node.isRequired
-    })
-  ).isRequired,
-  children: PropTypes.func.isRequired
-};
-
 const Tab = ({ children }) => {
   return <div>{children}</div>;
-};
-
-Tab.propTypes = {
-  title: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired
 };
 
 export { Tabs, Tab };

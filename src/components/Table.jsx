@@ -167,7 +167,7 @@ const Table = ({ datos, cantidadPorVista, textoBuscar, onRowClick, onCellClick, 
   );
 };
 
-export default Table;
+export {Table};
 
 
 

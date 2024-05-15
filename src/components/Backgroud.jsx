@@ -62,4 +62,4 @@ const Background = ({classA0='text-neutral-100 dark:text-neutral-900', classA1='
     )
   }
   
-  export {Background}
+  export { Background }

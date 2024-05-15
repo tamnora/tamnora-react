@@ -3,7 +3,7 @@ import React from 'react';
 // Card Component
 const Card = ({ children }) => {
   return (
-    <div className="bg-neutral-100/50 dark:bg-neutral-800/80  rounded-lg overflow-hidden transition-all ease-in-out duration-500">
+    <div className="bg-neutral-100/50 dark:bg-neutral-800/80 text-neutral-500 dark:text-neutral-400 rounded-lg overflow-hidden transition-all ease-in-out duration-500">
       {children}
     </div>
   );
