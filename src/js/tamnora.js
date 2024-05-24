@@ -1046,6 +1046,85 @@ export async function urlExists(url) {
   }
 }
 
+export function handleStructure(structure) {
+  const groupType = {};
+  const primaryKey = {};
+
+  if (structure.length > 0) {
+    structure.forEach(val => {
+      let name = val.COLUMN_NAME.toLowerCase()
+      groupType[name] = typeToType(val.DATA_TYPE);
+      primaryKey[name] = val.COLUMN_KEY;
+    })
+  } 
+
+  return { groupType, primaryKey };
+}
+
+export function typeToType(inType = 'text') {
+  let outType;
+  if (inType == 'int') outType = 'number';
+  if (inType == 'tinyint') outType = 'number';
+  if (inType == 'double') outType = 'number';
+  if (inType == 'char') outType = 'text';
+  if (inType == 'varchar') outType = 'text';
+  if (inType == 'datetime') outType = 'datetime-local';
+  if (inType == 'timestamp') outType = 'datetime-local';
+  if (inType == 'date') outType = 'date';
+  if (inType == 'time') outType = 'time';
+  if (inType == 'decimal') outType = 'currency';
+  if (inType == 'text') outType = 'text';
+  if (inType == 'longtext') outType = 'text';
+
+  if (!outType) {
+    console.error(`inType ${inType} no definido!`)
+    outType = 'text'
+  }
+
+  return outType
+}
+
+export async function setStructure(table) {
+  let struc = await structure('t', table);
+    if (!struc[0].resp) {
+      const newStruc = []
+      struc.forEach(data => {
+        data.table = table;
+        data.COLUMN_NAME = data.COLUMN_NAME.toLowerCase()
+        newStruc.push(data);
+      })
+      return newStruc;
+    } else {
+      console.error(struc[0].msgError, struc[0].err)
+      return false
+    }
+}
+
+export async function dataTableRunCode(codeSQL, table, keyPrimary = ''){
+  let objResult = {
+    response: true,
+    data : [],
+    struc: {},
+    error: ''
+  }
+  try {
+    const value = await runCode(codeSQL);
+    objResult.data = value;
+
+    if(table){
+      const tableStructure = await setStructure(table, keyPrimary);
+      objResult.struc = handleStructure(tableStructure);
+    }
+ 
+    return objResult;
+    
+  } catch (err) {
+    objResult.response = false;
+    objResult.error = err.message || 'Error al traer datos';
+    return objResult;
+  } 
+}
+
 export function originServer() {
   return window.location.origin;
 }

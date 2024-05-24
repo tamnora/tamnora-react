@@ -34,7 +34,7 @@ const Tabs = ({ ariaLabel, items, children }) => {
 };
 
 const Tab = ({ children }) => {
-  return <div>{children}</div>;
+  return <div className='transition-all ease-in-out duration-500'>{children}</div>;
 };
 
 export { Tabs, Tab };

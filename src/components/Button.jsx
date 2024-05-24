@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Button = ({ color='neutral', onClick=()=>{}, size = 'sm', children }) => {
+const Button = ({ color='neutral', onClick=()=>{}, fontSize = 'text-sm', widthBtn = 'w-full' , children }) => {
 
  const colorTheme = {
     primary: `text-white bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg hover:shadow-xl shadow-blue-600/40 hover:shadow-blue-600/60 dark:from-blue-600 dark:to-blue-700 dark:shadow-blue-800/80`,
@@ -16,8 +16,8 @@ const Button = ({ color='neutral', onClick=()=>{}, size = 'sm', children }) => {
   };
 
   const buttonStyles = `
-    flex items-center rounded-lg px-4 py-2 text-sm font-medium focus:outline-none shadow-lg hover:shadow-xl active:translate-y-0.5
-    transition-all duration-100 scale-95 hover:scale-100 dark:shadow-lg text-center ${colorTheme[color]}`;
+    flex justify-center items-center rounded-lg px-4 py-2 ${fontSize} font-medium focus:outline-none shadow-lg hover:shadow-xl active:translate-y-0.5
+    transition-all duration-100 scale-95 hover:scale-100 dark:shadow-lg text-center ${colorTheme[color]} ${widthBtn}`;
 
   return (
     <button type="button" className={buttonStyles} onClick={onClick}>
