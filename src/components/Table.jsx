@@ -125,7 +125,7 @@ const Table = ({ name = 'table', datos, cantidadPorVista, textoBuscar, onRowClic
     // console.log('Pagina', currentPage)
     // console.log('Total de páginas', totalPages - 1)
     tableRef.current.focus();
-  }, [paginatedData])
+  }, [currentPage])
 
   const handleRowClick = (row, index) => {
     if (onRowClick) {
