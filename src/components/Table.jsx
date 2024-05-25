@@ -4,6 +4,7 @@ const Table = ({ name = 'table', datos, cantidadPorVista, textoBuscar, onRowClic
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
   const [selectedCellIndex, setSelectedCellIndex] = useState(0);
+  const [inFocus, setInFocus] = useState(false)
   const tableRef = useRef(null);
 
   const filteredData = useMemo(() => {
@@ -108,22 +109,32 @@ const Table = ({ name = 'table', datos, cantidadPorVista, textoBuscar, onRowClic
 
     };
 
+    const handleFocus = () => {
+      setInFocus(true);
+    };
+
+    const handleBlur = () => {
+      setInFocus(false);
+    };
+
     const tableElement = tableRef.current;
 
     if (tableElement) {
       tableElement.addEventListener('keydown', handleKeyDown);
+      tableElement.addEventListener('focus', handleFocus);
+      tableElement.addEventListener('blur', handleBlur);
     }
 
     return () => {
       if (tableElement) {
         tableElement.removeEventListener('keydown', handleKeyDown);
+        tableElement.removeEventListener('focus', handleFocus);
+        tableElement.removeEventListener('blur', handleBlur);
       }
     };
   }, [columns, selectedRowIndex, selectedCellIndex, onCellClick, onRowClick]);
 
   useEffect(() => {
-    // console.log('Pagina', currentPage)
-    // console.log('Total de páginas', totalPages - 1)
     tableRef.current.focus();
   }, [currentPage])
 
@@ -170,7 +181,7 @@ const Table = ({ name = 'table', datos, cantidadPorVista, textoBuscar, onRowClic
     <div>
       {datos.length > 0 ? (
         <>
-          <div ref={tableRef} tabIndex={0} name={name} className='overflow-x-auto rounded-lg border border-zinc-400/30 dark:border-zinc-700/50 w-full tmn-fadeIn' style={{ outline: 'none' }}>
+          <div ref={tableRef} tabIndex={0} name={name} className={`overflow-x-auto rounded-lg border ${inFocus ? 'border-blue-500/50 dark:border-blue-700/50' : 'border-zinc-400/30 dark:border-zinc-700/50'} w-full tmn-fadeIn`} style={{ outline: 'none' }}>
             <table className="w-full text-sm text-left text-zinc-500 dark:text-zinc-400">
               <thead className="text-xs border-b text-zinc-700 bg-zinc-100 dark:bg-zinc-900 border-zinc-200 uppercase dark:text-zinc-400 dark:border-zinc-800">
                 <tr className="text-md font-semibold">
@@ -196,7 +207,7 @@ const Table = ({ name = 'table', datos, cantidadPorVista, textoBuscar, onRowClic
                 {paginatedData.map((row, rowIndex) => (
                   <tr
                     key={rowIndex}
-                    className={`${styleRow}${rowIndex % 2 ? (selectedRowIndex === rowIndex ? trSelect : tr2) : (selectedRowIndex === rowIndex ? trSelect : tr1)}`}
+                    className={`${styleRow}${rowIndex % 2 ? ((selectedRowIndex === rowIndex && inFocus) ? trSelect : tr2) : (selectedRowIndex === rowIndex ? trSelect : tr1)}`}
                     onClick={onRowClick ? () => handleRowClick(row, rowIndex) : null}>
                     {columns.map((column, index) => (
                       <td
