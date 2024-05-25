@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { createPortal } from 'react-dom';
 
 const Modal = ({
   children,
@@ -9,16 +8,15 @@ const Modal = ({
   backdrop = 'opaque',
   scrollBehavior = 'normal',
   placement = 'auto',
-  isOpen,
+  isOpen = false,
   defaultOpen,
   isDismissable = true,
   isKeyboardDismissDisabled = false,
   shouldBlockScroll = true,
   hideCloseButton = false,
   closeButton,
-  portalContainer = document.body,
   classNames: customClassNames = {},
-  onOpenChange,
+  handleModal,
   onClose,
   title,
   subtitle,
@@ -28,11 +26,8 @@ const Modal = ({
   useEffect(() => {
     if (isOpen !== undefined) {
       setIsModalOpen(isOpen);
-      if (onOpenChange) {
-        onOpenChange(isOpen);
-      }
     }
-  }, [isOpen, onOpenChange]);
+  }, [isOpen]);
 
   useEffect(() => {
     if (isModalOpen && shouldBlockScroll) {
@@ -44,23 +39,26 @@ const Modal = ({
 
   const handleClose = () => {
     setIsModalOpen(false);
-    if (onOpenChange) {
-      onOpenChange(false);
-    }
     if (onClose) {
       onClose();
     }
-  }
+  };
 
   const handleBackdropClose = () => {
     if (isDismissable) {
-      setIsModalOpen(false)
+      handleClose();
+      if (handleModal) {
+        handleModal();
+      }
     }
   };
 
   const handleKeyDown = (e) => {
     if (e.key === 'Escape' && !isKeyboardDismissDisabled) {
       handleClose();
+      if (handleModal) {
+        handleModal();
+      }
     }
   };
 
@@ -124,7 +122,7 @@ const Modal = ({
     return null;
   }
 
-  return createPortal(
+  return (
     <div className={wrapperClasses} onClick={handleBackdropClose}>
       <div
         className={baseClasses}
@@ -134,7 +132,12 @@ const Modal = ({
           <div className={`absolute top-1 right-1 ${customClassNames.closeButton || ''}`}>
             {closeButton || (
               <button
-                onClick={handleClose}
+                onClick={() => {
+                  handleClose();
+                  if (handleModal) {
+                    handleModal();
+                  }
+                }}
                 role="button"
                 aria-label="Close"
                 className="appearance-none select-none p-2 text-zinc-500 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 outline-none"
@@ -155,9 +158,8 @@ const Modal = ({
           {children}
         </div>
       </div>
-    </div>,
-    portalContainer
+    </div>
   );
 };
 
-export { Modal };
+export { Modal }
