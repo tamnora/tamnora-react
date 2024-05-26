@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const SearchComponent = ({ onSearchChange, onEnter, myRef }) => {
+const SearchComponent = ({ onSearchChange, onEnter, myRef, name='inputSearch' }) => {
   const [textoBuscar, setTextoBuscar] = useState('');
   const [myPlaceHolder, setMyPlaceHolder] = useState('Buscar...')
   const searchRef = useRef(null);
@@ -44,7 +44,7 @@ const SearchComponent = ({ onSearchChange, onEnter, myRef }) => {
       <input
         ref={searchRef}
         type="search"
-        name="search"
+        name={name}
         autoComplete="off"
         className="block w-full py-2 px-3 ps-10 text-sm font-normal border rounded-lg outline-none shadow-sm bg-zinc-50 text-zinc-600  dark:bg-zinc-700/50 dark:text-zinc-300 dark:border-zinc-800 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-700/50 dark:focus:border-blue-700/50"
         placeholder={myPlaceHolder}

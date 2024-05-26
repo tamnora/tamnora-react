@@ -207,7 +207,7 @@ const Table = ({ name = 'table', datos, cantidadPorVista, textoBuscar, onRowClic
                 {paginatedData.map((row, rowIndex) => (
                   <tr
                     key={rowIndex}
-                    className={`${styleRow}${rowIndex % 2 ? ((selectedRowIndex === rowIndex && inFocus) ? trSelect : tr2) : (selectedRowIndex === rowIndex ? trSelect : tr1)}`}
+                    className={`${styleRow}${rowIndex % 2 ? ((selectedRowIndex === rowIndex && inFocus) ? trSelect : tr2) : ((selectedRowIndex === rowIndex && inFocus) ? trSelect : tr1)}`}
                     onClick={onRowClick ? () => handleRowClick(row, rowIndex) : null}>
                     {columns.map((column, index) => (
                       <td
