@@ -1469,24 +1469,6 @@ export class Tamnora {
             border: 4px solid var(--neutral-900); /* Cambia el color del borde en modo oscuro */
           }
           
-          /* Estilo para el cuadro de expansión de textarea */
-          
-          textarea::-webkit-resizer {
-            background-color: transparent; /* Color de fondo */
-            border-top: 3px solid transparent;
-            border-left: 3px solid transparent;
-            border-right: 3px solid var(--sky-500);
-            border-bottom: 3px solid var(--sky-500);
-          }
-
-          html.dark textarea::-webkit-resizer {
-            background-color: transparent; 
-            border-top: 3px solid transparent;
-            border-left: 3px solid transparent;
-            border-right: 3px solid var(--sky-700);
-            border-bottom: 3px solid var(--sky-700);
-          }
-          
           @-webkit-keyframes tmn-fadeIn {
             0% { opacity: 0; }
             to { opacity: 1; }
