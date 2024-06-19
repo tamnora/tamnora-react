@@ -116,7 +116,7 @@ const Modal = ({
 
   const wrapperClasses = `${modalBackdrops[backdrop]} fixed inset-0 z-50 ${customClassNames.wrapper || ''}`;
 
-  const baseClasses = `${modalSizes[size]} ${modalRadius[radius]} ${modalShadows[shadow]} ${modalPlacements[placement]} dark:text-white bg-white dark:bg-zinc-900 relative ${customClassNames.base || ''}`;
+  const baseClasses = `${modalSizes[size]} ${modalRadius[radius]} ${modalShadows[shadow]} ${modalPlacements[placement]} dark:text-white bg-zinc-100 dark:bg-zinc-900 tmn-fadeIn relative ${customClassNames.base || ''}`;
 
   if (!isModalOpen) {
     return null;

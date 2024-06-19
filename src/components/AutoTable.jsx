@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 
-const Table = ({ name = 'table', datos, cantidadPorVista, textoBuscar, onRowClick, onCellClick, extraColumns, columnWidths, renderCell, columnAlignments }) => {
+const AutoTable = ({ name = 'table', names = {}, datos, cantidadPorVista = 10, textoBuscar = '', onRowClick, onCellClick, extraColumns, columnWidths, renderCell, columnAlignments }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
   const [selectedCellIndex, setSelectedCellIndex] = useState(0);
@@ -172,16 +172,16 @@ const Table = ({ name = 'table', datos, cantidadPorVista, textoBuscar, onRowClic
     }
   };
 
-  const styleRow = `border-t border-zinc-200 dark:border-zinc-700/70 hover:bg-zinc-200/40 dark:hover:bg-zinc-800/40 `;
-  const tr1 = `bg-transparent hover:text-zinc-900 dark:hover:text-zinc-100 ${rowPointer} `;
-  const tr2 = `bg-zinc-50 dark:bg-zinc-900/60 hover:text-zinc-900 dark:hover:text-zinc-100 ${rowPointer} `;
-  const trSelect = `bg-blue-50 dark:bg-blue-500/15 hover:bg-blue-100/60 dark:hover:bg-blue-500/20 semibold text-blue-700 dark:text-blue-500 ${rowPointer} `;
+  const styleRow = `border-t border-zinc-200 dark:border-zinc-700/70 hover:bg-zinc-200/40 dark:hover:bg-zinc-800/70 `;
+  const tr1 = `bg-zinc-50 dark:bg-zinc-800/40 hover:text-zinc-900 dark:hover:text-zinc-100 ${rowPointer} `;
+  const tr2 = `bg-transparent hover:text-zinc-800 dark:hover:text-zinc-100 ${rowPointer} `;
+  const trSelect = `bg-zinc-200 dark:bg-zinc-950/20 text-blue-700 dark:text-blue-500 ${rowPointer} `;
 
   return (
     <div>
       {datos.length > 0 ? (
         <>
-          <div ref={tableRef} tabIndex={0} name={name} className={`overflow-x-auto rounded-lg border ${inFocus ? 'border-blue-500/30 dark:border-blue-700/30' : 'border-zinc-400/30 dark:border-zinc-700/50'} w-full tmn-fadeIn`} style={{ outline: 'none' }}>
+          <div ref={tableRef} tabIndex={0} name={name} className={`overflow-x-auto rounded-lg border border-zinc-400/30 dark:border-zinc-700/50 w-full tmn-fadeIn `} style={{ outline: 'none' }}>
             <table className="w-full text-sm text-left text-zinc-500 dark:text-zinc-400">
               <thead className="text-xs border-b text-zinc-700 bg-zinc-100 dark:bg-zinc-900 border-zinc-200 uppercase dark:text-zinc-400 dark:border-zinc-800">
                 <tr className="text-md font-semibold">
@@ -190,7 +190,7 @@ const Table = ({ name = 'table', datos, cantidadPorVista, textoBuscar, onRowClic
                       key={column}
                       className={`px-4 py-3 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 whitespace-nowrap ${getColumnAlignmentClass(index)}`}
                       style={{ width: columnWidths ? columnWidths[index] : 'auto' }}>
-                      {column}
+                      {names[column] ? names[column] : column}
                     </th>
                   ))}
                   {extraColumns && extraColumns.map((col, indexExtra) => (
@@ -212,7 +212,7 @@ const Table = ({ name = 'table', datos, cantidadPorVista, textoBuscar, onRowClic
                     {columns.map((column, index) => (
                       <td
                         key={column}
-                        className={`px-4 py-3 select-none whitespace-nowrap ${cellPointer} ${getColumnAlignmentClass(index)} ${selectedRowIndex === rowIndex && selectedCellIndex === index && onCellClick ? 'bg-blue-200 dark:bg-blue-700' : ''}`}
+                        className={`px-4 py-3 select-none whitespace-nowrap ${cellPointer} ${getColumnAlignmentClass(index)} ${selectedRowIndex === rowIndex && selectedCellIndex === index && onCellClick ? 'bg-zinc-300 dark:bg-zinc-700' : ''}`}
                         onClick={onCellClick ? (e) => handleCellClick(e, row, column) : null}>
                         {renderCellContent(row[column], row, column)}
                       </td>
@@ -274,4 +274,4 @@ const Table = ({ name = 'table', datos, cantidadPorVista, textoBuscar, onRowClic
   );
 };
 
-export { Table };
+export { AutoTable };

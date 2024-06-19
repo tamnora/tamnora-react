@@ -1,5 +1,15 @@
-const SERVER = import.meta.env.VITE_SERVER_NODE;
-const TYPE_SERVER = 'node';
+const SERVER_REMOTE = import.meta.env.VITE_SERVER_REMOTE;
+const SERVER_LOCAL = import.meta.env.VITE_SERVER_LOCAL;
+const TYPE_SERVER = import.meta.env.VITE_TYPE_SERVER;
+const SERVER_USE = import.meta.env.VITE_SERVER_USE;
+let SERVER;
+
+if(SERVER_USE == 'local'){
+  SERVER = SERVER_LOCAL;
+} else {
+  SERVER = SERVER_REMOTE;
+}
+
 let informe = { primero: 'nada', segundo: 'nada' };
 
 function createQuerySQL(type, params) {

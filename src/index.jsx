@@ -2,16 +2,40 @@ import { Tamnora } from "./js/tamnora.js";
 import { inServer, formatDate, originServer, runCode, structure, dbSelect, pesos, formatNumber, formatNumberArray, currency, defaultClass, handleStructure, typeToType, setStructure, dataTableRunCode } from './js/tamnora.js';
 export {Tamnora, inServer, formatDate, originServer, runCode, structure, dbSelect, pesos, formatNumber, formatNumberArray, currency, defaultClass, handleStructure, typeToType, setStructure, dataTableRunCode}
 import './main.css';
-export { Modal } from './components/Modal.jsx';
+
+export { Alert } from './components/Alert';
+export { AutoComplete } from './components/AutoComplete';
+export { DarkModeBtn } from './components/DarkModeBtn';
+export { Logo } from './components/Logo';
+export { Select } from './components/Select';
+export { Sidebar } from './components/Sidebar';
+export { TableActions } from './components/TableActions';
+
 export { AutoForm } from './components/AutoForm.jsx';
+export { AutoTable } from './components/AutoTable.jsx';
 export { Background } from './components/Backgroud.jsx';
-export { Table } from './components/Table.jsx';
-export { SearchComponent } from './components/SearchComponent.jsx';
-export { default as Tmn } from './components/Tmn.jsx';
 export { Button } from './components/Button.jsx';
-export { Tabs, Tab } from './components/Tabs.jsx';
 export { Card, CardBody } from './components/Card.jsx';
-export { TmnLogo } from './components/TmnLogo.jsx';
+export { Checkbox } from './components/Checkbox.jsx';
+export { CheckboxGroup } from './components/CheckboxGroup.jsx';
+export { Input } from './components/Input.jsx';
 export { InputSubmit } from './components/InputSubmit.jsx';
+export { List } from './components/List.jsx';
 export { Loader } from './components/Loader.jsx';
+export { LogoutBtn } from './components/LogoutBtn.jsx';
+export { Modal } from './components/Modal.jsx';
+export { Navbar } from './components/Navbar.jsx';
+export { RadioGroup } from './components/RadioGroup.jsx';
+export { SearchComponent } from './components/SearchComponent.jsx';
+export { SelectSearch } from './components/SelectSearch.jsx';
+export { Switch } from './components/Switch.jsx';
+export { Tab } from './components/Tab.jsx';
+export { Table } from './components/Table.jsx';
+export { Tabs } from './components/Tabs.jsx';
+export { Textarea } from './components/Textarea.jsx';
+export { TextDarkModeButton } from './components/TextDarkModeButton.jsx';
+export { default as Tmn } from './components/Tmn.jsx';
+export { TmnLogo } from './components/TmnLogo.jsx';
+export { Tooltip } from './components/Tooltip.jsx';
+
 

@@ -1,41 +1,32 @@
 import React, { useState } from 'react';
 
-const Tabs = ({ ariaLabel, items, children }) => {
-  const [activeTab, setActiveTab] = useState(items[0].id);
+const Tabs = ({ children }) => {
+  const [activeTab, setActiveTab] = useState(0);
 
-  const handleTabClick = (id) => {
-    setActiveTab(id);
+  const handleTabClick = (index) => {
+    setActiveTab(index);
   };
 
   return (
     <div>
-      <div role="tablist" aria-label={ariaLabel} className="flex border-b border-neutral-200 dark:border-neutral-700/70">
-        {items.map((item) => (
+      <div className="flex border-b border-neutral-200 dark:border-neutral-700/70">
+        {children.map((tab, index) => (
           <button
-            key={item.id}
-            role="tab"
-            aria-selected={activeTab === item.id}
-            className={`px-4 py-2 text-sm font-medium hover:text-neutral-900 dark:hover:text-neutral-100 ${
-              activeTab === item.id ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'
-            } transition-colors ease-in-out duration-500`}
-            onClick={() => handleTabClick(item.id)}
+            key={index}
+            className={`px-4 py-2 -mb-px text-sm font-medium border-b  transition-colors duration-500 ${
+              activeTab === index ? 'border-blue-500 text-blue-500' : 'border-transparent text-neutral-500 hover:text-neutral-600 hover:border-neutral-600 dark:hover:text-neutral-200 dark:hover:border-neutral-200'
+            }`}
+            onClick={() => handleTabClick(index)}
           >
-            {item.label}
+            {tab.props.label}
           </button>
         ))}
       </div>
-      <div className="mt-4">
-        {items.map((item) =>
-          activeTab === item.id ? React.cloneElement(children(item), { key: item.id }) : null
-        )}
+      <div className="p-4">
+        {children[activeTab]}
       </div>
     </div>
   );
 };
 
-const Tab = ({ children }) => {
-  return <div className='transition-all ease-in-out duration-500'>{children}</div>;
-};
-
-export { Tabs, Tab };
-
+export { Tabs };
