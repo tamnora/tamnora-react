@@ -46,4 +46,4 @@ const Tooltip = ({
   );
 };
 
-export {Tooltip};
+export { Tooltip };

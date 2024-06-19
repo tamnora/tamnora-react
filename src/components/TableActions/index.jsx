@@ -1,4 +1,4 @@
-import Tooltip from "../Tooltip";
+import { Tooltip } from "../Tooltip";
 import { DeleteIcon } from "./DeleteIcon";
 import { DetailsIcon } from "./DetailsIcon";
 import { EditIcon } from "./EditIcon";

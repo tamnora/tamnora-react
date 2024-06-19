@@ -5,7 +5,6 @@ import './main.css';
 
 export { Alert } from './components/Alert';
 export { AutoComplete } from './components/AutoComplete';
-export { DarkModeBtn } from './components/DarkModeBtn';
 export { Logo } from './components/Logo';
 export { Select } from './components/Select';
 export { TableActions } from './components/TableActions';
