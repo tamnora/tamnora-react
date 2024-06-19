@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 
-const AutoTable = ({ name = 'table', names = {}, datos, cantidadPorVista = 10, textoBuscar = '', onRowClick, onCellClick, extraColumns, columnWidths, renderCell, columnAlignments }) => {
+const AutoTable = ({ name = 'table', names = {}, datos, cantidadPorVista = 10, textoBuscar = '', onRowFocus, onRowClick, onCellClick, extraColumns, columnWidths, renderCell, columnAlignments }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
   const [selectedCellIndex, setSelectedCellIndex] = useState(0);
@@ -67,10 +67,20 @@ const AutoTable = ({ name = 'table', names = {}, datos, cantidadPorVista = 10, t
           case 'ArrowDown':
             e.preventDefault();
             setSelectedRowIndex(prevIndex => (prevIndex + 1) % paginatedData.length);
+            // if((selectedRowIndex + 1) <= cantidadPorVista - 1){
+            //   console.log(paginatedData[selectedRowIndex + 1]);
+            // } else {
+            //   console.log(paginatedData[0]);
+            // }
             break;
           case 'ArrowUp':
             e.preventDefault();
             setSelectedRowIndex(prevIndex => (prevIndex - 1 + paginatedData.length) % paginatedData.length);
+            // if((selectedRowIndex - 1) >= 0){
+            //   console.log(paginatedData[selectedRowIndex - 1]);
+            // } else {
+            //   console.log(paginatedData[cantidadPorVista - 1]);
+            // }
             break;
           case 'Enter':
             e.preventDefault();
@@ -79,33 +89,39 @@ const AutoTable = ({ name = 'table', names = {}, datos, cantidadPorVista = 10, t
           default:
             break;
         }
+        
       }
 
       switch (e.key) {
         case 'PageDown':
           if (currentPage < (totalPages - 1)) {
             setCurrentPage(currentPage + 1)
+            setSelectedRowIndex(0);
           }
           break;
         case 'PageUp':
           if (currentPage > 0) {
             setCurrentPage(currentPage - 1)
+            setSelectedRowIndex(cantidadPorVista - 1);
           }
           break;
         case 'ArrowRight':
           if (currentPage < (totalPages - 1)) {
             setCurrentPage(currentPage + 1)
+            setSelectedRowIndex(0);
           }
           break;
         case 'ArrowLeft':
           if (currentPage > 0) {
             setCurrentPage(currentPage - 1)
+            setSelectedRowIndex(cantidadPorVista - 1);
           }
           break;
 
         default:
           break;
       }
+      
 
     };
 
@@ -138,12 +154,24 @@ const AutoTable = ({ name = 'table', names = {}, datos, cantidadPorVista = 10, t
     tableRef.current.focus();
   }, [currentPage])
 
+  useEffect(() => {
+    idSelectedRow();
+  }, [selectedRowIndex])
+
   const handleRowClick = (row, index) => {
     if (onRowClick) {
       setSelectedRowIndex(index)
       onRowClick(row, index);
     }
   };
+
+  const idSelectedRow = () => {
+    const rowSelected = tableRef.current.querySelector("[data-row='selected']");
+    const indexRow = rowSelected.getAttribute('data-id');
+    if(onRowFocus){
+      onRowFocus(paginatedData[indexRow])
+    }
+  }
 
   const handleCellClick = (e, row, cell) => {
     e.stopPropagation();
@@ -207,6 +235,8 @@ const AutoTable = ({ name = 'table', names = {}, datos, cantidadPorVista = 10, t
                 {paginatedData.map((row, rowIndex) => (
                   <tr
                     key={rowIndex}
+                    data-row={selectedRowIndex === rowIndex ? 'selected' : `fila${rowIndex}`}
+                    data-id={rowIndex}
                     className={`${styleRow}${rowIndex % 2 ? ((selectedRowIndex === rowIndex && inFocus) ? trSelect : tr2) : ((selectedRowIndex === rowIndex && inFocus) ? trSelect : tr1)}`}
                     onClick={onRowClick ? () => handleRowClick(row, rowIndex) : null}>
                     {columns.map((column, index) => (
