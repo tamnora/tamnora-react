@@ -8,7 +8,6 @@ export { AutoComplete } from './components/AutoComplete';
 export { DarkModeBtn } from './components/DarkModeBtn';
 export { Logo } from './components/Logo';
 export { Select } from './components/Select';
-export { Sidebar } from './components/Sidebar';
 export { TableActions } from './components/TableActions';
 
 export { AutoForm } from './components/AutoForm.jsx';
@@ -22,7 +21,6 @@ export { Input } from './components/Input.jsx';
 export { InputSubmit } from './components/InputSubmit.jsx';
 export { List } from './components/List.jsx';
 export { Loader } from './components/Loader.jsx';
-export { LogoutBtn } from './components/LogoutBtn.jsx';
 export { Modal } from './components/Modal.jsx';
 export { Navbar } from './components/Navbar.jsx';
 export { RadioGroup } from './components/RadioGroup.jsx';
