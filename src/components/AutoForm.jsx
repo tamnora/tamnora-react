@@ -463,6 +463,13 @@ const AutoForm = ({
 		});
 	};
 
+	const handleSelect = (key, value) => {
+		setFormData({
+			...formData,
+			[key]: value,
+		});
+	}
+
 	const handleFocus = (e, key) => {
 		setInitialValues({
 			...initialValues,
@@ -591,6 +598,7 @@ const AutoForm = ({
 										options={types[key].options}
 										label={names[key] || key}
 										defaultValue={formData[key]}
+										onChange={(value) => handleSelect(key, value)}
 										isReadOnly={isReadOnly[key] || false}
 										isRequired={isRequired[key] || false}
 										isDisabled={isDisabled[key] || false}

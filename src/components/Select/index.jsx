@@ -144,13 +144,13 @@ export function Select({
       </button>
       {showOptions && (
         <ul
-          className="absolute z-20 mt-2 w-full bg-white dark:bg-zinc-900 shadow-lg rounded-xl p-2 text-sm text-zinc-700 dark:text-zinc-200"
+          className="absolute z-20 mt-1 w-full bg-zinc-100 dark:bg-zinc-800 shadow-lg rounded-xl p-2 text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-600"
           ref={optionsRef}
         >
           {options.map((option, index) => (
             <li
               key={option.value}
-              className={`cursor-pointer px-2 py-1.5 hover:bg-zinc-200 rounded-lg dark:hover:bg-zinc-700 ${highlightedIndex === index ? 'bg-zinc-200 dark:bg-zinc-700' : ''}`}
+              className={`cursor-pointer px-2 py-1.5 hover:bg-white rounded-lg dark:hover:bg-zinc-900 ${selectedValue === option.value ? 'bg-white dark:bg-zinc-700 text-sky-700 dark:text-sky-200' : ''}`}
               onMouseEnter={() => setHighlightedIndex(index)}
               onClick={() => selectOption(option)}
             >
