@@ -34,6 +34,7 @@ export function Select({
     setSelectedValue(option.value);
     onChange && onChange(option.value);
     setShowOptions(false);
+    selectRef.current.focus();
     setFocused(true);
   };
 
