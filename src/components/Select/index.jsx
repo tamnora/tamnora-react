@@ -34,11 +34,13 @@ export function Select({
     setSelectedValue(option.value);
     onChange && onChange(option.value);
     setShowOptions(false);
-    selectRef.current.focus();
     setFocused(true);
+    selectRef.current.focus();
   };
 
   const navigateOptions = (e) => {
+    if (!showOptions) return;
+
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       setHighlightedIndex((prevIndex) => (prevIndex + 1) % options.length);
@@ -47,9 +49,6 @@ export function Select({
       setHighlightedIndex((prevIndex) => (prevIndex - 1 + options.length) % options.length);
     } else if (e.key === 'Enter') {
       e.preventDefault();
-      if(!showOptions){
-        setShowOptions(true)
-      }
       if (highlightedIndex >= 0 && highlightedIndex < options.length) {
         selectOption(options[highlightedIndex]);
       }
@@ -105,7 +104,7 @@ export function Select({
     ${variant === 'faded' ? 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border-2 border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500' : ''}
     ${variant === 'tmn' ? 'bg-white dark:bg-zinc-900/80 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500' : ''}
     ${focused && (variant === 'bordered' || variant === 'underlined') ? '!border-zinc-800 dark:!border-white' : ''}
-    ${focused && (variant === 'flat' || variant === 'faded' || variant === 'tmn') ? 'outline outline-sky-500 outline-offset-1' : ''}`;
+    ${focused && (variant === 'flat' || variant === 'faded' || variant === 'tmn') ? 'outline outline-sky-500 dark:outline-sky-700 outline-offset-1' : ''}`;
 
   const labelClassNames = `
     absolute z-10 text-md font-normal pointer-events-none origin-top-left subpixel-antialiased block cursor-text transition-transform transition-color transition-left ease-out duration-200
@@ -151,7 +150,7 @@ export function Select({
           {options.map((option, index) => (
             <li
               key={option.value}
-              className={`cursor-pointer px-2 py-1.5 hover:bg-white rounded-lg dark:hover:bg-zinc-900 ${selectedValue === option.value ? 'bg-white dark:bg-zinc-700 text-sky-700 dark:text-sky-200' : ''}`}
+              className={`cursor-pointer px-2 py-1.5 hover:bg-white rounded-lg dark:hover:bg-zinc-900 ${highlightedIndex === index ? 'bg-zinc-200 dark:bg-zinc-700' : ''} ${selectedValue === option.value ? 'bg-white dark:bg-zinc-700 text-sky-700 dark:text-sky-300' : ''}`}
               onMouseEnter={() => setHighlightedIndex(index)}
               onClick={() => selectOption(option)}
             >
