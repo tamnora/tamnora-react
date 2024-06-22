@@ -28,6 +28,7 @@ export function Select({
     if (isDisabled || isReadOnly) return;
     setFocused(true);
     setShowOptions(prev => !prev);
+    setHighlightedIndex((prevIndex) => (prevIndex + 1) % options.length);
   };
 
   const selectOption = (option) => {
@@ -52,7 +53,7 @@ export function Select({
       if (highlightedIndex >= 0 && highlightedIndex < options.length) {
         selectOption(options[highlightedIndex]);
       }
-    } else if (e.key === 'Escape') {
+    } else if (e.key === 'Tab') {
       setShowOptions(false);
       setFocused(false);
     }
@@ -102,7 +103,7 @@ export function Select({
     ${variant === 'bordered' ? 'border-2 border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500' : ''}
     ${variant === 'underlined' ? 'border-b-2 !shadow-none dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500 !px-1' : ''}
     ${variant === 'faded' ? 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border-2 border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500' : ''}
-    ${variant === 'tmn' ? 'bg-white dark:bg-zinc-900/80 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500' : ''}
+    ${variant === 'tmn' ? 'bg-white dark:bg-zinc-800/80 hover:bg-zinc-50 dark:hover:bg-zinc-700/80 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500' : ''}
     ${focused && (variant === 'bordered' || variant === 'underlined') ? '!border-zinc-800 dark:!border-white' : ''}
     ${focused && (variant === 'flat' || variant === 'faded' || variant === 'tmn') ? 'outline outline-sky-500 dark:outline-sky-700 outline-offset-1' : ''}`;
 
@@ -150,7 +151,7 @@ export function Select({
           {options.map((option, index) => (
             <li
               key={option.value}
-              className={`cursor-pointer px-2 py-1.5 hover:bg-white rounded-lg dark:hover:bg-zinc-900 ${highlightedIndex === index ? 'bg-zinc-200 dark:bg-zinc-700' : ''} ${selectedValue === option.value ? 'bg-white dark:bg-zinc-700 text-sky-700 dark:text-sky-300' : ''}`}
+              className={`cursor-pointer px-2 py-1.5 hover:bg-white rounded-lg dark:hover:bg-zinc-900 ${highlightedIndex === index ? 'bg-zinc-200 dark:bg-zinc-700' : ''} ${selectedValue === option.value ? 'bg-sky-100 dark:bg-sky-700 text-sky-700 dark:text-sky-200' : ''}`}
               onMouseEnter={() => setHighlightedIndex(index)}
               onClick={() => selectOption(option)}
             >
