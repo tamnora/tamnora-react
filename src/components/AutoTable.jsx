@@ -203,7 +203,7 @@ const AutoTable = ({ name = 'table', names = {}, datos, cantidadPorVista = 10, t
   const styleRow = `border-t border-zinc-200 dark:border-zinc-700/70 hover:bg-zinc-200/40 dark:hover:bg-zinc-800/70 `;
   const tr1 = `bg-zinc-50 dark:bg-zinc-800/40 hover:text-zinc-900 dark:hover:text-zinc-100 ${rowPointer} `;
   const tr2 = `bg-transparent hover:text-zinc-800 dark:hover:text-zinc-100 ${rowPointer} `;
-  const trSelect = `bg-zinc-200 dark:bg-zinc-950/20 text-blue-700 dark:text-blue-500 ${rowPointer} `;
+  const trSelect = `bg-sky-200/20 dark:bg-sky-950/20 text-sky-600 dark:text-sky-500 ${rowPointer} `;
 
   return (
     <div>

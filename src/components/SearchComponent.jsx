@@ -46,7 +46,7 @@ const SearchComponent = ({ onSearchChange, onEnter, myRef, name='inputSearch' })
         type="search"
         name={name}
         autoComplete="off"
-        className="block w-full py-2 px-3 ps-10 text-sm font-normal border rounded-lg outline-none shadow-sm bg-zinc-50 text-zinc-600  dark:bg-zinc-700/50 dark:text-zinc-300 dark:border-zinc-800 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-700/50 dark:focus:border-blue-700/50"
+        className="block w-full py-2 px-3 ps-10 text-sm text-sky-700 dark:text-sky-300 font-normal rounded-lg shadow-sm bg-white dark:bg-zinc-800/80 hover:bg-zinc-50 dark:hover:bg-zinc-700/80 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500 focus:outline focus:outline-sky-500 dark:focus:outline-sky-700 focus:ring-blue-500 focus:border-sky-500 dark:focus:ring-sky-700 dark:focus:border-sky-700"
         placeholder={myPlaceHolder}
         value={textoBuscar}
         onChange={handleInputChange}
