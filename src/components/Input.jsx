@@ -25,11 +25,13 @@ const Input = ({
   startContent,
   endContent,
   onChange,
+  onHandleBlur,
   isCase,
   ...props
 }) => {
   const [focused, setFocused] = useState(false);
   const [internalValue, setInternalValue] = useState(defaultValue || '');
+  const [initialValue, setInitialValue] = useState(defaultValue || '');
   const [hasBeenFocused, setHasBeenFocused] = useState(false);
   const [requiredMessage, setRequiredMessage] = useState('');
   const inputRef = useRef(null);
@@ -65,11 +67,15 @@ const Input = ({
 
   const handleBlur = (e) => {
     setFocused(false);
+    if (initialValue !== e.target.value) {
+      setInitialValue(e.target.value)
+			if (onHandleBlur) {
+				onHandleBlur(e);
+			}
+		}
   };
 
-  const handleInput = (e)=>{
-    console.log(e.target.value)
-  }
+  
 
   const displayedValue = value !== undefined ? value : internalValue;
   const inputProps = {

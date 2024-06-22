@@ -33,6 +33,7 @@ const AutoForm = ({
 	const [initialValues, setInitialValues] = useState({ ...data });
 	const formRef = useRef(null);
 	const fieldRefs = useRef({});
+	const [refreshForm, setRefreshForm] = useState(1)
 
 	let objects = {
 		id: idSelected ?? 0,
@@ -479,11 +480,18 @@ const AutoForm = ({
 
 	const handleBlur = (e, key) => {
 		if (initialValues[key] !== e.target.value) {
+			initialValues[key] = e.target.value;
+			let updatedData = { ...formData, [key]: e.target.value };
 			if (key in onUpdateInput) {
-				onUpdateInput[key](formData, e.target.value);
+				let res = onUpdateInput[key](formData, e.target.value);
+				if(res){
+					setRefreshForm(0);
+					updatedData = { ...updatedData, ...res };
+					console.log('Resultado', updatedData)
+					setFormData(updatedData);	
+				}
 			}
 		}
-
 	};
 
 	const handleChangeCurrency = (e, key) => {
@@ -564,7 +572,6 @@ const AutoForm = ({
 	};
 
 	
-
 	const footerClasses = `flex items-center justify-between gap-2 border-zinc-300 dark:border-zinc-600
 	${variant === 'tmn' && 'border-t pt-4'}
 	`
@@ -572,6 +579,10 @@ const AutoForm = ({
 	useEffect(() => {
 		setFormData({ ...data });
 	}, [data]);
+
+	useEffect(()=>{
+		setRefreshForm(1);
+	},[formData])
 
 	useEffect(() => {
 		if (focusIn && fieldRefs.current[focusIn]) {
@@ -584,7 +595,7 @@ const AutoForm = ({
 	return (
 		<form name={name} ref={formRef} onSubmit={handleSubmit} onKeyDown={handleKeyPress}>
 			<div className="grid grid-cols-12 gap-2 pb-6">
-				{Object.keys(formData).map((key) => {
+				{refreshForm && Object.keys(formData).map((key) => {
 					const fieldType = types[key]?.type || struc[key] || 'text';
 
 					if (key !== primaryKey) {
@@ -615,6 +626,7 @@ const AutoForm = ({
 										defaultValue={formData[key]}
 										isRequiredMessage="Campo requerido"
 										onChange={(e) => handleChange(e, key)}
+										onHandleBlur={(e) => handleBlur(e, key)}
 										isCase={isCase[key] || ''}
 										isReadOnly={isReadOnly[key] || false}
 										isRequired={isRequired[key] || false}
@@ -630,6 +642,7 @@ const AutoForm = ({
 										type={fieldType}
 										defaultValue={formData[key]}
 										onChange={(e) => handleChange(e, key)}
+										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly[key] || false}
 										isRequired={isRequired[key] || false}
 										isDisabled={isDisabled[key] || false} />
@@ -645,6 +658,7 @@ const AutoForm = ({
 										type={fieldType}
 										defaultValue={formatNumberArray(formData[key])[2]}
 										onChange={(e) => handleChange(e, key)}
+										onHandleBlur={(e) => handleChangeCurrency(e, key)}
 										isReadOnly={isReadOnly[key] || false}
 										isRequired={isRequired[key] || false}
 										isDisabled={isDisabled[key] || false}
@@ -665,6 +679,7 @@ const AutoForm = ({
 										type={fieldType}
 										defaultValue={formData[key]}
 										onChange={(e) => handleChange(e, key)}
+										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly[key] || false}
 										isRequired={isRequired[key] || false}
 										isDisabled={isDisabled[key] || false} />
