@@ -37,9 +37,9 @@ const Alert = ({
     'top-center': 'top-3 left-1/2 transform -translate-x-1/2 tmn-fadeInDown',
     'top-right': 'top-3 right-3 tmn-fadeInDown',
     'center': 'top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 tmn-fadeIn',
-    'bottom-left': 'bottom-3 left-3 tmn-fadeInUp',
-    'bottom-center': 'bottom-3 left-1/2 transform -translate-x-1/2 tmn-fadeInUp',
-    'bottom-right': 'bottom-3 right-3 tmn-fadeInUp',
+    'bottom-left': 'bottom-3 left-3 tmn-fadeInTop',
+    'bottom-center': 'bottom-3 left-1/2 transform -translate-x-1/2 tmn-fadeInTop',
+    'bottom-right': 'bottom-3 right-3 tmn-fadeInTop',
   };
 
   useEffect(() => {

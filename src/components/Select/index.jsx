@@ -145,7 +145,7 @@ export function Select({
       </button>
       {showOptions && (
         <ul
-          className="absolute z-20 mt-1 w-full bg-zinc-100 dark:bg-zinc-800 shadow-lg rounded-xl p-2 text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-600"
+          className="absolute z-20 mt-1 w-full bg-zinc-100 dark:bg-zinc-800 shadow-lg rounded-xl p-2 text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-600 max-h-72 overflow-y-auto"
           ref={optionsRef}
         >
           {options.map((option, index) => (
