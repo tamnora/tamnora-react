@@ -69,7 +69,7 @@ const AutoComplete = ({
   }, [activeSuggestion]);
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full tmn-fadeIn">
       <Input
         type="text"
         onChange={handleChange}
@@ -78,7 +78,8 @@ const AutoComplete = ({
         {...props}
       />
       {showSuggestions && query && (
-        <ul className="absolute z-20 mt-2 w-full bg-zinc-100 dark:bg-zinc-800 shadow-lg rounded-xl p-2 text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-600 max-h-72 overflow-y-auto">
+        <div className="absolute z-20 mt-2 w-full bg-zinc-100 dark:bg-zinc-800/80 shadow-lg rounded-xl text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-600 tmn-fadeIn">
+          <ul className="p-2 max-h-72 overflow-y-auto">
           {filteredData.length > 0 ? (
             filteredData.map((item, index) => (
               <li
@@ -96,6 +97,7 @@ const AutoComplete = ({
             <li className="px-2 py-1.5 bg-red-200 text-red-700 rounded-lg dark:bg-red-700 dark:text-red-200">{emptyData}</li>
           )}
         </ul>
+        </div>
       )}
     </div>
   );
