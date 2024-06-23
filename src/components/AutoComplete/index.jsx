@@ -20,7 +20,7 @@ const AutoComplete = ({
  const handleChange = (e) => {
    const userInput = e.target.value;
    setQuery(userInput);
-   if (userInput.length > 0) {
+   if (userInput.length > startLetter) {
      const filtered = data.filter(item =>
        sarta
          ? item[columnSearch].toLowerCase().includes(userInput.toLowerCase())
@@ -69,7 +69,7 @@ const AutoComplete = ({
      />
      {showSuggestions && query && (
        <ul className="absolute z-20 mt-2 w-full bg-zinc-100 dark:bg-zinc-800 shadow-lg rounded-xl p-2 text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-600">
-         {filteredData.length > startLetter ? (
+         {filteredData.length > 0 ? (
            filteredData.map((item, index) => (
              <li
                key={item[keyReturn]}

@@ -159,10 +159,7 @@ const Input = ({
           <input
             {...inputProps}
             autoComplete="off"
-            className={`
-              w-full bg-transparent outline-none dark:text-white placeholder:text-zinc-500 text-sm border-0
-              
-            `}
+            className={`w-full bg-transparent outline-none dark:text-white placeholder:text-zinc-500 text-sm border-0`}
           />
         {endContent &&
           <div className='text-zinc-400 ps-2 select-none'>
