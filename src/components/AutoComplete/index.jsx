@@ -9,6 +9,7 @@ const AutoComplete = ({
   emptyData = "No hay sugerencias",
   enforceSelection = false,
   startLetter = 0,
+  onSelect,
   ...props
 }) => {
   const [query, setQuery] = useState('');
@@ -29,18 +30,23 @@ const AutoComplete = ({
       );
       setFilteredData(filtered);
       setShowSuggestions(true);
+      console.log(filtered);
+      setActiveSuggestion(0);
     } else {
       setShowSuggestions(false);
     }
   };
 
   const handleClick = (item) => {
-    console.log(item)
     setQuery(item[columnSearch]);
-    console.log('item', item[columnSearch])
     setSelectedItem(item);
     setShowSuggestions(false);
-    console.log(item[keyReturn]);
+    // console.log(item)
+    // console.log(item[keyReturn]);
+    // console.log('item', item[columnSearch])
+    if(onSelect){
+      onSelect({data: item, columnSearch: item[columnSearch], value: item[keyReturn] })
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -55,6 +61,7 @@ const AutoComplete = ({
     } else if (e.key === 'Enter') {
       if (filteredData.length > 0) {
         handleClick(filteredData[activeSuggestion]);
+        setShowSuggestions(false)
       }
     }
   };

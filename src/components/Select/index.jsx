@@ -144,10 +144,8 @@ export function Select({
         </span>
       </button>
       {showOptions && (
-        <ul
-          className="absolute z-20 mt-1 w-full bg-zinc-100 dark:bg-zinc-800 shadow-lg rounded-xl p-2 text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-600 max-h-72 overflow-y-auto"
-          ref={optionsRef}
-        >
+        <div className="absolute z-20 mt-2 w-full bg-zinc-100 dark:bg-zinc-800/80 shadow-lg rounded-xl text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-600 tmn-fadeIn">
+          <ul className="p-2 max-h-72 overflow-y-auto" ref={optionsRef}>
           {options.map((option, index) => (
             <li
               key={option.value}
@@ -159,6 +157,7 @@ export function Select({
             </li>
           ))}
         </ul>
+        </div>
       )}
     </div>
   );
