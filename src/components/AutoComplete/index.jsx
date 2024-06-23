@@ -45,7 +45,7 @@ const AutoComplete = ({
     // console.log(item[keyReturn]);
     // console.log('item', item[columnSearch])
     if(onSelect){
-      onSelect({data: item, columnSearch: item[columnSearch], value: item[keyReturn] })
+      onSelect({column: columnSearch, columnSearch: item[columnSearch], data: item,  value: item[keyReturn] })
     }
   };
 
@@ -85,14 +85,14 @@ const AutoComplete = ({
         {...props}
       />
       {showSuggestions && query && (
-        <div className="absolute z-20 mt-2 w-full bg-zinc-100 dark:bg-zinc-800/80 shadow-lg rounded-xl text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-600 tmn-fadeIn">
+        <div className="absolute z-20 mt-2 w-full bg-zinc-100 dark:bg-zinc-800 shadow-lg rounded-xl text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-600 tmn-fadeIn">
           <ul className="p-2 max-h-72 overflow-y-auto">
           {filteredData.length > 0 ? (
             filteredData.map((item, index) => (
               <li
                 key={item[keyReturn]}
                 ref={(el) => suggestionsRef.current[index] = el}
-                className={`cursor-pointer px-2 py-1.5 hover:bg-zinc-200 dark:hover:bg-zinc-700 rounded-lg  ${
+                className={`cursor-pointer px-2 py-1.5 hover:bg-zinc-200 dark:hover:bg-zinc-900 rounded-lg  ${
                   index === activeSuggestion ? 'bg-sky-200 dark:bg-sky-700 text-sky-700 dark:text-sky-200' : ''
                 }`}
                 onClick={() => handleClick(item)}
