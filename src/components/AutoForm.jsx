@@ -28,6 +28,9 @@ const AutoForm = ({
 	widthColumns = {},
 	onUpdateInput = {},
 	isCase = {},
+	textSubmit = 'Guardar',
+	textDelete = 'Eliminar',
+	textCancel = 'Cancelar',
 }) => {
 	const [formData, setFormData] = useState({ ...data });
 	const [initialValues, setInitialValues] = useState({ ...data });
@@ -560,7 +563,7 @@ const AutoForm = ({
 	};
 
 	
-	const [deleteText, setDeleteText] = useState('Eliminar')
+	const [deleteText, setDeleteText] = useState(textDelete)
 	const [deleteConfirmed, setDeleteConfirmed] = useState(false)
 	const handleDelete = (e) => {
 		setDeleteText('Seguro que desea eliminar?')
@@ -594,7 +597,7 @@ const AutoForm = ({
 
 	return (
 		<form name={name} ref={formRef} onSubmit={handleSubmit} onKeyDown={handleKeyPress}>
-			<div className="grid grid-cols-12 gap-2 pb-6">
+			<div className="grid grid-cols-12 gap-2 pb-4 tmn-fadeIn">
 				{refreshForm && Object.keys(formData).map((key) => {
 					const fieldType = types[key]?.type || struc[key] || 'text';
 
@@ -725,7 +728,7 @@ const AutoForm = ({
 				<div className={footerClasses}>
 					<div className="flex items-center justify-start gap-2">
 						<Button radius='rounded-xl'  type="submit" name='submit' color='sky'>
-							Guardar
+							{textSubmit}
 						</Button>
 						{onDelete && idSelected > 0 && (
 							<Button radius='rounded-xl' color='red' type="button" name='delete' onClick={handleDelete}>
@@ -734,7 +737,7 @@ const AutoForm = ({
 						)}
 						{onCancel && (
 							<Button radius='rounded-xl' color='zinc' type="button" name='cancel' onClick={onCancel}>
-								Cancelar
+								{textCancel}
 							</Button>
 						)}
 					</div>

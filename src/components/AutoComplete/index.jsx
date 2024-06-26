@@ -30,7 +30,6 @@ const AutoComplete = ({
       );
       setFilteredData(filtered);
       setShowSuggestions(true);
-      console.log(filtered);
       setActiveSuggestion(0);
     } else {
       setShowSuggestions(false);
