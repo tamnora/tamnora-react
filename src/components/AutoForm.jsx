@@ -21,6 +21,7 @@ const AutoForm = ({
 	onCancel,
 	onDelete,
 	onSubmit,
+	onChange,
 	isRequired = {},
 	isReadOnly = {},
 	isDisabled = {},
@@ -31,6 +32,9 @@ const AutoForm = ({
 	textSubmit = 'Guardar',
 	textDelete = 'Eliminar',
 	textCancel = 'Cancelar',
+	mostrarSubmit = true,
+	mostrarDelete = true,
+	mostarCancel = true,
 }) => {
 	const [formData, setFormData] = useState({ ...data });
 	const [initialValues, setInitialValues] = useState({ ...data });
@@ -248,7 +252,7 @@ const AutoForm = ({
 							typeInput = json[key].type;
 							hayKey = true;
 							let valueKey = json[key].value;
-							console.log(selectID);
+							// console.log(selectID);
 							if (selectID != null) {
 								if (typeInput == 'integer' || typeInput == 'number') {
 									if (json[key].value > 0) {
@@ -468,10 +472,12 @@ const AutoForm = ({
 	};
 
 	const handleSelect = (key, value) => {
-		setFormData({
-			...formData,
-			[key]: value,
-		});
+		let updatedData = { ...formData, [key]: value };
+		setFormData(updatedData);
+
+		if(onChange){
+			onChange(updatedData);
+		}
 	}
 
 	const handleFocus = (e, key) => {
@@ -493,6 +499,10 @@ const AutoForm = ({
 					console.log('Resultado', updatedData)
 					setFormData(updatedData);	
 				}
+			}
+
+			if(onChange){
+				onChange(updatedData);
 			}
 		}
 	};
@@ -727,15 +737,18 @@ const AutoForm = ({
 			{onSubmit && (
 				<div className={footerClasses}>
 					<div className="flex items-center justify-start gap-2">
-						<Button radius='rounded-xl'  type="submit" name='submit' color='sky'>
-							{textSubmit}
-						</Button>
-						{onDelete && idSelected > 0 && (
+						
+						{mostrarSubmit && (
+							<Button radius='rounded-xl'  type="submit" name='submit' color='sky'>
+								{textSubmit}
+							</Button>
+						)}
+						{mostrarDelete && onDelete && idSelected > 0 && (
 							<Button radius='rounded-xl' color='red' type="button" name='delete' onClick={handleDelete}>
 								{deleteText}
 							</Button>
 						)}
-						{onCancel && (
+						{ mostarCancel && onCancel && (
 							<Button radius='rounded-xl' color='zinc' type="button" name='cancel' onClick={onCancel}>
 								{textCancel}
 							</Button>
