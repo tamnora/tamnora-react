@@ -20,6 +20,7 @@ const Modal = ({
   onClose,
   title,
   subtitle,
+  overflow = 'overflow-y-visible'
 }) => {
   const [isModalOpen, setIsModalOpen] = React.useState(defaultOpen || false);
 
@@ -154,7 +155,7 @@ const Modal = ({
           <h2 className='text-zinc-600 dark:text-white text-lg font-medium leading-4'>{title}</h2>
           <p className='text-zinc-400 text-sm leading-3'>{subtitle}</p>
         </div>
-        <div className={`overflow-y-auto pt-4 pb-6 px-6 ${scrollBehavior === 'inside' ? 'max-h-full' : ''} ${customClassNames.body || ''}`}>
+        <div className={`${overflow} pt-4 pb-6 px-6 ${scrollBehavior === 'inside' ? 'max-h-full' : ''} ${customClassNames.body || ''}`}>
           {children}
         </div>
       </div>

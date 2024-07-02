@@ -23,6 +23,7 @@ export function Select({
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const selectRef = useRef(null);
   const optionsRef = useRef(null);
+  const optionRefs = useRef([]);
 
   const toggleOptions = () => {
     if (isDisabled || isReadOnly) return;
@@ -44,10 +45,18 @@ export function Select({
 
     if (e.key === 'ArrowDown') {
       e.preventDefault();
-      setHighlightedIndex((prevIndex) => (prevIndex + 1) % options.length);
+      setHighlightedIndex((prevIndex) => {
+        const newIndex = (prevIndex + 1) % options.length;
+        optionRefs.current[newIndex]?.scrollIntoView({ block: 'nearest' });
+        return newIndex;
+      });
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
-      setHighlightedIndex((prevIndex) => (prevIndex - 1 + options.length) % options.length);
+      setHighlightedIndex((prevIndex) => {
+        const newIndex = (prevIndex - 1 + options.length) % options.length;
+        optionRefs.current[newIndex]?.scrollIntoView({ block: 'nearest' });
+        return newIndex;
+      });
     } else if (e.key === 'Enter') {
       e.preventDefault();
       if (highlightedIndex >= 0 && highlightedIndex < options.length) {
@@ -152,6 +161,7 @@ export function Select({
               className={`cursor-pointer px-2 py-1.5 hover:bg-white rounded-lg dark:hover:bg-zinc-900 ${highlightedIndex === index ? 'bg-zinc-200 dark:bg-zinc-700' : ''} ${selectedValue === option.value ? 'bg-sky-100 dark:bg-sky-700 text-sky-700 dark:text-sky-200' : ''}`}
               onMouseEnter={() => setHighlightedIndex(index)}
               onClick={() => selectOption(option)}
+              ref={el => optionRefs.current[index] = el}
             >
               {option.label}
             </li>
