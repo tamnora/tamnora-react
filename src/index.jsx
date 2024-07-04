@@ -32,6 +32,7 @@ export { Table } from './components/Table.jsx';
 export { Tabs } from './components/Tabs.jsx';
 export { Textarea } from './components/Textarea.jsx';
 export { TextDarkModeButton } from './components/TextDarkModeButton.jsx';
+export { TimeLine } from './components/TimeLine.jsx';
 export { default as Tmn } from './components/Tmn.jsx';
 export { TmnLogo } from './components/TmnLogo.jsx';
 export { Tooltip } from './components/Tooltip.jsx';

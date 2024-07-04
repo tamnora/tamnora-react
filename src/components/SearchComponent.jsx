@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const SearchComponent = ({ onSearchChange, onEnter, myRef, name='inputSearch' }) => {
+const SearchComponent = ({ onSearchChange, onEnter, myRef, name='inputSearch', placeholder='Buscar ...' }) => {
   const [textoBuscar, setTextoBuscar] = useState('');
-  const [myPlaceHolder, setMyPlaceHolder] = useState('Buscar...')
+  const [myPlaceHolder, setMyPlaceHolder] = useState(placeholder)
   const searchRef = useRef(null);
 
   const handleInputChange = (event) => {
