@@ -1,33 +1,35 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 
-const AutoTable = ({ name = 'table', names = {}, datos, cantidadPorVista = 10, textoBuscar = '', onRowFocus, onRowClick, onCellClick, extraColumns, columnWidths, renderCell, columnAlignments }) => {
+const AutoTable = ({ name = 'table', columnNames = {}, data = [], rowsPerView = 10, searchText = '', onRowFocus, onRowClick, onCellClick, extraColumns, columnWidths, renderCell, columnAlignments, columns = [] }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
   const [selectedCellIndex, setSelectedCellIndex] = useState(0);
-  const [inFocus, setInFocus] = useState(false)
+  const [inFocus, setInFocus] = useState(false);
   const tableRef = useRef(null);
 
   const filteredData = useMemo(() => {
-    if (textoBuscar) {
-      const lowercasedFilter = textoBuscar.toLowerCase();
-      return datos.filter(item =>
+    if (searchText) {
+      const lowercasedFilter = searchText.toLowerCase();
+      return data.filter(item =>
         Object.values(item).some(value =>
           String(value).toLowerCase().includes(lowercasedFilter)
         )
       );
     }
-    return datos;
-  }, [textoBuscar, datos]);
+    return data;
+  }, [searchText, data]);
 
   useEffect(() => {
     setCurrentPage(0);
   }, [filteredData]);
 
-  const columns = datos.length > 0 ? Object.keys(datos[0]) : [];
-  const start = currentPage * cantidadPorVista;
-  const end = start + cantidadPorVista;
+  // Utilizar las columnas especificadas o todas las columnas de los datos
+  const effectiveColumns = columns.length > 0 ? columns : data.length > 0 ? Object.keys(data[0]) : [];
+
+  const start = currentPage * rowsPerView;
+  const end = start + rowsPerView;
   const paginatedData = filteredData.slice(start, end);
-  const totalPages = Math.ceil(filteredData.length / cantidadPorVista);
+  const totalPages = Math.ceil(filteredData.length / rowsPerView);
   const rowPointer = onRowClick ? 'cursor-pointer' : '';
   const cellPointer = onCellClick ? 'cursor-pointer' : '';
 
@@ -45,18 +47,18 @@ const AutoTable = ({ name = 'table', names = {}, datos, cantidadPorVista = 10, t
             break;
           case 'ArrowRight':
             e.preventDefault();
-            setSelectedCellIndex(prevIndex => (prevIndex + 1) % columns.length);
+            setSelectedCellIndex(prevIndex => (prevIndex + 1) % effectiveColumns.length);
             break;
           case 'ArrowLeft':
             e.preventDefault();
-            setSelectedCellIndex(prevIndex => (prevIndex - 1 + columns.length) % columns.length);
+            setSelectedCellIndex(prevIndex => (prevIndex - 1 + effectiveColumns.length) % effectiveColumns.length);
             break;
           case 'Enter':
             e.preventDefault();
             handleCellClick(
               { stopPropagation: () => { } },
               paginatedData[selectedRowIndex],
-              columns[selectedCellIndex]
+              effectiveColumns[selectedCellIndex]
             );
             break;
           default:
@@ -67,20 +69,10 @@ const AutoTable = ({ name = 'table', names = {}, datos, cantidadPorVista = 10, t
           case 'ArrowDown':
             e.preventDefault();
             setSelectedRowIndex(prevIndex => (prevIndex + 1) % paginatedData.length);
-            // if((selectedRowIndex + 1) <= cantidadPorVista - 1){
-            //   console.log(paginatedData[selectedRowIndex + 1]);
-            // } else {
-            //   console.log(paginatedData[0]);
-            // }
             break;
           case 'ArrowUp':
             e.preventDefault();
             setSelectedRowIndex(prevIndex => (prevIndex - 1 + paginatedData.length) % paginatedData.length);
-            // if((selectedRowIndex - 1) >= 0){
-            //   console.log(paginatedData[selectedRowIndex - 1]);
-            // } else {
-            //   console.log(paginatedData[cantidadPorVista - 1]);
-            // }
             break;
           case 'Enter':
             e.preventDefault();
@@ -89,40 +81,37 @@ const AutoTable = ({ name = 'table', names = {}, datos, cantidadPorVista = 10, t
           default:
             break;
         }
-        
       }
 
       switch (e.key) {
         case 'PageDown':
           if (currentPage < (totalPages - 1)) {
-            setCurrentPage(currentPage + 1)
+            setCurrentPage(currentPage + 1);
             setSelectedRowIndex(0);
           }
           break;
         case 'PageUp':
           if (currentPage > 0) {
-            setCurrentPage(currentPage - 1)
-            setSelectedRowIndex(cantidadPorVista - 1);
+            setCurrentPage(currentPage - 1);
+            setSelectedRowIndex(rowsPerView - 1);
           }
           break;
         case 'ArrowRight':
           if (currentPage < (totalPages - 1)) {
-            setCurrentPage(currentPage + 1)
+            setCurrentPage(currentPage + 1);
             setSelectedRowIndex(0);
           }
           break;
         case 'ArrowLeft':
           if (currentPage > 0) {
-            setCurrentPage(currentPage - 1)
-            setSelectedRowIndex(cantidadPorVista - 1);
+            setCurrentPage(currentPage - 1);
+            setSelectedRowIndex(rowsPerView - 1);
           }
           break;
 
         default:
           break;
       }
-      
-
     };
 
     const handleFocus = () => {
@@ -148,30 +137,32 @@ const AutoTable = ({ name = 'table', names = {}, datos, cantidadPorVista = 10, t
         tableElement.removeEventListener('blur', handleBlur);
       }
     };
-  }, [columns, selectedRowIndex, selectedCellIndex, onCellClick, onRowClick]);
+  }, [effectiveColumns, selectedRowIndex, selectedCellIndex, onCellClick, onRowClick]);
 
   useEffect(() => {
-    tableRef.current.focus();
-  }, [currentPage])
+    if (tableRef.current) {
+      tableRef.current.focus();
+    }
+  }, [currentPage]);
 
   useEffect(() => {
     idSelectedRow();
-  }, [selectedRowIndex])
+  }, [selectedRowIndex]);
 
   const handleRowClick = (row, index) => {
     if (onRowClick) {
-      setSelectedRowIndex(index)
+      setSelectedRowIndex(index);
       onRowClick(row, index);
     }
   };
 
   const idSelectedRow = () => {
-    const rowSelected = tableRef.current.querySelector("[data-row='selected']");
-    const indexRow = rowSelected.getAttribute('data-id');
-    if(onRowFocus){
-      onRowFocus(paginatedData[indexRow])
+    const rowSelected = tableRef.current?.querySelector("[data-row='selected']");
+    const indexRow = rowSelected?.getAttribute('data-id');
+    if (onRowFocus && indexRow !== undefined) {
+      onRowFocus(paginatedData[indexRow]);
     }
-  }
+  };
 
   const handleCellClick = (e, row, cell) => {
     e.stopPropagation();
@@ -207,99 +198,92 @@ const AutoTable = ({ name = 'table', names = {}, datos, cantidadPorVista = 10, t
 
   return (
     <div>
-      {datos.length > 0 ? (
-        <>
-          <div ref={tableRef} tabIndex={0} name={name} className={`overflow-x-auto rounded-lg border border-zinc-400/30 dark:border-zinc-700/50 w-full tmn-fadeIn `} style={{ outline: 'none' }}>
-            <table className="w-full text-sm text-left text-zinc-500 dark:text-zinc-400">
-              <thead className="text-xs border-b text-zinc-700 bg-zinc-100 dark:bg-zinc-900 border-zinc-200 uppercase dark:text-zinc-400 dark:border-zinc-800">
-                <tr className="text-md font-semibold">
-                  {columns.map((column, index) => (
-                    <th
+      <>
+        <div ref={tableRef} tabIndex={0} name={name} className={`overflow-x-auto rounded-lg border border-zinc-400/30 dark:border-zinc-700/50 w-full tmn-fadeIn `} style={{ outline: 'none' }}>
+          <table className="w-full text-sm text-left text-zinc-500 dark:text-zinc-400">
+            <thead className="text-xs border-b text-zinc-700 bg-zinc-100 dark:bg-zinc-900 border-zinc-200 uppercase dark:text-zinc-400 dark:border-zinc-800">
+              <tr className="text-md font-semibold">
+                {effectiveColumns.length > 0 && effectiveColumns.map((column, index) => (
+                  <th
+                    key={column}
+                    className={`px-4 py-3 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 whitespace-nowrap ${getColumnAlignmentClass(index)}`}
+                    style={{ width: columnWidths ? columnWidths[index] : 'auto' }}>
+                    {columnNames[column] ? columnNames[column] : column}
+                  </th>
+                ))}
+                {extraColumns && extraColumns.map((col, indexExtra) => (
+                  <th
+                    key={`extra-${indexExtra}`}
+                    className={`px-4 py-3 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 whitespace-nowrap ${getColumnAlignmentClass(effectiveColumns.length + indexExtra)}`}
+                    style={{ width: col.width || 'auto' }}>
+                    {col.header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {data.length > 0 ? paginatedData.map((row, rowIndex) => (
+                <tr
+                  key={rowIndex}
+                  data-row={selectedRowIndex === rowIndex ? 'selected' : `fila${rowIndex}`}
+                  data-id={rowIndex}
+                  className={`${styleRow}${rowIndex % 2 ? ((selectedRowIndex === rowIndex && inFocus) ? trSelect : tr2) : ((selectedRowIndex === rowIndex && inFocus) ? trSelect : tr1)}`}
+                  onClick={onRowClick ? () => handleRowClick(row, rowIndex) : null}>
+                  {effectiveColumns.map((column, index) => (
+                    <td
                       key={column}
-                      className={`px-4 py-3 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 whitespace-nowrap ${getColumnAlignmentClass(index)}`}
-                      style={{ width: columnWidths ? columnWidths[index] : 'auto' }}>
-                      {names[column] ? names[column] : column}
-                    </th>
+                      className={`px-4 py-3 select-none whitespace-nowrap ${cellPointer} ${getColumnAlignmentClass(index)} ${selectedRowIndex === rowIndex && selectedCellIndex === index && onCellClick ? 'bg-zinc-300 dark:bg-zinc-700' : ''}`}
+                      onClick={onCellClick ? (e) => handleCellClick(e, row, column) : null}>
+                      {renderCellContent(row[column], row, column)}
+                    </td>
                   ))}
                   {extraColumns && extraColumns.map((col, indexExtra) => (
-                    <th
+                    <td
                       key={`extra-${indexExtra}`}
-                      className={`px-4 py-3 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 whitespace-nowrap ${getColumnAlignmentClass(columns.length + indexExtra)}`}
-                      style={{ width: col.width || 'auto' }}>
-                      {col.header}
-                    </th>
+                      className={`px-4 py-3 select-none whitespace-nowrap ${cellPointer} ${getColumnAlignmentClass(effectiveColumns.length + indexExtra)}`}
+                      onClick={onCellClick ? (e) => handleCellClick(e, row, `extra-${indexExtra}`) : null}>
+                      {col.render ? col.render(row) : ''}
+                    </td>
                   ))}
                 </tr>
-              </thead>
-              <tbody>
-                {paginatedData.map((row, rowIndex) => (
-                  <tr
-                    key={rowIndex}
-                    data-row={selectedRowIndex === rowIndex ? 'selected' : `fila${rowIndex}`}
-                    data-id={rowIndex}
-                    className={`${styleRow}${rowIndex % 2 ? ((selectedRowIndex === rowIndex && inFocus) ? trSelect : tr2) : ((selectedRowIndex === rowIndex && inFocus) ? trSelect : tr1)}`}
-                    onClick={onRowClick ? () => handleRowClick(row, rowIndex) : null}>
-                    {columns.map((column, index) => (
-                      <td
-                        key={column}
-                        className={`px-4 py-3 select-none whitespace-nowrap ${cellPointer} ${getColumnAlignmentClass(index)} ${selectedRowIndex === rowIndex && selectedCellIndex === index && onCellClick ? 'bg-zinc-300 dark:bg-zinc-700' : ''}`}
-                        onClick={onCellClick ? (e) => handleCellClick(e, row, column) : null}>
-                        {renderCellContent(row[column], row, column)}
-                      </td>
-                    ))}
-                    {extraColumns && extraColumns.map((col, indexExtra) => (
-                      <td
-                        key={`extra-${indexExtra}`}
-                        className={`px-4 py-3 select-none whitespace-nowrap ${cellPointer} ${getColumnAlignmentClass(columns.length + indexExtra)}`}
-                        onClick={onCellClick ? (e) => handleCellClick(e, row, `extra-${indexExtra}`) : null}>
-                        {col.render ? col.render(row) : ''}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-              {/* <tfoot className="bg-zinc-100/70 text-zinc-700 dark:bg-zinc-800/50 dark:text-zinc-400">
-                <tr className="text-md font-semibold">
-                  {columns.map((column, index) => (
-                    <td key={index} className="px-4 py-3 select-none whitespace-nowrap"></td>
-                  ))}
-                  {extraColumns && extraColumns.map((col, index) => (
-                    <td key={`extra-${index}`} className="px-4 py-3 select-none whitespace-nowrap"></td>
-                  ))}
+              )) : (
+                <tr>
+                  <td colSpan={effectiveColumns.length} className="px-4 py-3 text-center">
+                    No hay datos disponibles
+                  </td>
                 </tr>
-              </tfoot> */}
-            </table>
+              )}
+            </tbody>
+          </table>
+        </div>
+      { data.length > 0 &&
+        <div className="flex flex-col sm:flex-row sm:justify-between items-start text-zinc-700 px-4 sm:px-2 pt-4 dark:text-zinc-400">
+          <span className="text-sm text-zinc-600 dark:text-zinc-400">
+            Página <span className="font-semibold">{currentPage + 1}</span> de <span className="font-semibold">{totalPages}</span>
+          </span>
+          <div className="inline-flex rounded-lg overflow-hidden">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+              disabled={currentPage === 0}
+              className="flex items-center justify-center py-2 px-3 text-xs font-medium bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:border-zinc-700/50 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-white border-0 border-r  disabled:opacity-50 disabled:cursor-not-allowed">
+              <svg className="w-3.5 h-3.5 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 5H1m0 0 4 4M1 5l4-4"></path>
+              </svg>
+              Anterior
+            </button>
+            <button
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))}
+              disabled={currentPage >= totalPages - 1}
+              className="flex items-center justify-center py-2 px-3 text-xs font-medium bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:border-zinc-700/50 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-white border-0 border-l  disabled:opacity-50 disabled:cursor-not-allowed">
+              Siguiente
+              <svg className="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"></path>
+              </svg>
+            </button>
           </div>
-
-          <div className="flex flex-col sm:flex-row sm:justify-between items-start text-zinc-700 px-4 sm:px-2 pt-4 dark:text-zinc-400">
-            <span className="text-sm text-zinc-600 dark:text-zinc-400">
-              Página <span className="font-semibold">{currentPage + 1}</span> de <span className="font-semibold">{totalPages}</span>
-            </span>
-            <div className="inline-flex rounded-lg overflow-hidden">
-              <button
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
-                disabled={currentPage === 0}
-                className="flex items-center justify-center py-2 px-3 text-xs font-medium bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:border-zinc-700/50 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-white border-0 border-r  disabled:opacity-50 disabled:cursor-not-allowed">
-                <svg className="w-3.5 h-3.5 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 5H1m0 0 4 4M1 5l4-4"></path>
-                </svg>
-                Anterior
-              </button>
-              <button
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))}
-                disabled={currentPage >= totalPages - 1}
-                className="flex items-center justify-center py-2 px-3 text-xs font-medium bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:border-zinc-700/50 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-white border-0 border-l  disabled:opacity-50 disabled:cursor-not-allowed">
-                Siguiente
-                <svg className="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                  <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"></path>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </>
-      ) : (
-        <p className="text-zinc-700 dark:text-zinc-400">No hay información</p>
-      )}
+        </div>
+      }
+      </>
     </div>
   );
 };

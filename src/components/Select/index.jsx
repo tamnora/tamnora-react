@@ -153,17 +153,23 @@ export function Select({
         </span>
       </button>
       {showOptions && (
-        <div className="absolute z-20 mt-2 w-full bg-zinc-100 dark:bg-zinc-800 shadow-lg rounded-xl text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-600 tmn-fadeIn">
+        <div className="absolute z-20 mt-2 w-full bg-white dark:bg-zinc-800 shadow-lg rounded-xl text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-600 tmn-fadeIn">
           <ul className="p-2 max-h-72 overflow-y-auto" ref={optionsRef}>
           {options.map((option, index) => (
             <li
               key={option.value}
-              className={`cursor-pointer px-2 py-1.5 hover:bg-white rounded-lg dark:hover:bg-zinc-900 ${highlightedIndex === index ? 'bg-zinc-200 dark:bg-zinc-700' : ''} ${selectedValue === option.value ? 'bg-sky-100 dark:bg-sky-700 text-sky-700 dark:text-sky-200' : ''}`}
+              className={`flex justify-between items-center cursor-pointer px-2 py-1.5 hover:bg-zinc-200 rounded-lg dark:hover:bg-zinc-700 ${highlightedIndex === index ? 'bg-zinc-200 dark:bg-zinc-700' : ''} ${selectedValue === option.value ? ' text-sky-700 dark:text-sky-500' : ''}`}
               onMouseEnter={() => setHighlightedIndex(index)}
               onClick={() => selectOption(option)}
               ref={el => optionRefs.current[index] = el}
             >
               {option.label}
+              {selectedValue === option.value ? (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="size-4 text-sky-700 dark:text-sky-500">
+                <path fillRule="evenodd" d="M12.416 3.376a.75.75 0 0 1 .208 1.04l-5 7.5a.75.75 0 0 1-1.154.114l-3-3a.75.75 0 0 1 1.06-1.06l2.353 2.353 4.493-6.74a.75.75 0 0 1 1.04-.207Z" clipRule="evenodd" />
+              </svg>
+              
+              ): ''}
             </li>
           ))}
         </ul>
