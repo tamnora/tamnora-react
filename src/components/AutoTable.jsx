@@ -173,7 +173,7 @@ const AutoTable = ({ name = 'table', columnNames = {}, data = [], rowsPerView = 
 
   const renderCellContent = (value, row, column) => {
     if (renderCell) {
-      return renderCell(value, row, column);
+      return renderCell({value, row, column});
     }
     return value;
   };
