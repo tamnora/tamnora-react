@@ -97,18 +97,18 @@ const InputCurrency = ({
         if (inputValue === '') {
             setInternalValue('');
             if (onChange) {
-                onChange({ target: { value: 0, realValue: 0 } });
+                onChange({ target: { value: 0, formatValue: 0 } });
             }
             return;
         }
         
         // Format the currency
-        let newValue = formatCurrency(inputValue, lang);
-        let realValue = formatCurrency(inputValue, 'normal');
+        let formatValue = formatCurrency(inputValue, lang);
+        let newValue = formatCurrency(inputValue, 'normal');
 
-        setInternalValue(newValue);
+        setInternalValue(formatValue);
         if (onChange) {
-            onChange({ target: { value: newValue, realValue: realValue } });
+            onChange({ target: { value: newValue, formatValue: formatValue } });
         }
     };
 

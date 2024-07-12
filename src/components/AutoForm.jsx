@@ -660,11 +660,6 @@ const AutoForm = ({
 										isReadOnly={isReadOnly[key] || false}
 										isRequired={isRequired[key] || false}
 										isDisabled={isDisabled[key] || false}
-										startContent={
-											<div className="pointer-events-none flex items-center">
-												<span className="text-default-400 text-small">$</span>
-											</div>
-										}
 									/>
 								)}
 								{fieldType === 'number' && (
