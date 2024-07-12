@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Textarea } from './Textarea';
 import { Input } from './Input';
+import { InputCurrency } from './InputCurrency'
 import { Select } from './Select';
 import { Button } from './Button';
 
@@ -544,22 +545,6 @@ const AutoForm = ({
 				}
 			}
 		}
-		// } else if (e.keyCode === 37 || e.keyCode === 38) {
-		// 	e.preventDefault();
-		// 	const formElements = Array.from(formRef.current.elements);
-		// 	const index = formElements.indexOf(document.activeElement);
-		// 	if (index > 0 && index <= formElements.length - 1) {
-		// 		formElements[index - 1].focus();
-		// 	}
-		// } else if (e.keyCode === 39 || e.keyCode === 40) {
-		// 	e.preventDefault();
-		// 	const formElements = Array.from(formRef.current.elements);
-		// 	const index = formElements.indexOf(document.activeElement);
-		// 	if (index > -1 && index + 1 <= formElements.length - 1) {
-		// 		formElements[index + 1].focus();
-		// 	}
-
-		// }
 	};
 
 	const handleSubmit = (e) => {
@@ -662,7 +647,7 @@ const AutoForm = ({
 								)}
 								{fieldType === 'currency' && (
 									// 		onBlur={(e) => handleChangeCurrency(e, key)}
-									<Input
+									<InputCurrency
 										label={names[key] || key}
 										labelPlacement={labelPlacement}
 										radius={inputRadius}
@@ -671,7 +656,7 @@ const AutoForm = ({
 										type={fieldType}
 										defaultValue={formatNumberArray(formData[key])[2]}
 										onChange={(e) => handleChange(e, key)}
-										onHandleBlur={(e) => handleChangeCurrency(e, key)}
+										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly[key] || false}
 										isRequired={isRequired[key] || false}
 										isDisabled={isDisabled[key] || false}
