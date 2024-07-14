@@ -4,6 +4,7 @@ import { Input } from './Input';
 import { InputCurrency } from './InputCurrency'
 import { Select } from './Select';
 import { Button } from './Button';
+import { InputCurrency2 } from './InputCurrency2';
 
 const AutoForm = ({
 	idSelected,
@@ -649,6 +650,23 @@ const AutoForm = ({
 								{fieldType === 'currency' && (
 									// 		onBlur={(e) => handleChangeCurrency(e, key)}
 									<InputCurrency
+										label={names[key] || key}
+										labelPlacement={labelPlacement}
+										radius={inputRadius}
+										variant={inputVariant}
+										id={`${name}_${key}`}
+										type={fieldType}
+										defaultValue={formData[key]}
+										onChange={(e) => handleChange(e, key)}
+										onHandleBlur={(e) => handleBlur(e, key)}
+										isReadOnly={isReadOnly[key] || false}
+										isRequired={isRequired[key] || false}
+										isDisabled={isDisabled[key] || false}
+									/>
+								)}
+								{fieldType === 'currency2' && (
+									// 		onBlur={(e) => handleChangeCurrency(e, key)}
+									<InputCurrency2
 										label={names[key] || key}
 										labelPlacement={labelPlacement}
 										radius={inputRadius}
