@@ -19,6 +19,7 @@ export { CheckboxGroup } from './components/CheckboxGroup.jsx';
 export { Dropdown } from './components/Dropdown.jsx';
 export { Input } from './components/Input.jsx';
 export { InputCurrency } from './components/InputCurrency.jsx';
+export { InputCurrency2 } from './components/InputCurrency2.jsx'
 export { InputSubmit } from './components/InputSubmit.jsx';
 export { List } from './components/List.jsx';
 export { Loader } from './components/Loader.jsx';

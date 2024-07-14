@@ -26,6 +26,7 @@ const AutoForm = ({
 	isRequired = {},
 	isReadOnly = {},
 	isDisabled = {},
+	hiddenFields = [],
 	primaryKey = {},
 	widthColumns = {},
 	onUpdateInput = {},
@@ -596,7 +597,7 @@ const AutoForm = ({
 				{refreshForm && Object.keys(formData).map((key) => {
 					const fieldType = types[key]?.type || struc[key] || 'text';
 
-					if (key !== primaryKey) {
+					if (!hiddenFields.includes(key)) {
 						return (
 							<div key={key} className={`${widthColumns[key] || 'col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3'}`}>
 								{fieldType === 'select' && (
