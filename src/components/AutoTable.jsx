@@ -1,11 +1,33 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 
-const AutoTable = ({ name = 'table', columnNames = {}, data = [], rowsPerView = 10, searchText = '', onRowFocus, onRowClick, onCellClick, extraColumns, columnWidths, renderCell, columnAlignments, columns = [] }) => {
+const AutoTable = ({ name = 'table', columnNames = {}, data, rowsPerView = 10, searchText = '', onRowFocus, onRowClick, onCellClick, extraColumns, columnWidths, renderCell, columnAlignments, columns = [] }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
   const [selectedCellIndex, setSelectedCellIndex] = useState(0);
   const [inFocus, setInFocus] = useState(false);
   const tableRef = useRef(null);
+
+  function isArray(variable) {
+    return Array.isArray(variable);
+  }
+
+  if (!data) return (
+		<div className={`flex flex-col items-center justify-center gap-4 text-lg text-zinc-700 dark:text-zinc-200 w-full h-64 bg-black/10 dark:bg-white/10 rounded-xl  animate-pulse`}>
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-10 text-red-500">
+				<path strokeLinecap="round" strokeLinejoin="round" d="M15.182 16.318A4.486 4.486 0 0 0 12.016 15a4.486 4.486 0 0 0-3.198 1.318M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
+			</svg>
+			Tabla: ¡No hay datos cargados!
+		</div>
+	);
+
+  if(isArray(data) == false) return (
+    <div className={`flex flex-col items-center justify-center gap-4 text-lg text-zinc-700 dark:text-zinc-200 w-full h-64 bg-black/10 dark:bg-white/10 rounded-xl  animate-pulse`}>
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-10 text-red-500">
+				<path strokeLinecap="round" strokeLinejoin="round" d="M15.182 16.318A4.486 4.486 0 0 0 12.016 15a4.486 4.486 0 0 0-3.198 1.318M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
+			</svg>
+			¡El formato de los datos de la tabla no es el correcto!
+		</div>
+  );
 
   const filteredData = useMemo(() => {
     if (searchText) {
@@ -195,6 +217,8 @@ const AutoTable = ({ name = 'table', columnNames = {}, data = [], rowsPerView = 
   const tr1 = `bg-zinc-50 dark:bg-zinc-800/40 hover:text-zinc-900 dark:hover:text-zinc-100 ${rowPointer} `;
   const tr2 = `bg-transparent hover:text-zinc-800 dark:hover:text-zinc-100 ${rowPointer} `;
   const trSelect = `bg-sky-200/20 dark:bg-sky-950/20 text-sky-600 dark:text-sky-500 ${rowPointer} `;
+
+  
 
   return (
     <div>

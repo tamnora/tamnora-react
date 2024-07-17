@@ -11,7 +11,7 @@ const AutoForm = ({
 	updateIdSelected = false,
 	data,
 	name = 'form',
-	struc,
+	struc = {},
 	table,
 	types = {},
 	names = {},
@@ -44,6 +44,20 @@ const AutoForm = ({
 	const formRef = useRef(null);
 	const fieldRefs = useRef({});
 	const [refreshForm, setRefreshForm] = useState(1)
+
+	function isObject(variable) {
+		return typeof variable === 'object' && variable !== null && !Array.isArray(variable);
+	  }
+
+	
+	if(isObject(data) == false) return (
+		<div className={`flex flex-col items-center justify-center gap-4 text-lg text-zinc-700 dark:text-zinc-200 w-full h-64 bg-black/10 dark:bg-white/10 rounded-xl  animate-pulse`}>
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-10 text-red-500">
+					<path strokeLinecap="round" strokeLinejoin="round" d="M15.182 16.318A4.486 4.486 0 0 0 12.016 15a4.486 4.486 0 0 0-3.198 1.318M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
+				</svg>
+				¡El formato de los datos del formulario no es el correcto!
+			</div>
+	  );
 
 	let objects = {
 		id: idSelected ?? 0,
@@ -448,8 +462,9 @@ const AutoForm = ({
 					type = groupType[fieldName];
 				}
 
-				if (fieldName in primaryKey) {
-					key = primaryKey[fieldName];
+				if (fieldName == primaryKey) {
+					// key = primaryKey[fieldName];
+					key = 'PRI'
 				}
 
 				newObjectClean[fieldName] = cleanValue;
@@ -478,7 +493,7 @@ const AutoForm = ({
 		let updatedData = { ...formData, [key]: value };
 		setFormData(updatedData);
 
-		if(onChange){
+		if (onChange) {
 			onChange(updatedData);
 		}
 	}
@@ -496,15 +511,15 @@ const AutoForm = ({
 			let updatedData = { ...formData, [key]: e.target.value };
 			if (key in onUpdateInput) {
 				let res = onUpdateInput[key](formData, e.target.value);
-				if(res){
+				if (res) {
 					setRefreshForm(0);
 					updatedData = { ...updatedData, ...res };
 					console.log('Resultado', updatedData)
-					setFormData(updatedData);	
+					setFormData(updatedData);
 				}
 			}
 
-			if(onChange){
+			if (onChange) {
 				onChange(updatedData);
 			}
 		}
@@ -526,24 +541,26 @@ const AutoForm = ({
 	};
 
 	const handleKeyPress = (e) => {
-		if (e.keyCode === 13) {
-			let typeElement = document.activeElement.tagName.toLowerCase();
-			const formElements = Array.from(formRef.current.elements);
-			const index = formElements.indexOf(document.activeElement);
-			if (typeElement != 'button') {
-				e.preventDefault();
-				if (index > -1 && index < formElements.length - 1) {
-					formElements[index + 1].focus();
-				}
-			} else {
-				if (document.activeElement.name === 'submit') {
-					handleSubmit();
-				}
-				if (document.activeElement.name === 'delete') {
-					onDelete();
-				}
-				if (document.activeElement.name === 'cancel') {
-					onCancel();
+		if (data) {
+			if (e.keyCode === 13) {
+				let typeElement = document.activeElement.tagName.toLowerCase();
+				const formElements = Array.from(formRef.current.elements);
+				const index = formElements.indexOf(document.activeElement);
+				if (typeElement != 'button') {
+					e.preventDefault();
+					if (index > -1 && index < formElements.length - 1) {
+						formElements[index + 1].focus();
+					}
+				} else {
+					if (document.activeElement.name === 'submit') {
+						handleSubmit();
+					}
+					if (document.activeElement.name === 'delete') {
+						onDelete();
+					}
+					if (document.activeElement.name === 'cancel') {
+						onCancel();
+					}
 				}
 			}
 		}
@@ -559,19 +576,19 @@ const AutoForm = ({
 		onSubmit({ formData, query });
 	};
 
-	
+
 	const [deleteText, setDeleteText] = useState(textDelete)
 	const [deleteConfirmed, setDeleteConfirmed] = useState(false)
 	const handleDelete = (e) => {
 		setDeleteText('Seguro que desea eliminar?')
-		if(deleteConfirmed){
+		if (deleteConfirmed) {
 			onDelete();
 		}
 		setDeleteConfirmed(!deleteConfirmed)
 
 	};
 
-	
+
 	const footerClasses = `flex items-center justify-between gap-2 border-zinc-300 dark:border-zinc-600
 	${variant === 'tmn' && 'border-t pt-4'}
 	`
@@ -580,22 +597,33 @@ const AutoForm = ({
 		setFormData({ ...data });
 	}, [data]);
 
-	useEffect(()=>{
+	useEffect(() => {
 		setRefreshForm(1);
-	},[formData])
+	}, [formData])
 
 	useEffect(() => {
-		if (focusIn && fieldRefs.current[focusIn]) {
-			fieldRefs.current[focusIn].focus(); // Enfoca el campo correspondiente a `focusIn`
-		} else {
-			formRef.current.elements[0].focus();
+		if (data) {
+			if (focusIn && fieldRefs.current[focusIn]) {
+				fieldRefs.current[focusIn].focus(); // Enfoca el campo correspondiente a `focusIn`
+			} else {
+				formRef.current.elements[0].focus();
+			}
 		}
 	}, [focusIn]);
+
+	if (!data) return (
+		<div className={`flex flex-col items-center justify-center gap-4 text-lg text-zinc-700 dark:text-zinc-200 w-full h-64 bg-black/10 dark:bg-white/10 rounded-xl  animate-pulse`}>
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-10 text-red-500">
+				<path strokeLinecap="round" strokeLinejoin="round" d="M15.182 16.318A4.486 4.486 0 0 0 12.016 15a4.486 4.486 0 0 0-3.198 1.318M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
+			</svg>
+			Formulario: ¡No hay datos cargados!
+		</div>
+	);
 
 	return (
 		<form name={name} ref={formRef} onSubmit={handleSubmit} onKeyDown={handleKeyPress}>
 			<div className="grid grid-cols-12 gap-2 pb-4 tmn-fadeIn">
-				{refreshForm && Object.keys(formData).map((key) => {
+				{formData && refreshForm && Object.keys(formData).map((key) => {
 					const fieldType = types[key]?.type || struc[key] || 'text';
 
 					if (!hiddenFields.includes(key)) {
@@ -736,9 +764,9 @@ const AutoForm = ({
 			{onSubmit && (
 				<div className={footerClasses}>
 					<div className="flex items-center justify-start gap-2">
-						
+
 						{mostrarSubmit && (
-							<Button radius='rounded-xl'  type="submit" name='submit' color='sky'>
+							<Button radius='rounded-xl' type="submit" name='submit' color='sky'>
 								{textSubmit}
 							</Button>
 						)}
@@ -747,7 +775,7 @@ const AutoForm = ({
 								{deleteText}
 							</Button>
 						)}
-						{ mostarCancel && onCancel && (
+						{mostarCancel && onCancel && (
 							<Button radius='rounded-xl' color='zinc' type="button" name='cancel' onClick={onCancel}>
 								{textCancel}
 							</Button>
