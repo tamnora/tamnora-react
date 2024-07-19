@@ -86,6 +86,7 @@ const Input = ({
     onFocus: handleFocus,
     onBlur: handleBlur,
     onChange: handleInputChange,
+    tabIndex: (isReadOnly || isDisabled) ? -1 : 0,
     ...props
   };
 
@@ -190,6 +191,7 @@ const Input = ({
     ${getHeightClass()}
     ${requiredStyles()}
     ${isDisabled && 'opacity-50'}
+    ${isReadOnly && 'opacity-80'}
     ${fullWidth ? 'w-full' : 'w-auto'}
     ${variant === 'underlined' ? 'rounded-0' : radius}
     ${getColorClass()}
@@ -198,7 +200,7 @@ const Input = ({
     `;
 
   const labelClassNames = `absolute z-10 text-md font-normal pointer-events-none origin-top-left subpixel-antialiased block cursor-text transition-transform transition-color transition-left ease-out duration-200 
-    ${displayedValue || focused || placeholder || props.type === 'date' ? 'text-zinc-600 dark:text-zinc-300 scale-75 -translate-y-2' : 'scale-100 translate-y-0 text-zinc-500 dark:text-zinc-400'} `;
+    ${displayedValue || focused || placeholder || props.type === 'date' || props.type === 'time' ? 'text-zinc-600 dark:text-zinc-300 scale-75 -translate-y-2' : 'scale-100 translate-y-0 text-zinc-500 dark:text-zinc-400'} `;
   const outsideLabelClassNames = `${isDisabled && 'opacity-50'} text-xs font-medium text-zinc-600 dark:text-zinc-400`;
 
   return (

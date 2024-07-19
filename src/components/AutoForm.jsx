@@ -45,6 +45,7 @@ const AutoForm = ({
 	const fieldRefs = useRef({});
 	const [refreshForm, setRefreshForm] = useState(1)
 
+	
 	function isObject(variable) {
 		return typeof variable === 'object' && variable !== null && !Array.isArray(variable);
 	  }
@@ -482,6 +483,28 @@ const AutoForm = ({
 		objects.midata = newObject;
 	}
 
+	function formatTime(valor = '') {
+		if (valor === '') return { horaEs: '' };
+	  
+		let myTime;
+		if (typeof valor === 'string') {
+		  const exp = /^\d{2}:\d{2}(:\d{2})?$/;
+		  if (!exp.test(valor)) return { horaEs: '' };
+		  myTime = valor;
+		} else if (valor instanceof Date) {
+		  myTime = valor.toTimeString().slice(0, 8);
+		} else {
+		  return { horaEs: '' };
+		}
+	  
+		const [horas, minutos] = myTime.split(':');
+		
+		return {
+		  horaEs: `${horas}:${minutos}`,
+		  // ... (puedes agregar aquí más propiedades si lo deseas)
+		};
+	  }
+
 	const handleChange = (e, key) => {
 		setFormData({
 			...formData,
@@ -548,8 +571,12 @@ const AutoForm = ({
 				const index = formElements.indexOf(document.activeElement);
 				if (typeElement != 'button') {
 					e.preventDefault();
-					if (index > -1 && index < formElements.length - 1) {
-						formElements[index + 1].focus();
+					let nextIndex = index + 1;
+					while (nextIndex < formElements.length && formElements[nextIndex].tabIndex === -1) {
+						nextIndex++;
+					}
+					if (nextIndex < formElements.length) {
+						formElements[nextIndex].focus();
 					}
 				} else {
 					if (document.activeElement.name === 'submit') {
@@ -565,6 +592,7 @@ const AutoForm = ({
 			}
 		}
 	};
+	
 
 	const handleSubmit = (e) => {
 		if (e) e.preventDefault();
@@ -601,15 +629,33 @@ const AutoForm = ({
 		setRefreshForm(1);
 	}, [formData])
 
+	// useEffect(() => {
+	// 	if (data) {
+	// 		if (focusIn && fieldRefs.current[focusIn]) {
+	// 			fieldRefs.current[focusIn].focus(); // Enfoca el campo correspondiente a `focusIn`
+	// 		} else {
+	// 			formRef.current.elements[0].focus();
+	// 		}
+	// 	}
+	// }, [focusIn]);
+
 	useEffect(() => {
 		if (data) {
 			if (focusIn && fieldRefs.current[focusIn]) {
-				fieldRefs.current[focusIn].focus(); // Enfoca el campo correspondiente a `focusIn`
+				fieldRefs.current[focusIn].focus();
 			} else {
-				formRef.current.elements[0].focus();
+				const formElements = Array.from(formRef.current.elements);
+				const firstFocusableElement = formElements.find(element => 
+					element.tabIndex !== -1 && 
+					!element.disabled && 
+					!element.readOnly
+				);
+				if (firstFocusableElement) {
+					firstFocusableElement.focus();
+				}
 			}
 		}
-	}, [focusIn]);
+	}, [focusIn, data]);
 
 	if (!data) return (
 		<div className={`flex flex-col items-center justify-center gap-4 text-lg text-zinc-700 dark:text-zinc-200 w-full h-64 bg-black/10 dark:bg-white/10 rounded-xl  animate-pulse`}>
@@ -669,6 +715,21 @@ const AutoForm = ({
 										id={`${name}_${key}`}
 										type={fieldType}
 										defaultValue={formData[key]}
+										onChange={(e) => handleChange(e, key)}
+										onHandleBlur={(e) => handleBlur(e, key)}
+										isReadOnly={isReadOnly[key] || false}
+										isRequired={isRequired[key] || false}
+										isDisabled={isDisabled[key] || false} />
+								)}
+								{fieldType === 'time' && (
+									<Input
+										label={names[key] || key}
+										labelPlacement={labelPlacement}
+										radius={inputRadius}
+										variant={inputVariant}
+										id={`${name}_${key}`}
+										type={fieldType}
+										defaultValue={formatTime(formData[key]).horaEs}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly[key] || false}

@@ -1007,6 +1007,28 @@ export function formatDate(valor = null, separador = '-') {
   return myObject;
 }
 
+export function formatTime(valor = '') {
+  if (valor === '') return { horaEs: '' };
+
+  let myTime;
+  if (typeof valor === 'string') {
+    const exp = /^\d{2}:\d{2}(:\d{2})?$/;
+    if (!exp.test(valor)) return { horaEs: '' };
+    myTime = valor;
+  } else if (valor instanceof Date) {
+    myTime = valor.toTimeString().slice(0, 8);
+  } else {
+    return { horaEs: '' };
+  }
+
+  const [horas, minutos] = myTime.split(':');
+
+  return {
+    horaEs: `${horas}:${minutos}`,
+    // ... (puedes agregar aquí más propiedades si lo deseas)
+  };
+}
+
 export async function initKeyData(table, key, value) {
   let objData = {};
   let momo = await runCode(`-st ${table}`).then(data => {
