@@ -632,7 +632,6 @@ const AutoForm = ({
 
 	const handleDelete = (e) => {
 		setDeleteText(msgButtonDelete);
-		console.log(deleteConfirmed)
 		setDeleteColor('red');
 		if (deleteConfirmed) {
 			onDelete();

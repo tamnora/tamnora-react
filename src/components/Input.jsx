@@ -27,6 +27,7 @@ const Input = ({
   onChange,
   onHandleBlur,
   isCase,
+  specialClass,
   ...props
 }) => {
   const [focused, setFocused] = useState(false);
@@ -45,13 +46,13 @@ const Input = ({
 
   const handleInputChange = (e) => {
     let newValue = e.target.value;
-    if(isCase === 'uppercase'){
+    if (isCase === 'uppercase') {
       newValue = e.target.value.toUpperCase();
       e.target.value = newValue;
-    } else if(isCase === 'lowercase'){
+    } else if (isCase === 'lowercase') {
       newValue = e.target.value.toLowerCase();
       e.target.value = newValue;
-    } 
+    }
 
     setInternalValue(newValue);
     if (onChange) {
@@ -203,9 +204,9 @@ const Input = ({
     ${displayedValue || focused || placeholder || props.type === 'date' || props.type === 'time' ? 'text-zinc-600 dark:text-zinc-300 scale-75 -translate-y-2' : 'scale-100 translate-y-0 text-zinc-500 dark:text-zinc-400'} `;
   const outsideLabelClassNames = `${isDisabled && 'opacity-50'} text-xs font-medium text-zinc-600 dark:text-zinc-400`;
 
-  useEffect(()=>{
+  useEffect(() => {
     setInternalValue(defaultValue);
-  },[defaultValue])
+  }, [defaultValue])
 
   return (
     <div>
@@ -226,11 +227,19 @@ const Input = ({
               {startContent}
             </div>
           }
-          <input
-            {...inputProps}
-            autoComplete="off"
-            className={`w-full bg-transparent outline-none dark:text-white placeholder:text-zinc-500 text-sm border-0`}
-          />
+          {specialClass &&
+            <input
+              {...inputProps}
+              autoComplete="off"
+              className={`w-full bg-transparent outline-none border-0 ${specialClass}`}
+            />
+          }
+          {!specialClass &&
+            <input
+              {...inputProps}
+              autoComplete="off"
+              className={`w-full bg-transparent outline-none dark:text-white placeholder:text-zinc-500 text-sm border-0`}
+            />}
           {endContent &&
             <div className='text-zinc-400 ps-2 select-none'>
               {endContent}
