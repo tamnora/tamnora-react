@@ -137,6 +137,7 @@ export function Select({
         onBlur={() => setFocused(false)}
         onKeyDown={navigateOptions}
         type="button"
+        role="select"
         ref={selectRef}
         {...props}
       >

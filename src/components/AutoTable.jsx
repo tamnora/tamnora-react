@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 
-const AutoTable = ({ name = 'table', columnNames = {}, data, rowsPerView = 10, searchText = '', classTextSelect = 'text-sky-600 dark:text-sky-500', classBgSelect, onRowFocus, onRowClick, onCellClick, extraColumns, columnWidths, renderCell, columnAlignments, columns = [], rowSelect = true, hiddenColumn = [] }) => {
+const AutoTable = ({ name = 'table', columnNames = {}, data, rowsPerView = 10, searchText = '', classTextSelect = 'text-sky-500 dark:text-sky-500', classBgSelect, onRowFocus, onRowClick, onCellClick, extraColumns, columnWidths, renderCell, columnAlignments, columns = [], rowSelect = true, hiddenColumn = [] }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
   const [selectedCellIndex, setSelectedCellIndex] = useState(0);
@@ -272,7 +272,12 @@ const AutoTable = ({ name = 'table', columnNames = {}, data, rowsPerView = 10, s
                         <path fillRule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
                       </svg>
                     </td>}
-                  {!(selectedRowIndex === rowIndex && inFocus) && rowSelect && <td></td>}
+                  {!(selectedRowIndex === rowIndex && inFocus) && rowSelect && 
+                  <td>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="size-4 text-transparent">
+                        <path fillRule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
+                      </svg>
+                    </td>}
                   {effectiveColumns.map((column, index) => {
                     if(!hiddenColumn.includes(column)) return (
                     <td

@@ -1,80 +1,179 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
-const Switch = ({ name, title, color='blue', size='sm', onChange, defaultChecked = false }) => {
-  const [isChecked, setIsChecked] = useState(defaultChecked);
+const Switch = ({
+  label,
+  value,
+  defaultValue = 0,
+  color = 'default',
+  size = 'md',
+  labelPlacement = 'right',
+  isDisabled = false,
+  isReadOnly = false,
+  onChange,
+  inOn,
+  inOff,
+  ...props
+}) => {
+  const [internalValue, setInternalValue] = useState(defaultValue);
+  const switchRef = useRef(null);
 
-  const colorTheme = {
-    blue: `peer-checked:bg-blue-600 after:bg-white dark:after:bg-zinc-800 after:border-zinc-300 dark:after:border-zinc-600 peer-checked:after:border-blue-400`,
-    zinc: `peer-checked:bg-zinc-600 after:bg-white dark:after:bg-zinc-800 after:border-zinc-300 dark:after:border-zinc-600 peer-checked:after:border-zinc-400`,
-    red: `peer-checked:bg-red-600 after:bg-white dark:after:bg-zinc-800 after:border-zinc-300 dark:after:border-zinc-600 peer-checked:after:border-red-400`,
-    yellow: `peer-checked:bg-yellow-600 after:bg-white dark:after:bg-zinc-800 after:border-zinc-300 dark:after:border-zinc-600 peer-checked:after:border-yellow-400`,
-    sky: `peer-checked:bg-sky-600 after:bg-white dark:after:bg-zinc-800 after:border-zinc-300 dark:after:border-zinc-600 peer-checked:after:border-sky-400`,
-    black: ``,
-    white: ``,
-    zinc: ``,
-    emerald: `peer-checked:bg-emerald-600 after:bg-white dark:after:bg-zinc-800 after:border-zinc-300 dark:after:border-zinc-600 peer-checked:after:border-emerald-400`
-  };
+  useEffect(() => {
+    if (value !== undefined) {
+      setInternalValue(value);
+    }
+  }, [value]);
 
-  const colorFocus = {
-    blue: `peer-focus:ring-blue-500 dark:peer-focus:ring-blue-800 `,
-    zinc: `peer-focus:ring-zinc-500 dark:peer-focus:ring-zinc-800 `,
-    red: `peer-focus:ring-red-500 dark:peer-focus:ring-red-800 `,
-    yellow: `peer-focus:ring-yellow-500 dark:peer-focus:ring-yellow-800 `,
-    sky: `peer-focus:ring-sky-500 dark:peer-focus:ring-sky-800 `,
-    black: ``,
-    white: ``,
-    zinc: ``,
-    emerald: `peer-focus:ring-emerald-500 dark:peer-focus:ring-emerald-800 `
-  };
+  const handleToggle = (e) => {
+    e.preventDefault();
+    if (isReadOnly || isDisabled) return;
 
-  const textSize = {
-    xs: `text-xs`,
-    sm: `text-sm`,
-    md: `text-base`,
-    lg: `text-lg`,
-    xl: `text-xl`
-  }
-
-  const iconSize = {
-    xs: `w-6 h-3 after:top-0.5 after:left-[1px] after:h-3 after:w-3`,
-    sm: `w-8 h-4 after:top-0.5 after:left-[1px] after:h-4 after:w-4`,
-    md: `w-10 h-5 after:top-0.5 after:left-[1px] after:h-5 after:w-5`,
-    lg: `w-12 h-6 after:top-0.5 after:left-[1px] after:h-6 after:w-6`,
-    xl: `w-16 h-8 after:top-0.3 after:left-[1px] after:h-8 after:w-8`
-  }
-
-  const handleToggle = () => {
-    let valorActual = false;
-    if(!isChecked){
-      valorActual = true;
-    } 
-    setIsChecked(!isChecked);
-    if(onChange){
-      onChange(valorActual)
+    const newValue = internalValue === 1 ? 0 : 1;
+    setInternalValue(newValue);
+    if (onChange) {
+      onChange({ target: { value: newValue } });
     }
   };
 
-  return (
-    <label className="relative inline-flex items-center cursor-pointer mr-6 w-fit">
-      <input
-        name={name}
-        type="checkbox"
-        className="sr-only peer"
-        checked={isChecked}
-        onChange={handleToggle}
-      />
-      <div
-        className={`${iconSize[size]} bg-zinc-300 dark:bg-zinc-700 rounded-full peer peer-focus:ring-2 ${
-          isChecked ? colorFocus[color] : 'peer-focus:ring-zinc-300 dark:peer-focus:ring-zinc-800'
-        } peer-checked:after:translate-x-full  after:content-[''] after:absolute  after:border after:rounded-full  after:transition-all  ${colorTheme[color]}`}
-      ></div>
-      {title && (
-        <span className={`${textSize[size]} text-neutral-900 dark:text-neutral-300 ml-2`}>
-        {title}
-      </span>
+  const sizeMap = {
+    sm: { container: 'h-6', switch: 'w-8 h-4', thumb: 'w-3 h-3', content: 'text-xs' },
+    md: { container: 'h-10', switch: 'w-11 h-6', thumb: 'w-5 h-5', content: 'text-xs' },
+    lg: { container: 'h-12', switch: 'w-14 h-7', thumb: 'w-6 h-6', content: 'text-sm' },
+  };
+
+  const getSizeClasses = () => {
+    return sizeMap[size] || sizeMap.md;
+  };
+
+  const colorMap = {
+    default: 'bg-zinc-600 dark:bg-zinc-500',
+    blue: 'bg-blue-600 dark:bg-blue-500',
+    red: 'bg-red-600 dark:bg-red-500',
+    green: 'bg-green-600 dark:bg-green-500',
+    yellow: 'bg-yellow-600 dark:bg-yellow-500',
+    purple: 'bg-purple-600 dark:bg-purple-500',
+    emerald: 'bg-emerald-600 dark:bg-emerald-500',
+    sky: 'bg-sky-600 dark:bg-sky-500',
+  };
+
+  const getColorClass = () => {
+    return colorMap[color] || colorMap.default;
+  };
+
+  const { container, switch: switchSize, thumb, content } = getSizeClasses();
+
+  const containerClassNames = `relative flex items-center ${container} w-full`;
+  const containerClassNames2 = `relative flex flex-col gap-1 items-start w-full`;
+
+  const switchClassNames = `${switchSize} rounded-full
+    ${internalValue === 1 ? getColorClass() : 'bg-zinc-300 dark:bg-zinc-600'}
+    relative inline-flex flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline outline-sky-500 dark:outline-sky-700 outline-offset-4 
+    ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}
+  `;
+
+  const thumbClassNames = `
+    ${thumb} rounded-full
+    ${internalValue === 1 ? 'translate-x-full' : 'translate-x-0'}
+    pointer-events-none inline-block transform rounded-full bg-white dark:bg-zinc-900 shadow ring-0 transition duration-200 ease-in-out
+  `;
+
+  const contentClassNames = `
+    absolute inset-0 flex items-center justify-center ${content} font-medium text-white dark:text-zinc-900
+    ${internalValue === 1 ? 'opacity-100' : 'opacity-0'}
+    transition-opacity duration-200 ease-in-out
+  `;
+
+  const labelClassNames = `
+    ${labelPlacement === 'left' ? 'mr-2' : 'ml-2'}
+    ${isDisabled ? 'opacity-50' : ''}
+    select-none text-sm font-medium text-zinc-900 dark:text-zinc-100
+  `;
+
+  const labelOutSide = `false text-xs font-medium text-zinc-600 dark:text-zinc-400 pt-1`;
+  const labelInSide = `false text-xs font-medium text-zinc-600 dark:text-zinc-400 `;
+  const containerInSide = `relative w-full flex px-3 min-h-10 flex-col items-start justify-center transition-background duration-150 outline-none py-2 cursor-text h-14`;
+
+  const renderSwitchContent = () => (
+    <>
+      <span className={thumbClassNames} />
+      {inOn && (
+        <span className={`${contentClassNames} left-0 right-1/2`}>
+          {inOn}
+        </span>
       )}
-    </label>
+      {inOff && (
+        <span className={`${contentClassNames} left-1/2 right-0 ${internalValue === 0 ? 'opacity-100' : 'opacity-0'}`}>
+          {inOff}
+        </span>
+      )}
+    </>
+  );
+
+  return (
+    <>
+      {label && labelPlacement === 'outside' && (
+        <div className='flex flex-col gap-1'>
+          <span className={labelOutSide}>{label}</span>
+          <div className='flex justify-start items-center h-10 py-2'>
+            <button
+              ref={switchRef}
+              type='button'
+              className={switchClassNames}
+              onClick={handleToggle}
+              disabled={isDisabled || isReadOnly}
+              aria-checked={internalValue === 1}
+              role="switch"
+              tabIndex={isReadOnly || isDisabled ? -1 : 0}
+            >
+              {renderSwitchContent()}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {label && labelPlacement === 'inside' && (
+        <div className={containerInSide}>
+          <div className={containerClassNames2}>
+            <span className={labelInSide}>{label}</span>
+            <button
+              ref={switchRef}
+              type='button'
+              className={switchClassNames}
+              onClick={handleToggle}
+              disabled={isDisabled || isReadOnly}
+              aria-checked={internalValue === 1}
+              role="switch"
+              tabIndex={isReadOnly || isDisabled ? -1 : 0}
+            >
+              {renderSwitchContent()}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {(labelPlacement === 'left' || labelPlacement === 'right') && (
+        <div className={containerClassNames}>
+          {label && labelPlacement === 'left' && (
+            <span className={labelClassNames}>{label}</span>
+          )}
+          <button
+            ref={switchRef}
+            type='button'
+            className={switchClassNames}
+            onClick={handleToggle}
+            disabled={isDisabled || isReadOnly}
+            aria-checked={internalValue === 1}
+            role="switch"
+            tabIndex={isReadOnly || isDisabled ? -1 : 0}
+          >
+            {renderSwitchContent()}
+          </button>
+          {label && labelPlacement === 'right' && (
+            <span className={labelClassNames}>{label}</span>
+          )}
+        </div>
+      )}
+    </>
   );
 };
 
-export {Switch};
+export { Switch };

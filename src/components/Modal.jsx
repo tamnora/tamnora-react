@@ -10,7 +10,7 @@ const Modal = ({
   placement = 'auto',
   isOpen = false,
   defaultOpen,
-  isDismissable = true,
+  isDismissable = false,
   isKeyboardDismissDisabled = false,
   shouldBlockScroll = true,
   hideCloseButton = false,

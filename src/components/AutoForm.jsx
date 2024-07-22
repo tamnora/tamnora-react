@@ -5,6 +5,8 @@ import { InputCurrency } from './InputCurrency'
 import { Select } from './Select';
 import { Button } from './Button';
 import { InputCurrency2 } from './InputCurrency2';
+import { Switch } from './Switch';
+import { Checkbox } from './Checkbox';
 
 const AutoForm = ({
 	idSelected,
@@ -32,9 +34,17 @@ const AutoForm = ({
 	widthColumns = {},
 	onUpdateInput = {},
 	isCase = {},
+	specialClass = {},
+	switchOptions = {},
+	buttonVariant = 'solid',
+	buttonSize = 'md',
 	textSubmit = 'Guardar',
 	textDelete = 'Eliminar',
+	msgButtonDelete = "Confirmación: Eliminar",
 	textCancel = 'Cancelar',
+	colorSubmit = 'sky',
+	colorDelete = 'zinc',
+	colorCancel = 'zinc',
 	mostrarSubmit = true,
 	mostrarDelete = true,
 	mostarCancel = true,
@@ -43,22 +53,25 @@ const AutoForm = ({
 	const [initialValues, setInitialValues] = useState({ ...data });
 	const formRef = useRef(null);
 	const fieldRefs = useRef({});
-	const [refreshForm, setRefreshForm] = useState(1)
-
 	
+	const [submitColor, setSubmitColor] = useState(colorSubmit);
+	const [deleteColor, setDeleteColor] = useState(colorDelete);
+	const [cancelColor, setCancelColor] = useState(colorCancel);
+
+
 	function isObject(variable) {
 		return typeof variable === 'object' && variable !== null && !Array.isArray(variable);
-	  }
+	}
 
-	
-	if(isObject(data) == false) return (
+
+	if (isObject(data) == false) return (
 		<div className={`flex flex-col items-center justify-center gap-4 text-lg text-zinc-700 dark:text-zinc-200 w-full h-64 bg-black/10 dark:bg-white/10 rounded-xl  animate-pulse`}>
-				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-10 text-red-500">
-					<path strokeLinecap="round" strokeLinejoin="round" d="M15.182 16.318A4.486 4.486 0 0 0 12.016 15a4.486 4.486 0 0 0-3.198 1.318M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
-				</svg>
-				¡El formato de los datos del formulario no es el correcto!
-			</div>
-	  );
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-10 text-red-500">
+				<path strokeLinecap="round" strokeLinejoin="round" d="M15.182 16.318A4.486 4.486 0 0 0 12.016 15a4.486 4.486 0 0 0-3.198 1.318M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
+			</svg>
+			¡El formato de los datos del formulario no es el correcto!
+		</div>
+	);
 
 	let objects = {
 		id: idSelected ?? 0,
@@ -485,25 +498,25 @@ const AutoForm = ({
 
 	function formatTime(valor = '') {
 		if (valor === '') return { horaEs: '' };
-	  
+
 		let myTime;
 		if (typeof valor === 'string') {
-		  const exp = /^\d{2}:\d{2}(:\d{2})?$/;
-		  if (!exp.test(valor)) return { horaEs: '' };
-		  myTime = valor;
+			const exp = /^\d{2}:\d{2}(:\d{2})?$/;
+			if (!exp.test(valor)) return { horaEs: '' };
+			myTime = valor;
 		} else if (valor instanceof Date) {
-		  myTime = valor.toTimeString().slice(0, 8);
+			myTime = valor.toTimeString().slice(0, 8);
 		} else {
-		  return { horaEs: '' };
+			return { horaEs: '' };
 		}
-	  
+
 		const [horas, minutos] = myTime.split(':');
-		
+
 		return {
-		  horaEs: `${horas}:${minutos}`,
-		  // ... (puedes agregar aquí más propiedades si lo deseas)
+			horaEs: `${horas}:${minutos}`,
+			// ... (puedes agregar aquí más propiedades si lo deseas)
 		};
-	  }
+	}
 
 	const handleChange = (e, key) => {
 		setFormData({
@@ -529,15 +542,14 @@ const AutoForm = ({
 	};
 
 	const handleBlur = (e, key) => {
-		if (initialValues[key] !== e.target.value) {
+		if (initialValues[key] != e.target.value) {
 			initialValues[key] = e.target.value;
 			let updatedData = { ...formData, [key]: e.target.value };
 			if (key in onUpdateInput) {
-				let res = onUpdateInput[key](formData, e.target.value);
+				let res = onUpdateInput[key]({formData: formData, key: key, value: e.target.value, ref: formRef});
 				if (res) {
-					setRefreshForm(0);
 					updatedData = { ...updatedData, ...res };
-					console.log('Resultado', updatedData)
+					// console.log('Resultado', updatedData)
 					setFormData(updatedData);
 				}
 			}
@@ -577,22 +589,32 @@ const AutoForm = ({
 					}
 					if (nextIndex < formElements.length) {
 						formElements[nextIndex].focus();
+						const typeNextElement = formElements[nextIndex].tagName.toLowerCase();
+						if(typeNextElement == 'input'){
+							formElements[nextIndex].select();
+						}
 					}
 				} else {
-					if (document.activeElement.name === 'submit') {
-						handleSubmit();
+					const role = document.activeElement.role || '';
+					if(role === 'switch' || role === 'select'){
+						e.preventDefault();
+					let nextIndex = index + 1;
+					while (nextIndex < formElements.length && formElements[nextIndex].tabIndex === -1) {
+						nextIndex++;
 					}
-					if (document.activeElement.name === 'delete') {
-						onDelete();
+					if (nextIndex < formElements.length) {
+						formElements[nextIndex].focus();
+						const typeNextElement = formElements[nextIndex].tagName.toLowerCase();
+						if(typeNextElement == 'input'){
+							formElements[nextIndex].select();
+						}
 					}
-					if (document.activeElement.name === 'cancel') {
-						onCancel();
 					}
 				}
 			}
 		}
 	};
-	
+
 
 	const handleSubmit = (e) => {
 		if (e) e.preventDefault();
@@ -607,14 +629,21 @@ const AutoForm = ({
 
 	const [deleteText, setDeleteText] = useState(textDelete)
 	const [deleteConfirmed, setDeleteConfirmed] = useState(false)
+
 	const handleDelete = (e) => {
-		setDeleteText('Seguro que desea eliminar?')
+		setDeleteText(msgButtonDelete);
+		console.log(deleteConfirmed)
+		setDeleteColor('red');
 		if (deleteConfirmed) {
 			onDelete();
 		}
 		setDeleteConfirmed(!deleteConfirmed)
 
 	};
+
+	const handleCancel = (e) => {
+		onCancel()
+	}
 
 
 	const footerClasses = `flex items-center justify-between gap-2 border-zinc-300 dark:border-zinc-600
@@ -625,19 +654,7 @@ const AutoForm = ({
 		setFormData({ ...data });
 	}, [data]);
 
-	useEffect(() => {
-		setRefreshForm(1);
-	}, [formData])
-
-	// useEffect(() => {
-	// 	if (data) {
-	// 		if (focusIn && fieldRefs.current[focusIn]) {
-	// 			fieldRefs.current[focusIn].focus(); // Enfoca el campo correspondiente a `focusIn`
-	// 		} else {
-	// 			formRef.current.elements[0].focus();
-	// 		}
-	// 	}
-	// }, [focusIn]);
+	
 
 	useEffect(() => {
 		if (data) {
@@ -645,9 +662,9 @@ const AutoForm = ({
 				fieldRefs.current[focusIn].focus();
 			} else {
 				const formElements = Array.from(formRef.current.elements);
-				const firstFocusableElement = formElements.find(element => 
-					element.tabIndex !== -1 && 
-					!element.disabled && 
+				const firstFocusableElement = formElements.find(element =>
+					element.tabIndex !== -1 &&
+					!element.disabled &&
 					!element.readOnly
 				);
 				if (firstFocusableElement) {
@@ -669,7 +686,7 @@ const AutoForm = ({
 	return (
 		<form name={name} ref={formRef} onSubmit={handleSubmit} onKeyDown={handleKeyPress}>
 			<div className="grid grid-cols-12 gap-2 pb-4 tmn-fadeIn">
-				{formData && refreshForm && Object.keys(formData).map((key) => {
+				{formData && Object.keys(formData).map((key) => {
 					const fieldType = types[key]?.type || struc[key] || 'text';
 
 					if (!hiddenFields.includes(key)) {
@@ -683,6 +700,7 @@ const AutoForm = ({
 										options={types[key].options}
 										label={names[key] || key}
 										defaultValue={formData[key]}
+										specialClass={specialClass[key]}
 										onChange={(value) => handleSelect(key, value)}
 										isReadOnly={isReadOnly[key] || false}
 										isRequired={isRequired[key] || false}
@@ -698,6 +716,7 @@ const AutoForm = ({
 										id={`${name}_${key}`}
 										type={fieldType}
 										defaultValue={formData[key]}
+										specialClass={specialClass[key]}
 										isRequiredMessage="Campo requerido"
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
@@ -715,6 +734,7 @@ const AutoForm = ({
 										id={`${name}_${key}`}
 										type={fieldType}
 										defaultValue={formData[key]}
+										specialClass={specialClass[key]}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly[key] || false}
@@ -730,6 +750,7 @@ const AutoForm = ({
 										id={`${name}_${key}`}
 										type={fieldType}
 										defaultValue={formatTime(formData[key]).horaEs}
+										specialClass={specialClass[key]}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly[key] || false}
@@ -746,6 +767,7 @@ const AutoForm = ({
 										id={`${name}_${key}`}
 										type={fieldType}
 										defaultValue={formData[key]}
+										specialClass={specialClass[key]}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly[key] || false}
@@ -763,6 +785,7 @@ const AutoForm = ({
 										id={`${name}_${key}`}
 										type={fieldType}
 										defaultValue={formatNumberArray(formData[key])[2]}
+										specialClass={specialClass[key]}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly[key] || false}
@@ -779,6 +802,7 @@ const AutoForm = ({
 										id={`${name}_${key}`}
 										type={fieldType}
 										defaultValue={formData[key]}
+										specialClass={specialClass[key]}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly[key] || false}
@@ -786,20 +810,37 @@ const AutoForm = ({
 										isDisabled={isDisabled[key] || false} />
 								)}
 								{fieldType === 'checkbox' && (
-									<div className='flex pt-4 ml-2 justify-start align-center'>
-										<input
-											id={`${name}_${key}`}
-											type={fieldType}
-											defaultValue={formData[key]}
-											onChange={(e) => handleChange(e, key)}
-											onFocus={(e) => handleFocus(e, key)}
-											onBlur={(e) => handleBlur(e, key)}
-											isReadOnly={isReadOnly[key] || false}
-											isRequired={isRequired[key] || false}
-											isDisabled={isDisabled[key] || false}
-										/>
-										<label htmlFor={`${name}_${key}`}>{types[key].label || key}</label>
-									</div>
+									<Checkbox
+										label={names[key] || key}
+										labelPlacement={labelPlacement}
+										radius={inputRadius}
+										variant={inputVariant}
+										id={`${name}_${key}`}
+										defaultValue={formData[key]}
+										onChange={(e) => handleChange(e, key)}
+										onHandleBlur={(e) => handleBlur(e, key)}
+										isReadOnly={isReadOnly[key] || false}
+										isRequired={isRequired[key] || false}
+										isDisabled={isDisabled[key] || false}
+									/>
+								)}
+								{fieldType === 'switch' && (
+									<Switch
+										label={names[key] || key}
+										labelPlacement={labelPlacement}
+										radius={inputRadius}
+										variant={inputVariant}
+										color='emerald'
+										id={`${name}_${key}`}
+										defaultValue={formData[key]}
+										onChange={(e) => handleChange(e, key)}
+										onHandleBlur={(e) => handleBlur(e, key)}
+										isReadOnly={isReadOnly[key] || false}
+										isRequired={isRequired[key] || false}
+										isDisabled={isDisabled[key] || false}
+										inOn={switchOptions[key]?.inOn ? switchOptions[key].inOn : ''}
+										inOff={switchOptions[key]?.inOff ? switchOptions[key].inOff : ''}
+									/>
 								)}
 								{fieldType === 'textarea' && (
 									<Textarea
@@ -827,17 +868,17 @@ const AutoForm = ({
 					<div className="flex items-center justify-start gap-2">
 
 						{mostrarSubmit && (
-							<Button radius='rounded-xl' type="submit" name='submit' color='sky'>
+							<Button radius='rounded-xl' color={submitColor} type="submit" name='submit' variant={buttonVariant} size={buttonSize} >
 								{textSubmit}
 							</Button>
 						)}
 						{mostrarDelete && onDelete && idSelected > 0 && (
-							<Button radius='rounded-xl' color='red' type="button" name='delete' onClick={handleDelete}>
+							<Button radius='rounded-xl' color={deleteColor} type="button" name='delete' variant={buttonVariant} size={buttonSize} onClick={handleDelete}>
 								{deleteText}
 							</Button>
 						)}
 						{mostarCancel && onCancel && (
-							<Button radius='rounded-xl' color='zinc' type="button" name='cancel' onClick={onCancel}>
+							<Button radius='rounded-xl' color={cancelColor} type="button" name='cancel' variant={buttonVariant} size={buttonSize} onClick={handleCancel}>
 								{textCancel}
 							</Button>
 						)}
