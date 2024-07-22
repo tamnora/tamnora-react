@@ -7,6 +7,7 @@ import { Button } from './Button';
 import { InputCurrency2 } from './InputCurrency2';
 import { Switch } from './Switch';
 import { Checkbox } from './Checkbox';
+import { ToggleButton } from './ToggleButton';
 
 const AutoForm = ({
 	idSelected,
@@ -827,6 +828,24 @@ const AutoForm = ({
 								)}
 								{fieldType === 'switch' && (
 									<Switch
+										label={names[key] || key}
+										labelPlacement={labelPlacement}
+										radius={inputRadius}
+										variant={inputVariant}
+										color='emerald'
+										id={`${name}_${key}`}
+										defaultValue={formData[key]}
+										onChange={(e) => handleChange(e, key)}
+										onHandleBlur={(e) => handleBlur(e, key)}
+										isReadOnly={isReadOnly.includes(key)}
+										isRequired={isRequired.includes(key)}
+										isDisabled={isDisabled.includes(key)}
+										inOn={types[key].options ? types[key].options.on : ''}
+										inOff={types[key].options ? types[key].options.off : ''}
+									/>
+								)}
+								{fieldType === 'toggle' && (
+									<ToggleButton
 										label={names[key] || key}
 										labelPlacement={labelPlacement}
 										radius={inputRadius}
