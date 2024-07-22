@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 
-const AutoTable = ({ name = 'table', columnNames = {}, data, rowsPerView = 10, searchText = '', classTextSelect = 'text-sky-500 dark:text-sky-500', classBgSelect, onRowFocus, onRowClick, onCellClick, extraColumns, columnWidths, renderCell, columnAlignments, columns = [], rowSelect = true, hiddenColumn = [] }) => {
+const AutoTable = ({ name = 'table', columnNames = {}, data, rowsPerView = 10, searchText = '', classTextSelect = 'text-sky-500 dark:text-sky-500', classBgSelect, onRowFocus, onRowClick, onCellClick, extraColumns, columnWidths, renderCell, columnAlignments, columns = [], showRowSelection = true, isHidden = [] }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
   const [selectedCellIndex, setSelectedCellIndex] = useState(0);
@@ -236,9 +236,9 @@ const AutoTable = ({ name = 'table', columnNames = {}, data, rowsPerView = 10, s
           <table className="w-full text-sm text-left text-zinc-500 dark:text-zinc-400">
             <thead className="text-xs border-b text-zinc-700 bg-zinc-100 dark:bg-zinc-900 border-zinc-200 uppercase dark:text-zinc-400 dark:border-zinc-800">
               <tr className="text-md font-semibold">
-                {rowSelect && <th></th>}
+                {showRowSelection && <th></th>}
                 {effectiveColumns.length > 0 && effectiveColumns.map((column, index) => {
-                  if(!hiddenColumn.includes(column)) return (
+                  if(!isHidden.includes(column)) return (
                     <th
                     key={column}
                     className={`px-4 py-3 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 whitespace-nowrap ${getColumnAlignmentClass(index)}`}
@@ -264,22 +264,22 @@ const AutoTable = ({ name = 'table', columnNames = {}, data, rowsPerView = 10, s
                   key={rowIndex}
                   data-row={selectedRowIndex === rowIndex ? 'selected' : `fila${rowIndex}`}
                   data-id={rowIndex}
-                  className={`${styleRow}${rowIndex % 2 ? ((selectedRowIndex === rowIndex && inFocus && rowSelect) ? classRowSelect2 : tr2) : ((selectedRowIndex === rowIndex && inFocus && rowSelect) ? classRowSelect1 : tr1)}`}
+                  className={`${styleRow}${rowIndex % 2 ? ((selectedRowIndex === rowIndex && inFocus && showRowSelection) ? classRowSelect2 : tr2) : ((selectedRowIndex === rowIndex && inFocus && showRowSelection) ? classRowSelect1 : tr1)}`}
                   onClick={onRowClick ? () => handleRowClick(row, rowIndex) : null}>
-                  {(selectedRowIndex === rowIndex && inFocus && rowSelect) &&
+                  {(selectedRowIndex === rowIndex && inFocus && showRowSelection) &&
                     <td>
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="size-4">
                         <path fillRule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
                       </svg>
                     </td>}
-                  {!(selectedRowIndex === rowIndex && inFocus) && rowSelect && 
+                  {!(selectedRowIndex === rowIndex && inFocus) && showRowSelection && 
                   <td>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="size-4 text-transparent">
                         <path fillRule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
                       </svg>
                     </td>}
                   {effectiveColumns.map((column, index) => {
-                    if(!hiddenColumn.includes(column)) return (
+                    if(!isHidden.includes(column)) return (
                     <td
                       key={column}
                       className={`px-4 py-3 select-none whitespace-nowrap ${cellPointer} ${getColumnAlignmentClass(index)} ${selectedRowIndex === rowIndex && selectedCellIndex === index && onCellClick ? 'bg-zinc-300 dark:bg-zinc-700' : ''}`}

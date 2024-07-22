@@ -18,23 +18,25 @@ const AutoForm = ({
 	types = {},
 	names = {},
 	focusIn = '',
-	variant = 'default',
+	formVariant = 'default',
 	inputRadius = 'rounded-xl',
 	inputVariant = 'faded',
 	labelPlacement = 'inside',
+	footerClass,
 	onCancel,
 	onDelete,
 	onSubmit,
 	onChange,
-	isRequired = {},
-	isReadOnly = {},
-	isDisabled = {},
-	hiddenFields = [],
-	primaryKey = {},
-	widthColumns = {},
+	isRequired = [],
+	isReadOnly = [],
+	isDisabled = [],
+	isHidden = [],
+	primaryKey = '',
+	colsWidth = {},
 	onUpdateInput = {},
-	isCase = {},
-	specialClass = {},
+	isUpperCase = [],
+	isLowerCase = [],
+	inputTextClass = {},
 	switchOptions = {},
 	buttonVariant = 'solid',
 	buttonSize = 'md',
@@ -45,15 +47,15 @@ const AutoForm = ({
 	colorSubmit = 'sky',
 	colorDelete = 'zinc',
 	colorCancel = 'zinc',
-	mostrarSubmit = true,
-	mostrarDelete = true,
-	mostarCancel = true,
+	showSubmit = true,
+	showDelete = true,
+	showCancel = true,
 }) => {
 	const [formData, setFormData] = useState({ ...data });
 	const [initialValues, setInitialValues] = useState({ ...data });
 	const formRef = useRef(null);
 	const fieldRefs = useRef({});
-	
+
 	const [submitColor, setSubmitColor] = useState(colorSubmit);
 	const [deleteColor, setDeleteColor] = useState(colorDelete);
 	const [cancelColor, setCancelColor] = useState(colorCancel);
@@ -546,7 +548,7 @@ const AutoForm = ({
 			initialValues[key] = e.target.value;
 			let updatedData = { ...formData, [key]: e.target.value };
 			if (key in onUpdateInput) {
-				let res = onUpdateInput[key]({formData: formData, key: key, value: e.target.value, ref: formRef});
+				let res = onUpdateInput[key]({ formData: formData, key: key, value: e.target.value, ref: formRef });
 				if (res) {
 					updatedData = { ...updatedData, ...res };
 					// console.log('Resultado', updatedData)
@@ -590,25 +592,25 @@ const AutoForm = ({
 					if (nextIndex < formElements.length) {
 						formElements[nextIndex].focus();
 						const typeNextElement = formElements[nextIndex].tagName.toLowerCase();
-						if(typeNextElement == 'input'){
+						if (typeNextElement == 'input') {
 							formElements[nextIndex].select();
 						}
 					}
 				} else {
 					const role = document.activeElement.role || '';
-					if(role === 'switch' || role === 'select'){
+					if (role === 'switch' || role === 'select') {
 						e.preventDefault();
-					let nextIndex = index + 1;
-					while (nextIndex < formElements.length && formElements[nextIndex].tabIndex === -1) {
-						nextIndex++;
-					}
-					if (nextIndex < formElements.length) {
-						formElements[nextIndex].focus();
-						const typeNextElement = formElements[nextIndex].tagName.toLowerCase();
-						if(typeNextElement == 'input'){
-							formElements[nextIndex].select();
+						let nextIndex = index + 1;
+						while (nextIndex < formElements.length && formElements[nextIndex].tabIndex === -1) {
+							nextIndex++;
 						}
-					}
+						if (nextIndex < formElements.length) {
+							formElements[nextIndex].focus();
+							const typeNextElement = formElements[nextIndex].tagName.toLowerCase();
+							if (typeNextElement == 'input') {
+								formElements[nextIndex].select();
+							}
+						}
 					}
 				}
 			}
@@ -645,15 +647,15 @@ const AutoForm = ({
 	}
 
 
-	const footerClasses = `flex items-center justify-between gap-2 border-zinc-300 dark:border-zinc-600
-	${variant === 'tmn' && 'border-t pt-4'}
-	`
+
+	const footerDefaultClass = `flex items-center justify-start gap-2 border-zinc-300 dark:border-zinc-600 ${formVariant === 'tmn' && 'border-t mt-2 pt-6'}`
+	const footerClasses = `${footerClass ? footerClass : footerDefaultClass}`
 
 	useEffect(() => {
 		setFormData({ ...data });
 	}, [data]);
 
-	
+
 
 	useEffect(() => {
 		if (data) {
@@ -684,13 +686,13 @@ const AutoForm = ({
 
 	return (
 		<form name={name} ref={formRef} onSubmit={handleSubmit} onKeyDown={handleKeyPress}>
-			<div className="grid grid-cols-12 gap-2 pb-4 tmn-fadeIn">
+			<div className={`grid grid-cols-12 gap-2 pb-4 tmn-fadeIn ${formVariant === 'daf' && 'shadow-lg p-3'}`}>
 				{formData && Object.keys(formData).map((key) => {
 					const fieldType = types[key]?.type || struc[key] || 'text';
 
-					if (!hiddenFields.includes(key)) {
+					if (!isHidden.includes(key)) {
 						return (
-							<div key={key} className={`${widthColumns[key] || 'col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3'}`}>
+							<div key={key} className={`${colsWidth[key] || 'col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3'}`}>
 								{fieldType === 'select' && (
 									<Select
 										labelPlacement={labelPlacement}
@@ -699,11 +701,10 @@ const AutoForm = ({
 										options={types[key].options}
 										label={names[key] || key}
 										defaultValue={formData[key]}
-										specialClass={specialClass[key]}
 										onChange={(value) => handleSelect(key, value)}
-										isReadOnly={isReadOnly[key] || false}
-										isRequired={isRequired[key] || false}
-										isDisabled={isDisabled[key] || false}
+										isReadOnly={isReadOnly.includes(key) || false}
+										isRequired={isRequired.includes(key) || false}
+										isDisabled={isDisabled.includes(key) || false}
 									/>
 								)}
 								{fieldType === 'text' && (
@@ -715,14 +716,15 @@ const AutoForm = ({
 										id={`${name}_${key}`}
 										type={fieldType}
 										defaultValue={formData[key]}
-										specialClass={specialClass[key]}
+										textClass={inputTextClass[key]}
 										isRequiredMessage="Campo requerido"
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
-										isCase={isCase[key] || ''}
-										isReadOnly={isReadOnly[key] || false}
-										isRequired={isRequired[key] || false}
-										isDisabled={isDisabled[key] || false} />
+										isUpperCase={isUpperCase.includes(key)}
+										isLowerCase={isLowerCase.includes(key)}
+										isReadOnly={isReadOnly.includes(key)}
+										isRequired={isRequired.includes(key)}
+										isDisabled={isDisabled.includes(key)} />
 								)}
 								{fieldType === 'date' && (
 									<Input
@@ -733,12 +735,12 @@ const AutoForm = ({
 										id={`${name}_${key}`}
 										type={fieldType}
 										defaultValue={formData[key]}
-										specialClass={specialClass[key]}
+										textClass={inputTextClass[key]}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
-										isReadOnly={isReadOnly[key] || false}
-										isRequired={isRequired[key] || false}
-										isDisabled={isDisabled[key] || false} />
+										isReadOnly={isReadOnly.includes(key)}
+										isRequired={isRequired.includes(key)}
+										isDisabled={isDisabled.includes(key)} />
 								)}
 								{fieldType === 'time' && (
 									<Input
@@ -749,12 +751,12 @@ const AutoForm = ({
 										id={`${name}_${key}`}
 										type={fieldType}
 										defaultValue={formatTime(formData[key]).horaEs}
-										specialClass={specialClass[key]}
+										textClass={inputTextClass[key]}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
-										isReadOnly={isReadOnly[key] || false}
-										isRequired={isRequired[key] || false}
-										isDisabled={isDisabled[key] || false} />
+										isReadOnly={isReadOnly.includes(key)}
+										isRequired={isRequired.includes(key)}
+										isDisabled={isDisabled.includes(key)} />
 								)}
 								{fieldType === 'currency' && (
 									// 		onBlur={(e) => handleChangeCurrency(e, key)}
@@ -766,12 +768,12 @@ const AutoForm = ({
 										id={`${name}_${key}`}
 										type={fieldType}
 										defaultValue={formData[key]}
-										specialClass={specialClass[key]}
+										textClass={inputTextClass[key]}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
-										isReadOnly={isReadOnly[key] || false}
-										isRequired={isRequired[key] || false}
-										isDisabled={isDisabled[key] || false}
+										isReadOnly={isReadOnly.includes(key)}
+										isRequired={isRequired.includes(key)}
+										isDisabled={isDisabled.includes(key)}
 									/>
 								)}
 								{fieldType === 'currency2' && (
@@ -784,12 +786,12 @@ const AutoForm = ({
 										id={`${name}_${key}`}
 										type={fieldType}
 										defaultValue={formatNumberArray(formData[key])[2]}
-										specialClass={specialClass[key]}
+										textClass={inputTextClass[key]}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
-										isReadOnly={isReadOnly[key] || false}
-										isRequired={isRequired[key] || false}
-										isDisabled={isDisabled[key] || false}
+										isReadOnly={isReadOnly.includes(key)}
+										isRequired={isRequired.includes(key)}
+										isDisabled={isDisabled.includes(key)}
 									/>
 								)}
 								{fieldType === 'number' && (
@@ -801,12 +803,12 @@ const AutoForm = ({
 										id={`${name}_${key}`}
 										type={fieldType}
 										defaultValue={formData[key]}
-										specialClass={specialClass[key]}
+										textClass={inputTextClass[key]}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
-										isReadOnly={isReadOnly[key] || false}
-										isRequired={isRequired[key] || false}
-										isDisabled={isDisabled[key] || false} />
+										isReadOnly={isReadOnly.includes(key)}
+										isRequired={isRequired.includes(key)}
+										isDisabled={isDisabled.includes(key)} />
 								)}
 								{fieldType === 'checkbox' && (
 									<Checkbox
@@ -818,9 +820,9 @@ const AutoForm = ({
 										defaultValue={formData[key]}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
-										isReadOnly={isReadOnly[key] || false}
-										isRequired={isRequired[key] || false}
-										isDisabled={isDisabled[key] || false}
+										isReadOnly={isReadOnly.includes(key)}
+										isRequired={isRequired.includes(key)}
+										isDisabled={isDisabled.includes(key)}
 									/>
 								)}
 								{fieldType === 'switch' && (
@@ -834,11 +836,11 @@ const AutoForm = ({
 										defaultValue={formData[key]}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
-										isReadOnly={isReadOnly[key] || false}
-										isRequired={isRequired[key] || false}
-										isDisabled={isDisabled[key] || false}
-										inOn={switchOptions[key]?.inOn ? switchOptions[key].inOn : ''}
-										inOff={switchOptions[key]?.inOff ? switchOptions[key].inOff : ''}
+										isReadOnly={isReadOnly.includes(key)}
+										isRequired={isRequired.includes(key)}
+										isDisabled={isDisabled.includes(key)}
+										inOn={types[key].options ? types[key].options.on : ''}
+										inOff={types[key].options ? types[key].options.off : ''}
 									/>
 								)}
 								{fieldType === 'textarea' && (
@@ -849,10 +851,11 @@ const AutoForm = ({
 										variant={inputVariant}
 										id={`${name}_${key}`}
 										onChange={(e) => handleChange(e, key)}
-										isCase={isCase[key] || ''}
-										isReadOnly={isReadOnly[key] || false}
-										isRequired={isRequired[key] || false}
-										isDisabled={isDisabled[key] || false}
+										isUpperCase={isUpperCase.includes(key)}
+										isLowerCase={isLowerCase.includes(key)}
+										isReadOnly={isReadOnly.includes(key)}
+										isRequired={isRequired.includes(key)}
+										isDisabled={isDisabled.includes(key)}
 										rows={types[key].rows || 2}
 										defaultValue={formData[key]} />
 								)}
@@ -864,24 +867,22 @@ const AutoForm = ({
 			</div>
 			{onSubmit && (
 				<div className={footerClasses}>
-					<div className="flex items-center justify-start gap-2">
 
-						{mostrarSubmit && (
+						{showSubmit && (
 							<Button radius='rounded-xl' color={submitColor} type="submit" name='submit' variant={buttonVariant} size={buttonSize} >
 								{textSubmit}
 							</Button>
 						)}
-						{mostrarDelete && onDelete && idSelected > 0 && (
+						{showDelete && onDelete && idSelected > 0 && (
 							<Button radius='rounded-xl' color={deleteColor} type="button" name='delete' variant={buttonVariant} size={buttonSize} onClick={handleDelete}>
 								{deleteText}
 							</Button>
 						)}
-						{mostarCancel && onCancel && (
+						{showCancel && onCancel && (
 							<Button radius='rounded-xl' color={cancelColor} type="button" name='cancel' variant={buttonVariant} size={buttonSize} onClick={handleCancel}>
 								{textCancel}
 							</Button>
 						)}
-					</div>
 				</div>
 			)}
 		</form>

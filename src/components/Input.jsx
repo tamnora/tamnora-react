@@ -20,14 +20,15 @@ const Input = ({
   isReadOnly = false,
   isDisabled = false,
   isInvalid = false,
-  baseRef,
+  isUpperCase = false,
+  isLowerCase = false,
   disableAnimation = false,
+  baseRef,
   startContent,
   endContent,
   onChange,
   onHandleBlur,
-  isCase,
-  specialClass,
+  textClass,
   ...props
 }) => {
   const [focused, setFocused] = useState(false);
@@ -46,10 +47,11 @@ const Input = ({
 
   const handleInputChange = (e) => {
     let newValue = e.target.value;
-    if (isCase === 'uppercase') {
+    if (isUpperCase) {
       newValue = e.target.value.toUpperCase();
       e.target.value = newValue;
-    } else if (isCase === 'lowercase') {
+    } 
+    if (isLowerCase) {
       newValue = e.target.value.toLowerCase();
       e.target.value = newValue;
     }
@@ -192,7 +194,7 @@ const Input = ({
     ${getHeightClass()}
     ${requiredStyles()}
     ${isDisabled && 'opacity-50'}
-    ${isReadOnly && 'opacity-80'}
+    ${isReadOnly && 'opacity-60'}
     ${fullWidth ? 'w-full' : 'w-auto'}
     ${variant === 'underlined' ? 'rounded-0' : radius}
     ${getColorClass()}
@@ -201,7 +203,7 @@ const Input = ({
     `;
 
   const labelClassNames = `absolute z-10 text-md font-normal pointer-events-none origin-top-left subpixel-antialiased block cursor-text transition-transform transition-color transition-left ease-out duration-200 
-    ${displayedValue || focused || placeholder || props.type === 'date' || props.type === 'time' ? 'text-zinc-600 dark:text-zinc-300 scale-75 -translate-y-2' : 'scale-100 translate-y-0 text-zinc-500 dark:text-zinc-400'} `;
+    ${displayedValue || focused || placeholder || props.type === 'date' || props.type === 'time' || defaultValue == '0' ? 'text-zinc-600 dark:text-zinc-300 scale-75 -translate-y-2' : 'scale-100 translate-y-0 text-zinc-500 dark:text-zinc-400'} `;
   const outsideLabelClassNames = `${isDisabled && 'opacity-50'} text-xs font-medium text-zinc-600 dark:text-zinc-400`;
 
   useEffect(() => {
@@ -227,14 +229,14 @@ const Input = ({
               {startContent}
             </div>
           }
-          {specialClass &&
+          {textClass &&
             <input
               {...inputProps}
               autoComplete="off"
-              className={`w-full bg-transparent outline-none border-0 ${specialClass}`}
+              className={`w-full bg-transparent outline-none border-0 ${textClass}`}
             />
           }
-          {!specialClass &&
+          {!textClass &&
             <input
               {...inputProps}
               autoComplete="off"

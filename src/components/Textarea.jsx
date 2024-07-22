@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 const Textarea = ({
   children,
@@ -19,6 +19,8 @@ const Textarea = ({
   isReadOnly = false,
   isDisabled = false,
   isInvalid = false,
+  isUpperCase = false,
+  isLowerCase = false,
   baseRef,
   disableAnimation = false,
   classNames: customClassNames = {},
@@ -37,8 +39,19 @@ const Textarea = ({
   };
 
   const handleTextareaChange = (e) => {
-    const newValue = e.target.value;
+    let newValue = e.target.value;
+
+    if (isUpperCase) {
+      newValue = e.target.value.toUpperCase();
+      e.target.value = newValue;
+    } 
+    if (isLowerCase) {
+      newValue = e.target.value.toLowerCase();
+      e.target.value = newValue;
+    }
+
     setInternalValue(newValue);
+
     if (onChange) {
       onChange(e);
     }
@@ -73,6 +86,10 @@ const Textarea = ({
     ${customClassNames.label || ''}`;
   const outsideLabelClassNames = `${isDisabled && 'opacity-50'} text-xs font-medium text-zinc-600 dark:text-zinc-300`;
 
+  useEffect(() => {
+    setInternalValue(defaultValue);
+  }, [defaultValue])
+  
   return (
     <div className='flex flex-col gap-1'>
       {labelPlacement === 'outside' && label && (
