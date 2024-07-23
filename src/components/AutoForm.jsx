@@ -886,8 +886,6 @@ const AutoForm = ({
 										isRequired={isRequired.includes(key)}
 										isDisabled={isDisabled.includes(key)}
 										options={types[key].options}
-										textOn={types[key].options ? types[key].options.on : ''}
-										textOff={types[key].options ? types[key].options.off : ''}
 									/>
 								)}
 								{fieldType === 'textarea' && (

@@ -29,11 +29,7 @@ const InputOptions = ({
   onChange,
   onHandleBlur,
   textClass,
-  textOn = 'Si',
-  textOff = 'No',
   options = [],
-  optionOn = ['Si', 'S', 's', 'si', '1', 'Y', 'y'],
-  optionOff = ['No', 'N', 'n', 'no', '0'],
   ...props
 }) => {
   const [focused, setFocused] = useState(false);
@@ -41,21 +37,22 @@ const InputOptions = ({
   const [initialValue, setInitialValue] = useState(defaultValue || '');
   const [hasBeenFocused, setHasBeenFocused] = useState(false);
   const [requiredMessage, setRequiredMessage] = useState('');
-  const [displayedValue, setDisplayedValue] = useState(defaultValue > 0 ? textOn : textOff)
+  const [displayedValue, setDisplayedValue] = useState('')
   const inputRef = useRef(null);
 
   
   function handleToggle(e, value){
-    let newValue = value;
-    
-    if(newValue > 0){
-      setDisplayedValue(textOn);
-      e.target.value = textOn;
-    } else {
-      setDisplayedValue(textOff);
-      e.target.value = textOff;
+    let textValue = '-';
+    if(options.length > 0){
+      options.forEach(option => {
+        if(option.value == value){
+          textValue = option.label
+        } 
+      });
     }
-  
+    setDisplayedValue(textValue);
+    e.target.value = textValue
+
   }
 
   const handleDivClick = () => {
@@ -67,19 +64,21 @@ const InputOptions = ({
 
   const handleInputChange = (e) => {
     let newValue = e.target.value;
-    let targetValue = e.target.value;
-    let originalValue = internalValue; // Supongo que tienes una variable de estado llamada internalValue
+    let originalValue = internalValue; 
   
     // Normaliza el valor de entrada para manejar diferentes casos
-    let normalizedValue = targetValue.trim().toLowerCase();
+    let normalizedValue = newValue.trim().toLowerCase();
     
-    if (optionOn.includes(normalizedValue)) {
-      newValue = '1';
-    } else if (optionOff.includes(normalizedValue)) {
-      newValue = '0';
-    } else {
-      newValue = originalValue;
+    let textValue = '-';
+    if(options.length > 0){
+      options.forEach(option => {
+        if(option.value == normalizedValue){
+          textValue = option.label
+        } 
+      });
     }
+    setDisplayedValue(textValue);
+    
 
     // Actualiza el estado interno solo si el valor cambió
     if (newValue !== originalValue) {
@@ -106,6 +105,23 @@ const InputOptions = ({
       }
   };
 
+  const initValues = (value)=>{
+    let textValue = '-';
+    if(options.length > 0){
+      options.forEach(option => {
+        if(option.value == value){
+          textValue = option.label
+        } 
+      });
+    }
+    setDisplayedValue(textValue);
+  }
+
+  useEffect(() => {
+    setInternalValue(defaultValue);
+    initValues(defaultValue)
+  }, [defaultValue])
+  
   
   
   const inputProps = {
@@ -235,9 +251,7 @@ const InputOptions = ({
     ${displayedValue || focused || placeholder || props.type === 'date' || props.type === 'time' || defaultValue == '0' ? 'text-zinc-600 dark:text-zinc-300 scale-75 -translate-y-2' : 'scale-100 translate-y-0 text-zinc-500 dark:text-zinc-400'} `;
   const outsideLabelClassNames = `${isDisabled && 'opacity-50'} text-xs font-medium text-zinc-600 dark:text-zinc-400`;
 
-  useEffect(() => {
-    setInternalValue(defaultValue);
-  }, [defaultValue])
+   
 
   return (
     <div>
