@@ -7,7 +7,7 @@ import { Button } from './Button';
 import { InputCurrency2 } from './InputCurrency2';
 import { Switch } from './Switch';
 import { Checkbox } from './Checkbox';
-import { ToggleButton } from './ToggleButton';
+import { InputToggle } from './InputToggle';
 
 const AutoForm = ({
 	idSelected,
@@ -845,21 +845,25 @@ const AutoForm = ({
 									/>
 								)}
 								{fieldType === 'toggle' && (
-									<ToggleButton
+									<InputToggle
 										label={names[key] || key}
 										labelPlacement={labelPlacement}
 										radius={inputRadius}
 										variant={inputVariant}
-										color='emerald'
 										id={`${name}_${key}`}
+										type='text'
 										defaultValue={formData[key]}
+										textClass={inputTextClass[key]}
+										isRequiredMessage="Campo requerido"
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
+										isUpperCase={isUpperCase.includes(key)}
+										isLowerCase={isLowerCase.includes(key)}
 										isReadOnly={isReadOnly.includes(key)}
 										isRequired={isRequired.includes(key)}
 										isDisabled={isDisabled.includes(key)}
-										inOn={types[key].options ? types[key].options.on : ''}
-										inOff={types[key].options ? types[key].options.off : ''}
+										textOn={types[key].options ? types[key].options.on : ''}
+										textOff={types[key].options ? types[key].options.off : ''}
 									/>
 								)}
 								{fieldType === 'textarea' && (
@@ -887,21 +891,21 @@ const AutoForm = ({
 			{onSubmit && (
 				<div className={footerClasses}>
 
-						{showSubmit && (
-							<Button radius='rounded-xl' color={submitColor} type="submit" name='submit' variant={buttonVariant} size={buttonSize} >
-								{textSubmit}
-							</Button>
-						)}
-						{showDelete && onDelete && idSelected > 0 && (
-							<Button radius='rounded-xl' color={deleteColor} type="button" name='delete' variant={buttonVariant} size={buttonSize} onClick={handleDelete}>
-								{deleteText}
-							</Button>
-						)}
-						{showCancel && onCancel && (
-							<Button radius='rounded-xl' color={cancelColor} type="button" name='cancel' variant={buttonVariant} size={buttonSize} onClick={handleCancel}>
-								{textCancel}
-							</Button>
-						)}
+					{showSubmit && (
+						<Button radius='rounded-xl' color={submitColor} type="submit" name='submit' variant={buttonVariant} size={buttonSize} >
+							{textSubmit}
+						</Button>
+					)}
+					{showDelete && onDelete && idSelected > 0 && (
+						<Button radius='rounded-xl' color={deleteColor} type="button" name='delete' variant={buttonVariant} size={buttonSize} onClick={handleDelete}>
+							{deleteText}
+						</Button>
+					)}
+					{showCancel && onCancel && (
+						<Button radius='rounded-xl' color={cancelColor} type="button" name='cancel' variant={buttonVariant} size={buttonSize} onClick={handleCancel}>
+							{textCancel}
+						</Button>
+					)}
 				</div>
 			)}
 		</form>
