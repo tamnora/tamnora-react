@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const InputToggle = ({
+const InputOptions = ({
   children,
   variant = 'flat',
   color = 'default',
@@ -31,6 +31,7 @@ const InputToggle = ({
   textClass,
   textOn = 'Si',
   textOff = 'No',
+  options = [],
   optionOn = ['Si', 'S', 's', 'si', '1', 'Y', 'y'],
   optionOff = ['No', 'N', 'n', 'no', '0'],
   ...props
@@ -282,4 +283,4 @@ const InputToggle = ({
   );
 };
 
-export { InputToggle };
+export { InputOptions };

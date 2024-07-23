@@ -8,6 +8,7 @@ import { InputCurrency2 } from './InputCurrency2';
 import { Switch } from './Switch';
 import { Checkbox } from './Checkbox';
 import { InputToggle } from './InputToggle';
+import { InputOptions } from './InputOptions';
 
 const AutoForm = ({
 	idSelected,
@@ -862,6 +863,29 @@ const AutoForm = ({
 										isReadOnly={isReadOnly.includes(key)}
 										isRequired={isRequired.includes(key)}
 										isDisabled={isDisabled.includes(key)}
+										textOn={types[key].options ? types[key].options.on : ''}
+										textOff={types[key].options ? types[key].options.off : ''}
+									/>
+								)}
+								{fieldType === 'option' && (
+									<InputOptions
+										label={names[key] || key}
+										labelPlacement={labelPlacement}
+										radius={inputRadius}
+										variant={inputVariant}
+										id={`${name}_${key}`}
+										type='text'
+										defaultValue={formData[key]}
+										textClass={inputTextClass[key]}
+										isRequiredMessage="Campo requerido"
+										onChange={(e) => handleChange(e, key)}
+										onHandleBlur={(e) => handleBlur(e, key)}
+										isUpperCase={isUpperCase.includes(key)}
+										isLowerCase={isLowerCase.includes(key)}
+										isReadOnly={isReadOnly.includes(key)}
+										isRequired={isRequired.includes(key)}
+										isDisabled={isDisabled.includes(key)}
+										options={types[key].options}
 										textOn={types[key].options ? types[key].options.on : ''}
 										textOff={types[key].options ? types[key].options.off : ''}
 									/>
