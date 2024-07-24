@@ -1,6 +1,27 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 
-const AutoTable = ({ name = 'table', columnNames = {}, data, rowsPerView = 10, searchText = '', classTextSelect = 'text-sky-500 dark:text-sky-500', classBgSelect, onRowFocus, onRowClick, onCellClick, extraColumns, columnWidths, renderCell, columnAlignments, columns = [], showRowSelection = true, isHidden = [] }) => {
+const AutoTable = ({ 
+  name = 'table', 
+  columnNames = {}, 
+  data, 
+  rowsPerView = 10, 
+  searchText = '', 
+  classTextSelect = 'text-sky-600 dark:text-sky-500', 
+  classBgSelect, 
+  onRowFocus, 
+  onRowClick, 
+  onCellClick, 
+  extraColumns, 
+  columnWidths, 
+  renderCell, 
+  columnAlignments, 
+  columns = [], 
+  showRowSelection = true, 
+  showIconSelection = true, 
+  rowFooter,
+  classFooter,
+  isHidden = [] 
+}) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
   const [selectedCellIndex, setSelectedCellIndex] = useState(0);
@@ -200,6 +221,13 @@ const AutoTable = ({ name = 'table', columnNames = {}, data, rowsPerView = 10, s
     return value;
   };
 
+  const renderCellFooter = (column) => {
+    if (rowFooter[column]) {
+      return rowFooter[column];
+    }
+    return '';
+  };
+
   const getColumnAlignmentClass = (index) => {
     if (!columnAlignments || !columnAlignments[index]) return '';
     switch (columnAlignments[index]) {
@@ -216,13 +244,16 @@ const AutoTable = ({ name = 'table', columnNames = {}, data, rowsPerView = 10, s
   const styleRow = `border-t border-zinc-200 dark:border-zinc-700/70 hover:bg-zinc-200/40 dark:hover:bg-zinc-800/70 `;
   const tr1 = `bg-zinc-50 dark:bg-zinc-800/40 hover:text-zinc-900 dark:hover:text-zinc-100 ${rowPointer} `;
   const tr2 = `bg-transparent hover:text-zinc-800 dark:hover:text-zinc-100 ${rowPointer} `;
+  const tr3 = `hover:text-zinc-900 dark:hover:text-zinc-100 ${rowPointer} `;
+  
+
   let classRowSelect1 = `${tr1} ${classTextSelect}`;
   let classRowSelect2 = `${tr2} ${classTextSelect}`;
 
   if(classBgSelect){
-    classRowSelect1 = `${classBgSelect} ${classTextSelect}`;
-    classRowSelect2 = `${classBgSelect} ${classTextSelect}`;
-  }
+    classRowSelect1 = `${classBgSelect} ${tr3} ${classTextSelect}`;
+    classRowSelect2 = `${classBgSelect} ${tr3} ${classTextSelect}`;
+  } 
 
 
   
@@ -236,7 +267,7 @@ const AutoTable = ({ name = 'table', columnNames = {}, data, rowsPerView = 10, s
           <table className="w-full text-sm text-left text-zinc-500 dark:text-zinc-400">
             <thead className="text-xs border-b text-zinc-700 bg-zinc-100 dark:bg-zinc-900 border-zinc-200 uppercase dark:text-zinc-400 dark:border-zinc-800">
               <tr className="text-md font-semibold">
-                {showRowSelection && <th></th>}
+                {showRowSelection && showIconSelection && <th></th>}
                 {effectiveColumns.length > 0 && effectiveColumns.map((column, index) => {
                   if(!isHidden.includes(column)) return (
                     <th
@@ -266,15 +297,15 @@ const AutoTable = ({ name = 'table', columnNames = {}, data, rowsPerView = 10, s
                   data-id={rowIndex}
                   className={`${styleRow}${rowIndex % 2 ? ((selectedRowIndex === rowIndex && inFocus && showRowSelection) ? classRowSelect2 : tr2) : ((selectedRowIndex === rowIndex && inFocus && showRowSelection) ? classRowSelect1 : tr1)}`}
                   onClick={onRowClick ? () => handleRowClick(row, rowIndex) : null}>
-                  {(selectedRowIndex === rowIndex && inFocus && showRowSelection) &&
+                  {(selectedRowIndex === rowIndex && inFocus && showRowSelection) && showIconSelection &&
                     <td>
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="size-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="ml-2 size-5">
                         <path fillRule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
                       </svg>
                     </td>}
-                  {!(selectedRowIndex === rowIndex && inFocus) && showRowSelection && 
+                  {!(selectedRowIndex === rowIndex && inFocus) && showRowSelection && showIconSelection && 
                   <td>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="size-4 text-transparent">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="ml-2 size-5 text-transparent">
                         <path fillRule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
                       </svg>
                     </td>}
@@ -305,6 +336,34 @@ const AutoTable = ({ name = 'table', columnNames = {}, data, rowsPerView = 10, s
                   </td>
                 </tr>
               )}
+              {rowFooter && 
+              <tr className={classFooter ? classFooter: 'text-sm font-semibold border-t text-zinc-700 bg-zinc-100 dark:bg-zinc-900 border-zinc-200  dark:text-zinc-400 dark:border-zinc-800'}>
+                  {showRowSelection && showIconSelection && 
+                  <td>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="ml-2 size-5 text-transparent">
+                        <path fillRule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
+                      </svg>
+                    </td>}
+                  {effectiveColumns.map((column, index) => {
+                    if(!isHidden.includes(column)) return (
+                    <td
+                      key={column + index}
+                      className={`px-4 py-3 select-none whitespace-nowrap `}
+                  
+                      style={{ width: columnWidths ? columnWidths[column] : 'auto' }}>
+                      {renderCellFooter(column)}
+                    </td>
+                    )}
+                  )}
+                  {extraColumns && extraColumns.map((col, indexExtra) => (
+                    <td
+                      key={`extrafooter-${indexExtra}`}
+                      className={`px-4 py-3 select-none whitespace-nowrap `}
+                      >
+                      {renderCellFooter(col)}
+                    </td>
+                  ))}  
+              </tr>}
             </tbody>
           </table>
         </div>

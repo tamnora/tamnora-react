@@ -31,7 +31,7 @@ const Tabs = ({ children }) => {
           <button
             key={index}
             className={`px-4 py-2 -mb-px text-sm font-medium border-b transition-colors duration-500 ${
-              activeTab === index ? 'border-blue-500 text-blue-600 dark:text-blue-500' : 'border-transparent text-zinc-500 hover:text-zinc-600 hover:border-zinc-600 dark:hover:text-zinc-200 dark:hover:border-zinc-200'
+              activeTab === index ? 'border-sky-500 text-sky-600 dark:text-sky-500' : 'border-transparent text-zinc-500 hover:text-zinc-600 hover:border-zinc-600 dark:hover:text-zinc-200 dark:hover:border-zinc-200'
             }`}
             onClick={() => handleTabClick(index)}
             aria-label={`Alt+${tab.props.accessKey}`}
