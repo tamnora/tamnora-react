@@ -6,7 +6,7 @@ const AutoTable = ({
   data, 
   rowsPerView = 10, 
   searchText = '', 
-  classTextSelect = 'text-sky-600 dark:text-sky-500', 
+  classTextSelect = 'text-sky-500 dark:text-sky-500 border border-sky-600/80 dark:border-sky-700/70', 
   classBgSelect, 
   onRowFocus, 
   onRowClick, 
@@ -17,7 +17,8 @@ const AutoTable = ({
   columnAlignments, 
   columns = [], 
   showRowSelection = true, 
-  showIconSelection = true, 
+  showIconSelection = false,
+  iconSelection,
   rowFooter,
   classFooter,
   isHidden = [] 
@@ -75,6 +76,9 @@ const AutoTable = ({
   const totalPages = Math.ceil(filteredData.length / rowsPerView);
   const rowPointer = onRowClick ? 'cursor-pointer' : '';
   const cellPointer = onCellClick ? 'cursor-pointer' : '';
+  const optionIcon = iconSelection ? iconSelection : <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="ml-2 size-5">
+  <path fillRule="evenodd" d="M15.28 9.47a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 1 1-1.06-1.06L13.69 10 9.97 6.28a.75.75 0 0 1 1.06-1.06l4.25 4.25ZM6.03 5.22l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L8.69 10 4.97 6.28a.75.75 0 0 1 1.06-1.06Z" clipRule="evenodd" />
+</svg>;
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -241,14 +245,20 @@ const AutoTable = ({
     }
   };
 
-  const styleRow = `border-t border-zinc-200 dark:border-zinc-700/70 hover:bg-zinc-200/40 dark:hover:bg-zinc-800/70 `;
-  const tr1 = `bg-zinc-50 dark:bg-zinc-800/40 hover:text-zinc-900 dark:hover:text-zinc-100 ${rowPointer} `;
-  const tr2 = `bg-transparent hover:text-zinc-800 dark:hover:text-zinc-100 ${rowPointer} `;
+  //border-t border-zinc-200 dark:border-zinc-700/70 
+
+  const styleRow = `hover:bg-zinc-200/40 dark:hover:bg-zinc-800/70 `;
+  const trA = `bg-zinc-50 dark:bg-zinc-800/40  ${rowPointer} `;
+  const trB = `bg-transparent  ${rowPointer} `;
   const tr3 = `hover:text-zinc-900 dark:hover:text-zinc-100 ${rowPointer} `;
+  const border = `border-t border-zinc-200 dark:border-zinc-700/70`;
+  const tr1 = `${trA} ${border} hover:text-zinc-900 dark:hover:text-zinc-100`;
+  const tr2 = `${trB} ${border} hover:text-zinc-800 dark:hover:text-zinc-100`;
   
 
-  let classRowSelect1 = `${tr1} ${classTextSelect}`;
-  let classRowSelect2 = `${tr2} ${classTextSelect}`;
+  let classRowSelect1 = `${trA}  ${classTextSelect} `;
+  let classRowSelect2 = `${trB}  ${classTextSelect} `;
+
 
   if(classBgSelect){
     classRowSelect1 = `${classBgSelect} ${tr3} ${classTextSelect}`;
@@ -299,15 +309,11 @@ const AutoTable = ({
                   onClick={onRowClick ? () => handleRowClick(row, rowIndex) : null}>
                   {(selectedRowIndex === rowIndex && inFocus && showRowSelection) && showIconSelection &&
                     <td>
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="ml-2 size-5">
-                        <path fillRule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
-                      </svg>
+                      {optionIcon}
                     </td>}
                   {!(selectedRowIndex === rowIndex && inFocus) && showRowSelection && showIconSelection && 
-                  <td>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="ml-2 size-5 text-transparent">
-                        <path fillRule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
-                      </svg>
+                  <td className='text-transparent'>
+                    {optionIcon}
                     </td>}
                   {effectiveColumns.map((column, index) => {
                     if(!isHidden.includes(column)) return (
