@@ -36,6 +36,7 @@ const InputCurrency = ({
     const [focused, setFocused] = useState(false);
     const [hasBeenFocused, setHasBeenFocused] = useState(false);
     const [requiredMessage, setRequiredMessage] = useState('');
+    const [inputUpdated, setInputUpdated] = useState(false);
     const integerInputRef = useRef(null);
     const decimalInputRef = useRef(null);
 

@@ -36,6 +36,7 @@ const Input = ({
   const [initialValue, setInitialValue] = useState(defaultValue || '');
   const [hasBeenFocused, setHasBeenFocused] = useState(false);
   const [requiredMessage, setRequiredMessage] = useState('');
+  const [inputUpdated, setInputUpdated] = useState(false);
   const inputRef = useRef(null);
 
   const handleDivClick = () => {
@@ -57,6 +58,7 @@ const Input = ({
     }
 
     setInternalValue(newValue);
+    if(!inputUpdated) setInputUpdated(true)
     if (onChange) {
       onChange(e);
     }
@@ -72,6 +74,11 @@ const Input = ({
     setFocused(false);
     if (initialValue !== e.target.value) {
       setInitialValue(e.target.value);
+      if (onHandleBlur) {
+        onHandleBlur(e);
+      }
+    } else if(inputUpdated) {
+      setInputUpdated(false);
       if (onHandleBlur) {
         onHandleBlur(e);
       }

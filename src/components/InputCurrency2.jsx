@@ -36,6 +36,7 @@ const InputCurrency2 = ({
     const [initialValue, setInitialValue] = useState(defaultValue || '');
     const [hasBeenFocused, setHasBeenFocused] = useState(false);
     const [requiredMessage, setRequiredMessage] = useState('');
+    const [inputUpdated, setInputUpdated] = useState(false);
     const inputRef = useRef(null);
 
     useEffect(() => {

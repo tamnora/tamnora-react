@@ -40,7 +40,8 @@ const InputToggle = ({
   const [initialValue, setInitialValue] = useState(defaultValue || '');
   const [hasBeenFocused, setHasBeenFocused] = useState(false);
   const [requiredMessage, setRequiredMessage] = useState('');
-  const [displayedValue, setDisplayedValue] = useState(defaultValue > 0 ? textOn : textOff)
+  const [displayedValue, setDisplayedValue] = useState(defaultValue > 0 ? textOn : textOff);
+  const [inputUpdated, setInputUpdated] = useState(false);
   const inputRef = useRef(null);
 
   

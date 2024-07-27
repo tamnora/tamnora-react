@@ -21,6 +21,7 @@ export function Select({
   const [showOptions, setShowOptions] = useState(false);
   const [selectedValue, setSelectedValue] = useState(value || defaultValue);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [selectUpdated, setSelectUpdated] = useState(false);
   const selectRef = useRef(null);
   const optionsRef = useRef(null);
   const optionRefs = useRef([]);
@@ -34,6 +35,7 @@ export function Select({
 
   const selectOption = (option) => {
     setSelectedValue(option.value);
+    
     onChange && onChange(option.value);
     setShowOptions(false);
     setFocused(true);

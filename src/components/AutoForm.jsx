@@ -57,7 +57,7 @@ const AutoForm = ({
 	const [initialValues, setInitialValues] = useState({ ...data });
 	const formRef = useRef(null);
 	const fieldRefs = useRef({});
-
+	const [inputUpdated, setInputUpdated] = useState(false);
 	const [submitColor, setSubmitColor] = useState(colorSubmit);
 	const [deleteColor, setDeleteColor] = useState(colorDelete);
 	const [cancelColor, setCancelColor] = useState(colorCancel);
@@ -521,12 +521,17 @@ const AutoForm = ({
 			// ... (puedes agregar aquí más propiedades si lo deseas)
 		};
 	}
+	
 
 	const handleChange = (e, key) => {
 		setFormData({
 			...formData,
 			[key]: e.target.value,
 		});
+
+		if(!inputUpdated){
+			setInputUpdated(true);
+		}
 	};
 
 	const handleSelect = (key, value) => {
@@ -538,16 +543,11 @@ const AutoForm = ({
 		}
 	}
 
-	const handleFocus = (e, key) => {
-		setInitialValues({
-			...initialValues,
-			[key]: e.target.value,
-		});
-	};
-
+	
 	const handleBlur = (e, key) => {
-		if (initialValues[key] != e.target.value) {
+		if (initialValues[key] != e.target.value || inputUpdated) {
 			initialValues[key] = e.target.value;
+			setInputUpdated(false);
 			let updatedData = { ...formData, [key]: e.target.value };
 			if (key in onUpdateInput) {
 				let res = onUpdateInput[key]({ formData: formData, key: key, value: e.target.value, ref: formRef });
@@ -564,21 +564,7 @@ const AutoForm = ({
 		}
 	};
 
-	const handleChangeCurrency = (e, key) => {
-		if (initialValues[key] !== e.target.value) {
-			let newValue = formatNumberArray(e.target.value);
-			setFormData({
-				...formData,
-				[key]: newValue[0],
-			});
-			// console.log(newValue, key);
-			e.target.value = newValue[2];
-			if (key in onUpdateInput) {
-				onUpdateInput[key](formData, newValue[0])
-			}
-		}
-	};
-
+	
 	const handleKeyPress = (e) => {
 		if (data) {
 			if (e.keyCode === 13) {
@@ -657,8 +643,7 @@ const AutoForm = ({
 		setFormData({ ...data });
 	}, [data]);
 
-
-
+	
 	useEffect(() => {
 		if (data) {
 			if (focusIn && fieldRefs.current[focusIn]) {
