@@ -1,27 +1,29 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 
-const AutoTable = ({ 
-  name = 'table', 
-  columnNames = {}, 
-  data, 
-  rowsPerView = 10, 
-  searchText = '', 
-  classTextSelect = 'text-sky-500 dark:text-sky-500 border border-sky-600/80 dark:border-sky-700/70', 
-  classBgSelect, 
-  onRowFocus, 
-  onRowClick, 
-  onCellClick, 
-  extraColumns, 
-  columnWidths, 
-  renderCell, 
-  columnAlignments, 
-  columns = [], 
-  showRowSelection = true, 
+const AutoTable = ({
+  name = 'table',
+  columnNames = {},
+  data,
+  rowsPerView = 10,
+  searchText = '',
+  classTextSelect = 'text-sky-500 dark:text-sky-500 border border-sky-600/80 dark:border-sky-700/70',
+  classBgSelect,
+  onRowFocus,
+  onRowClick,
+  onCellClick,
+  extraColumns,
+  columnWidths,
+  renderCell,
+  tdPadding = 'px-4 py-3',
+  columnAlignments,
+  columns = [],
+  showRowSelection = true,
   showIconSelection = false,
+  isStriped = true,
   iconSelection,
   rowFooter,
   classFooter,
-  isHidden = [] 
+  isHidden = []
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
@@ -76,8 +78,8 @@ const AutoTable = ({
   const totalPages = Math.ceil(filteredData.length / rowsPerView);
   const rowPointer = onRowClick ? 'cursor-pointer' : '';
   const cellPointer = onCellClick ? 'cursor-pointer' : '';
-  const optionIcon = iconSelection ? iconSelection : <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="ml-2 size-5">
-  <path fillRule="evenodd" d="M15.28 9.47a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 1 1-1.06-1.06L13.69 10 9.97 6.28a.75.75 0 0 1 1.06-1.06l4.25 4.25ZM6.03 5.22l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L8.69 10 4.97 6.28a.75.75 0 0 1 1.06-1.06Z" clipRule="evenodd" />
+  const optionIcon = iconSelection ? iconSelection : <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ml-2 size-5 ">
+  <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
 </svg>;
 
   useEffect(() => {
@@ -247,27 +249,27 @@ const AutoTable = ({
 
   //border-t border-zinc-200 dark:border-zinc-700/70 
 
-  const styleRow = `hover:bg-zinc-200/40 dark:hover:bg-zinc-800/70 `;
+  const styleRow = `hover:bg-zinc-200/40 dark:hover:bg-zinc-800/70`;
   const trA = `bg-zinc-50 dark:bg-zinc-800/40  ${rowPointer} `;
   const trB = `bg-transparent  ${rowPointer} `;
   const tr3 = `hover:text-zinc-900 dark:hover:text-zinc-100 ${rowPointer} `;
   const border = `border-t border-zinc-200 dark:border-zinc-700/70`;
   const tr1 = `${trA} ${border} hover:text-zinc-900 dark:hover:text-zinc-100`;
   const tr2 = `${trB} ${border} hover:text-zinc-800 dark:hover:text-zinc-100`;
-  
+
 
   let classRowSelect1 = `${trA}  ${classTextSelect} `;
   let classRowSelect2 = `${trB}  ${classTextSelect} `;
 
 
-  if(classBgSelect){
+  if (classBgSelect) {
     classRowSelect1 = `${classBgSelect} ${tr3} ${classTextSelect}`;
     classRowSelect2 = `${classBgSelect} ${tr3} ${classTextSelect}`;
-  } 
+  }
 
 
-  
-  
+
+
 
 
   return (
@@ -279,20 +281,20 @@ const AutoTable = ({
               <tr className="text-md font-semibold">
                 {showRowSelection && showIconSelection && <th></th>}
                 {effectiveColumns.length > 0 && effectiveColumns.map((column, index) => {
-                  if(!isHidden.includes(column)) return (
+                  if (!isHidden.includes(column)) return (
                     <th
-                    key={column}
-                    className={`px-4 py-3 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 whitespace-nowrap ${getColumnAlignmentClass(index)}`}
-                    style={{ width: columnWidths ? columnWidths[column] : 'auto' }}>
-                    {columnNames[column] ? columnNames[column] : column}
-                  </th>
+                      key={column}
+                      className={`px-4 py-4 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 whitespace-nowrap ${getColumnAlignmentClass(index)}`}
+                      style={{ width: columnWidths ? columnWidths[column] : 'auto' }}>
+                      {columnNames[column] ? columnNames[column] : column}
+                    </th>
                   )
                 })
                 }
                 {extraColumns && extraColumns.map((col, indexExtra) => (
                   <th
                     key={`extra-${indexExtra}`}
-                    className={`px-4 py-3 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 whitespace-nowrap ${getColumnAlignmentClass(effectiveColumns.length + indexExtra)}`}
+                    className={`px-4 py-4 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 whitespace-nowrap ${getColumnAlignmentClass(effectiveColumns.length + indexExtra)}`}
                     style={{ width: col.width || 'auto' }}>
                     {col.header}
                   </th>
@@ -305,31 +307,39 @@ const AutoTable = ({
                   key={rowIndex}
                   data-row={selectedRowIndex === rowIndex ? 'selected' : `fila${rowIndex}`}
                   data-id={rowIndex}
-                  className={`${styleRow}${rowIndex % 2 ? ((selectedRowIndex === rowIndex && inFocus && showRowSelection) ? classRowSelect2 : tr2) : ((selectedRowIndex === rowIndex && inFocus && showRowSelection) ? classRowSelect1 : tr1)}`}
+                  className={`${styleRow}
+                  ${isStriped ?
+                    (rowIndex % 2 ? 
+                      ((selectedRowIndex === rowIndex && inFocus && showRowSelection) ? classRowSelect2 : tr2) 
+                      : 
+                      ((selectedRowIndex === rowIndex && inFocus && showRowSelection) ? classRowSelect1 : tr1))
+                    :
+                    ((selectedRowIndex === rowIndex && inFocus && showRowSelection) ? classRowSelect2 : tr2)
+                  }`}
+
                   onClick={onRowClick ? () => handleRowClick(row, rowIndex) : null}>
                   {(selectedRowIndex === rowIndex && inFocus && showRowSelection) && showIconSelection &&
                     <td>
                       {optionIcon}
                     </td>}
-                  {!(selectedRowIndex === rowIndex && inFocus) && showRowSelection && showIconSelection && 
-                  <td className='text-transparent'>
-                    {optionIcon}
-                    </td>}
+                  {!(selectedRowIndex === rowIndex && inFocus) && showRowSelection && showIconSelection &&
+                    <td className='text-transparent'>{optionIcon}</td>}
                   {effectiveColumns.map((column, index) => {
-                    if(!isHidden.includes(column)) return (
-                    <td
-                      key={column}
-                      className={`px-4 py-3 select-none whitespace-nowrap ${cellPointer} ${getColumnAlignmentClass(index)} ${selectedRowIndex === rowIndex && selectedCellIndex === index && onCellClick ? 'bg-zinc-300 dark:bg-zinc-700' : ''}`}
-                      onClick={onCellClick ? (e) => handleCellClick(e, row, column) : null}
-                      style={{ width: columnWidths ? columnWidths[column] : 'auto' }}>
-                      {renderCellContent(row[column], row, column)}
-                    </td>
-                    )}
+                    if (!isHidden.includes(column)) return (
+                      <td
+                        key={column}
+                        className={`${tdPadding} select-none whitespace-nowrap ${cellPointer} ${getColumnAlignmentClass(index)} ${selectedRowIndex === rowIndex && selectedCellIndex === index && onCellClick ? 'bg-zinc-300 dark:bg-zinc-700' : ''}`}
+                        onClick={onCellClick ? (e) => handleCellClick(e, row, column) : null}
+                        style={{ width: columnWidths ? columnWidths[column] : 'auto' }}>
+                        {renderCellContent(row[column], row, column)}
+                      </td>
+                    )
+                  }
                   )}
                   {extraColumns && extraColumns.map((col, indexExtra) => (
                     <td
                       key={`extra-${indexExtra}`}
-                      className={`px-4 py-3 select-none whitespace-nowrap ${cellPointer} ${getColumnAlignmentClass(effectiveColumns.length + indexExtra)}`}
+                      className={`${tdPadding} select-none whitespace-nowrap ${cellPointer} ${getColumnAlignmentClass(effectiveColumns.length + indexExtra)}`}
                       onClick={onCellClick ? (e) => handleCellClick(e, row, `extra-${indexExtra}`) : null}>
                       {col.render ? col.render(row) : ''}
                     </td>
@@ -342,34 +352,30 @@ const AutoTable = ({
                   </td>
                 </tr>
               )}
-              {rowFooter && 
-              <tr className={classFooter ? classFooter: 'text-sm font-semibold border-t text-zinc-700 bg-zinc-100 dark:bg-zinc-900 border-zinc-200  dark:text-zinc-400 dark:border-zinc-800'}>
-                  {showRowSelection && showIconSelection && 
-                  <td>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="ml-2 size-5 text-transparent">
-                        <path fillRule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
-                      </svg>
-                    </td>}
+              {rowFooter &&
+                <tr className={classFooter ? classFooter : 'text-sm font-semibold border-t text-zinc-700 bg-zinc-100 dark:bg-zinc-900 border-zinc-200  dark:text-zinc-400 dark:border-zinc-800'}>
+                  {showRowSelection && showIconSelection &&  <td></td>}
                   {effectiveColumns.map((column, index) => {
-                    if(!isHidden.includes(column)) return (
-                    <td
-                      key={column + index}
-                      className={`px-4 py-3 select-none whitespace-nowrap `}
-                  
-                      style={{ width: columnWidths ? columnWidths[column] : 'auto' }}>
-                      {renderCellFooter(column)}
-                    </td>
-                    )}
+                    if (!isHidden.includes(column)) return (
+                      <td
+                        key={column + index}
+                        className={`px-4 py-3 select-none whitespace-nowrap `}
+
+                        style={{ width: columnWidths ? columnWidths[column] : 'auto' }}>
+                        {renderCellFooter(column)}
+                      </td>
+                    )
+                  }
                   )}
                   {extraColumns && extraColumns.map((col, indexExtra) => (
                     <td
                       key={`extrafooter-${indexExtra}`}
                       className={`px-4 py-3 select-none whitespace-nowrap `}
-                      >
+                    >
                       {renderCellFooter(col)}
                     </td>
-                  ))}  
-              </tr>}
+                  ))}
+                </tr>}
             </tbody>
           </table>
         </div>

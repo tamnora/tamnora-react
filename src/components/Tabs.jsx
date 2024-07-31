@@ -30,17 +30,20 @@ const Tabs = ({ children }) => {
         {children.map((tab, index) => (
           <button
             key={index}
-            className={`px-4 py-2 -mb-px text-sm font-medium border-b transition-colors duration-500 ${
+            className={`flex items-center gap-2 pl-2 pr-6 py-2 -mb-px text-sm font-medium border-b transition-colors duration-500 ${
               activeTab === index ? 'border-sky-500 text-sky-600 dark:text-sky-500' : 'border-transparent text-zinc-500 hover:text-zinc-600 hover:border-zinc-600 dark:hover:text-zinc-200 dark:hover:border-zinc-200'
             }`}
             onClick={() => handleTabClick(index)}
             aria-label={`Alt+${tab.props.accessKey}`}
           >
-            {tab.props.label} {tab.props.accessKey && <span className='pl-2 text-xs text-zinc-400 dark:text-zinc-700 hover:text-zinc-600'>[Alt+{tab.props.accessKey}]</span>}
+            {tab.props.position !== 'right' && tab.props.icon}
+            {tab.props.label}
+            {tab.props.accessKey && tab.props.showAccessKey  && <span className='border border-zinc-400 dark:border-zinc-700 rounded-lg px-2 py-1 text-xs text-zinc-400 dark:text-zinc-700 hover:text-zinc-600'>{tab.props.accessKey}</span>}
+            {tab.props.position === 'right' && tab.props.icon}
           </button>
         ))}
       </div>
-      <div className="p-4">
+      <div className="p-4 pt-6">
         {children[activeTab]}
       </div>
     </div>
@@ -48,3 +51,5 @@ const Tabs = ({ children }) => {
 };
 
 export { Tabs };
+
+
