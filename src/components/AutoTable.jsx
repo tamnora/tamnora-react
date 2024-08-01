@@ -79,8 +79,8 @@ const AutoTable = ({
   const rowPointer = onRowClick ? 'cursor-pointer' : '';
   const cellPointer = onCellClick ? 'cursor-pointer' : '';
   const optionIcon = iconSelection ? iconSelection : <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ml-2 size-5 ">
-  <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-</svg>;
+    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+  </svg>;
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -249,14 +249,13 @@ const AutoTable = ({
 
   //border-t border-zinc-200 dark:border-zinc-700/70 
 
-  const styleRow = `hover:bg-zinc-200/40 dark:hover:bg-zinc-800/70`;
-  const trA = `bg-zinc-50 dark:bg-zinc-800/40  ${rowPointer} `;
-  const trB = `bg-transparent  ${rowPointer} `;
+  const styleRow = `hover:bg-zinc-200/40 dark:hover:bg-zinc-800/70 `;
+  const trA = `bg-transparent  ${rowPointer} `;
+  const trB = `bg-zinc-50 dark:bg-zinc-800/40  ${rowPointer} `;
   const tr3 = `hover:text-zinc-900 dark:hover:text-zinc-100 ${rowPointer} `;
   const border = `border-t border-zinc-200 dark:border-zinc-700/70`;
   const tr1 = `${trA} ${border} hover:text-zinc-900 dark:hover:text-zinc-100`;
   const tr2 = `${trB} ${border} hover:text-zinc-800 dark:hover:text-zinc-100`;
-
 
   let classRowSelect1 = `${trA}  ${classTextSelect} `;
   let classRowSelect2 = `${trB}  ${classTextSelect} `;
@@ -267,17 +266,12 @@ const AutoTable = ({
     classRowSelect2 = `${classBgSelect} ${tr3} ${classTextSelect}`;
   }
 
-
-
-
-
-
   return (
     <div>
       <>
         <div ref={tableRef} tabIndex={0} name={name} className={`overflow-x-auto rounded-lg border border-zinc-400/30 dark:border-zinc-700/50 w-full tmn-fadeIn `} style={{ outline: 'none' }}>
           <table className="w-full text-sm text-left text-zinc-500 dark:text-zinc-400">
-            <thead className="text-xs border-b text-zinc-700 bg-zinc-100 dark:bg-zinc-900 border-zinc-200 uppercase dark:text-zinc-400 dark:border-zinc-800">
+            <thead className="text-xs border-b text-zinc-700 bg-zinc-50 dark:bg-zinc-800/40 border-zinc-200 uppercase dark:text-zinc-400 dark:border-zinc-800">
               <tr className="text-md font-semibold">
                 {showRowSelection && showIconSelection && <th></th>}
                 {effectiveColumns.length > 0 && effectiveColumns.map((column, index) => {
@@ -309,13 +303,13 @@ const AutoTable = ({
                   data-id={rowIndex}
                   className={`${styleRow}
                   ${isStriped ?
-                    (rowIndex % 2 ? 
-                      ((selectedRowIndex === rowIndex && inFocus && showRowSelection) ? classRowSelect2 : tr2) 
-                      : 
-                      ((selectedRowIndex === rowIndex && inFocus && showRowSelection) ? classRowSelect1 : tr1))
-                    :
-                    ((selectedRowIndex === rowIndex && inFocus && showRowSelection) ? classRowSelect2 : tr2)
-                  }`}
+                      (rowIndex % 2 ?
+                        ((selectedRowIndex === rowIndex && inFocus && showRowSelection) ? classRowSelect2 : tr2)
+                        :
+                        ((selectedRowIndex === rowIndex && inFocus && showRowSelection) ? classRowSelect1 : tr1))
+                      :
+                      ((selectedRowIndex === rowIndex && inFocus && showRowSelection) ? classRowSelect2 : tr2)
+                    }`}
 
                   onClick={onRowClick ? () => handleRowClick(row, rowIndex) : null}>
                   {(selectedRowIndex === rowIndex && inFocus && showRowSelection) && showIconSelection &&
@@ -354,7 +348,7 @@ const AutoTable = ({
               )}
               {rowFooter &&
                 <tr className={classFooter ? classFooter : 'text-sm font-semibold border-t text-zinc-700 bg-zinc-100 dark:bg-zinc-900 border-zinc-200  dark:text-zinc-400 dark:border-zinc-800'}>
-                  {showRowSelection && showIconSelection &&  <td></td>}
+                  {showRowSelection && showIconSelection && <td></td>}
                   {effectiveColumns.map((column, index) => {
                     if (!isHidden.includes(column)) return (
                       <td
