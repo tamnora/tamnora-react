@@ -40,6 +40,7 @@ const AutoForm = ({
 	isLowerCase = [],
 	inputTextClass = {},
 	switchOptions = {},
+	altFunctions = {},
 	buttonVariant = 'solid',
 	buttonSize = 'md',
 	textSubmit = 'Guardar',
@@ -567,7 +568,17 @@ const AutoForm = ({
 	
 	const handleKeyPress = (e) => {
 		if (data) {
-			if (e.keyCode === 13) {
+			if (e.ctrlKey && e.keyCode === 13) {
+				e.preventDefault();
+				
+				const formElements = Array.from(formRef.current.elements);
+				formElements.forEach(element => {
+					if(element.id === `${name}_submit`){
+						showSubmit && element.focus();
+					}
+				});
+				
+			} else if (e.keyCode === 13) {
 				let typeElement = document.activeElement.tagName.toLowerCase();
 				const formElements = Array.from(formRef.current.elements);
 				const index = formElements.indexOf(document.activeElement);
@@ -601,7 +612,27 @@ const AutoForm = ({
 						}
 					}
 				}
-			}
+			} else if (e.ctrlKey && e.key === 'd') {
+				e.preventDefault();
+				
+				const formElements = Array.from(formRef.current.elements);
+				formElements.forEach(element => {
+					if(element.id === `${name}_delete`){
+						showDelete && onDelete && idSelected > 0 && element.focus();
+					}
+				});
+				
+			} else if (e.ctrlKey && e.key === 'g') {
+				e.preventDefault();
+				
+				const formElements = Array.from(formRef.current.elements);
+				formElements.forEach(element => {
+					if(element.id === `${name}_submit`){
+						showSubmit && element.focus();
+					}
+				});
+				
+			} 
 		}
 	};
 
@@ -899,17 +930,17 @@ const AutoForm = ({
 				<div className={footerClasses}>
 
 					{showSubmit && (
-						<Button radius='rounded-xl' color={submitColor} type="submit" name='submit' variant={buttonVariant} size={buttonSize} >
+						<Button radius='rounded-xl' color={submitColor} id={`${name}_submit`} type="submit" name='submit' variant={buttonVariant} size={buttonSize} >
 							{textSubmit}
 						</Button>
 					)}
 					{showDelete && onDelete && idSelected > 0 && (
-						<Button radius='rounded-xl' color={deleteColor} type="button" name='delete' variant={buttonVariant} size={buttonSize} onClick={handleDelete}>
+						<Button radius='rounded-xl' color={deleteColor} id={`${name}_delete`} type="button" name='delete' variant={buttonVariant} size={buttonSize} onClick={handleDelete}>
 							{deleteText}
 						</Button>
 					)}
 					{showCancel && onCancel && (
-						<Button radius='rounded-xl' color={cancelColor} type="button" name='cancel' variant={buttonVariant} size={buttonSize} onClick={handleCancel}>
+						<Button radius='rounded-xl' color={cancelColor} id={`${name}_cancel`} type="button" name='cancel' variant={buttonVariant} size={buttonSize} onClick={handleCancel}>
 							{textCancel}
 						</Button>
 					)}
