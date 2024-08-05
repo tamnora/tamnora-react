@@ -18,6 +18,7 @@ export { Checkbox } from './components/Checkbox.jsx';
 export { CheckboxGroup } from './components/CheckboxGroup.jsx';
 export { Dropdown } from './components/Dropdown.jsx';
 export { Input } from './components/Input.jsx';
+export { InputAutocomplete } from './components/InputAutocomplete.jsx'
 export { InputCurrency } from './components/InputCurrency.jsx';
 export { InputCurrency2 } from './components/InputCurrency2.jsx'
 export { InputOptions } from './components/InputOptions.jsx';
