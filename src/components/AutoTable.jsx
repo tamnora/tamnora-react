@@ -251,7 +251,7 @@ const AutoTable = ({
 
   const styleRow = `hover:bg-zinc-200/40 dark:hover:bg-zinc-800/70 `;
   const trA = `bg-transparent  ${rowPointer} `;
-  const trB = `bg-zinc-50 dark:bg-zinc-800/40  ${rowPointer} `;
+  const trB = `bg-zinc-50 dark:bg-zinc-800/20  ${rowPointer} `;
   const tr3 = `hover:text-zinc-900 dark:hover:text-zinc-100 ${rowPointer} `;
   const border = `border-t border-zinc-200 dark:border-zinc-700/70`;
   const tr1 = `${trA} ${border} hover:text-zinc-900 dark:hover:text-zinc-100`;
@@ -271,7 +271,7 @@ const AutoTable = ({
       <>
         <div ref={tableRef} tabIndex={0} name={name} className={`overflow-x-auto rounded-lg border border-zinc-400/30 dark:border-zinc-700/50 w-full tmn-fadeIn `} style={{ outline: 'none' }}>
           <table className="w-full text-sm text-left text-zinc-500 dark:text-zinc-400">
-            <thead className="text-xs border-b text-zinc-700 bg-zinc-50 dark:bg-zinc-800/40 border-zinc-200 uppercase dark:text-zinc-400 dark:border-zinc-800">
+            <thead className="text-xs border-b text-zinc-700 bg-zinc-50 dark:bg-zinc-800/20 border-zinc-200 uppercase dark:text-zinc-400 dark:border-zinc-800">
               <tr className="text-md font-semibold">
                 {showRowSelection && showIconSelection && <th></th>}
                 {effectiveColumns.length > 0 && effectiveColumns.map((column, index) => {
