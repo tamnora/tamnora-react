@@ -9,6 +9,7 @@ import { Switch } from './Switch';
 import { Checkbox } from './Checkbox';
 import { InputToggle } from './InputToggle';
 import { InputOptions } from './InputOptions';
+import { InputAutocomplete } from './InputAutocomplete';
 
 const AutoForm = ({
 	idSelected,
@@ -40,7 +41,7 @@ const AutoForm = ({
 	isLowerCase = [],
 	inputTextClass = {},
 	switchOptions = {},
-	altFunctions = {},
+	placeholder = {},
 	buttonVariant = 'solid',
 	buttonSize = 'md',
 	textSubmit = 'Guardar',
@@ -718,6 +719,7 @@ const AutoForm = ({
 										variant={inputVariant}
 										options={types[key].options}
 										label={names[key] || key}
+										placeholder={placeholder[key] || ''}
 										defaultValue={formData[key]}
 										onChange={(value) => handleSelect(key, value)}
 										isReadOnly={isReadOnly.includes(key) || false}
@@ -735,6 +737,7 @@ const AutoForm = ({
 										type={fieldType}
 										defaultValue={formData[key]}
 										textClass={inputTextClass[key]}
+										placeholder={placeholder[key] || ''}
 										isRequiredMessage="Campo requerido"
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
@@ -892,6 +895,7 @@ const AutoForm = ({
 										id={`${name}_${key}`}
 										type='text'
 										defaultValue={formData[key]}
+										placeholder={placeholder[key] || ''}
 										textClass={inputTextClass[key]}
 										isRequiredMessage="Campo requerido"
 										onChange={(e) => handleChange(e, key)}
@@ -903,6 +907,28 @@ const AutoForm = ({
 										isDisabled={isDisabled.includes(key)}
 										options={types[key].options}
 									/>
+								)}
+								{fieldType === 'autocomplete' && (
+									<InputAutocomplete
+										label={names[key] || key}
+										labelPlacement={labelPlacement}
+										radius={inputRadius}
+										variant={inputVariant}
+										id={`${name}_${key}`}
+										type={fieldType}
+										defaultValue={formData[key]}
+										placeholder={placeholder[key] || ''}
+										textClass={inputTextClass[key]}
+										isRequiredMessage="Campo requerido"
+										onChange={(e) => handleChange(e, key)}
+										onHandleBlur={(e) => handleBlur(e, key)}
+										isUpperCase={isUpperCase.includes(key)}
+										isLowerCase={isLowerCase.includes(key)}
+										isReadOnly={isReadOnly.includes(key)}
+										isRequired={isRequired.includes(key)}
+										isDisabled={isDisabled.includes(key)} 
+										options={types[key].options}
+										/>
 								)}
 								{fieldType === 'textarea' && (
 									<Textarea
@@ -918,7 +944,9 @@ const AutoForm = ({
 										isRequired={isRequired.includes(key)}
 										isDisabled={isDisabled.includes(key)}
 										rows={types[key].rows || 2}
-										defaultValue={formData[key]} />
+										defaultValue={formData[key]}
+										placeholder={placeholder[key] || ''} 
+										/>	
 								)}
 							</div>
 						);
