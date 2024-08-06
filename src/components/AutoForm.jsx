@@ -737,7 +737,7 @@ const AutoForm = ({
 										options={types[key].options}
 										label={names[key] || key}
 										placeholder={placeholder[key] || ''}
-										defaultValue={formData[key]}
+										defaultValue={formData[key] || ''}
 										onChange={(value) => handleSelect(key, value)}
 										isReadOnly={isReadOnly.includes(key) || false}
 										isRequired={isRequired.includes(key) || false}
@@ -752,14 +752,14 @@ const AutoForm = ({
 										variant={inputVariant}
 										id={`${name}_${key}`}
 										type={fieldType}
-										defaultValue={formData[key]}
+										defaultValue={formData[key]  || ''}
 										textClass={inputTextClass[key]}
 										evalActive={evaluteInput[key]? true : false}
 										evalResult={evaluteInput[key]?.result}
 										evalColorTrue={evaluteInput[key]?.colorTrue}
 										evalColorFalse={evaluteInput[key]?.colorFalse}
 										placeholder={placeholder[key] || ''}
-										color={inputColorClass[key] || ''}
+										color={inputColorClass[key]}
 										isRequiredMessage="Campo requerido"
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
@@ -779,7 +779,7 @@ const AutoForm = ({
 										variant={inputVariant}
 										id={`${name}_${key}`}
 										type={fieldType}
-										defaultValue={formData[key]}
+										defaultValue={formData[key] || ''}
 										placeholder={placeholder[key] || ''}
 										color={inputColorClass[key]}
 										textClass={inputTextClass[key]}
@@ -803,7 +803,7 @@ const AutoForm = ({
 										variant={inputVariant}
 										id={`${name}_${key}`}
 										type={fieldType}
-										defaultValue={formData[key]}
+										defaultValue={formData[key] || ''}
 										textClass={inputTextClass[key]}
 										color={inputColorClass[key]}
 										evalActive={evaluteInput[key]? true : false}
@@ -850,7 +850,7 @@ const AutoForm = ({
 										variant={inputVariant}
 										id={`${name}_${key}`}
 										type={fieldType}
-										defaultValue={formData[key]}
+										defaultValue={formData[key] || 0}
 										textClass={inputTextClass[key]}
 										color={inputColorClass[key]}
 										onChange={(e) => handleChange(e, key)}
@@ -870,7 +870,7 @@ const AutoForm = ({
 										variant={inputVariant}
 										id={`${name}_${key}`}
 										type={fieldType}
-										defaultValue={formatNumberArray(formData[key])[2]}
+										defaultValue={formatNumberArray(formData[key] || 0)[2]}
 										textClass={inputTextClass[key]}
 										color={inputColorClass[key]}
 										onChange={(e) => handleChange(e, key)}
@@ -888,7 +888,7 @@ const AutoForm = ({
 										radius={inputRadius}
 										variant={inputVariant}
 										id={`${name}_${key}`}
-										defaultValue={formData[key]}
+										defaultValue={formData[key] || 0}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly.includes(key)}
@@ -904,7 +904,7 @@ const AutoForm = ({
 										variant={inputVariant}
 										color='emerald'
 										id={`${name}_${key}`}
-										defaultValue={formData[key]}
+										defaultValue={formData[key]  || 0}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly.includes(key)}
@@ -922,7 +922,7 @@ const AutoForm = ({
 										variant={inputVariant}
 										id={`${name}_${key}`}
 										type='text'
-										defaultValue={formData[key]}
+										defaultValue={formData[key] || 0}
 										textClass={inputTextClass[key]}
 										isRequiredMessage="Campo requerido"
 										onChange={(e) => handleChange(e, key)}
@@ -944,7 +944,7 @@ const AutoForm = ({
 										variant={inputVariant}
 										id={`${name}_${key}`}
 										type='text'
-										defaultValue={formData[key]}
+										defaultValue={formData[key] || ''}
 										placeholder={placeholder[key] || ''}
 										textClass={inputTextClass[key]}
 										isRequiredMessage="Campo requerido"
@@ -966,7 +966,7 @@ const AutoForm = ({
 										variant={inputVariant}
 										id={`${name}_${key}`}
 										type={fieldType}
-										defaultValue={formData[key]}
+										defaultValue={formData[key] || ''}
 										placeholder={placeholder[key] || ''}
 										textClass={inputTextClass[key]}
 										isRequiredMessage="Campo requerido"
@@ -994,7 +994,7 @@ const AutoForm = ({
 										isRequired={isRequired.includes(key)}
 										isDisabled={isDisabled.includes(key)}
 										rows={types[key].rows || 2}
-										defaultValue={formData[key]}
+										defaultValue={formData[key] || ''}
 										placeholder={placeholder[key] || ''} 
 										{...propsPlus[key]}
 										/>	

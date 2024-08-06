@@ -25,7 +25,7 @@ const Input = ({
   disableAnimation = false,
   evalActive = false,
   evalResult = true,
-  evalColorTrue = '',
+  evalColorTrue,
   evalColorFalse = 'red',
   baseRef,
   startContent,
@@ -43,8 +43,9 @@ const Input = ({
   const [inputUpdated, setInputUpdated] = useState(false);
   const inputRef = useRef(null);
 
-  if(!evalColorTrue) evalColorTrue = color;
-  if(!evalColorFalse) evalColorFalse = 'red';
+  if (!color) color = 'default';
+  if (!evalColorTrue) evalColorTrue = color;
+  if (!evalColorFalse) evalColorFalse = 'red';
 
   const handleDivClick = () => {
     setFocused(true);
@@ -58,14 +59,14 @@ const Input = ({
     if (isUpperCase) {
       newValue = e.target.value.toUpperCase();
       e.target.value = newValue;
-    } 
+    }
     if (isLowerCase) {
       newValue = e.target.value.toLowerCase();
       e.target.value = newValue;
     }
 
     setInternalValue(newValue);
-    if(!inputUpdated) setInputUpdated(true)
+    if (!inputUpdated) setInputUpdated(true)
     if (onChange) {
       onChange(e);
     }
@@ -84,7 +85,7 @@ const Input = ({
       if (onHandleBlur) {
         onHandleBlur(e);
       }
-    } else if(inputUpdated) {
+    } else if (inputUpdated) {
       setInputUpdated(false);
       if (onHandleBlur) {
         onHandleBlur(e);
@@ -140,7 +141,7 @@ const Input = ({
       bordered: 'border-2 border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500',
       underlined: 'border-b-2 !shadow-none dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500 !px-1',
       faded: 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border-2 border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500',
-      tmn: 'bg-white dark:bg-zinc-800/80 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500',
+      tmn: 'bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500',
     },
     blue: {
       flat: 'bg-blue-100 dark:bg-blue-800 hover:bg-blue-200 dark:hover:bg-blue-700',
@@ -228,50 +229,25 @@ const Input = ({
     },
   };
 
-  const getColorClass = (xcolor) => {
-    if(xcolor){
-      return colorMap[xcolor] ? colorMap[xcolor][variant] || '' : '';
-    }
-    return colorMap[color] ? colorMap[color][variant] || '' : '';
+  
+  const getColorEval = (xcolor) => {
+    return colorMap[xcolor] ? colorMap[xcolor][variant] || '' : '';
   };
 
- 
-    const containerEvalTrue = `relative w-full shadow-sm flex px-3 min-h-10 flex-col items-start justify-center transition-background duration-150 outline-none py-2 cursor-text 
-    ${getHeightClass()}
-    ${requiredStyles()}
-    ${isDisabled && 'opacity-50'}
-    ${isReadOnly && 'opacity-60'}
-    ${fullWidth ? 'w-full' : 'w-auto'}
-    ${variant === 'underlined' ? 'rounded-0' : radius}
-    ${getColorClass(evalColorTrue)}
-    ${focused && (variant === 'bordered' || variant === 'underlined') ? '!border-zinc-800 dark:!border-white' : ''}
-    ${focused && (variant === 'flat' || variant === 'faded' || variant === 'tmn') ? 'outline outline-sky-500 dark:outline-sky-700 outline-offset-1' : ''}
-    `;
+  const getColorClass = () => {
+    return colorMap[color] ? colorMap[color][variant] || '' : '';;
+  };
 
-    const containerEvalFalse = `relative w-full shadow-sm flex px-3 min-h-10 flex-col items-start justify-center transition-background duration-150 outline-none py-2 cursor-text 
+  const containerClassNames = `tmn-normal relative w-full shadow-sm flex px-3 min-h-10 flex-col items-start justify-center transition-background duration-150 outline-none py-2 cursor-text 
     ${getHeightClass()}
     ${requiredStyles()}
     ${isDisabled && 'opacity-50'}
     ${isReadOnly && 'opacity-60'}
     ${fullWidth ? 'w-full' : 'w-auto'}
     ${variant === 'underlined' ? 'rounded-0' : radius}
-    ${getColorClass(evalColorFalse)}
     ${focused && (variant === 'bordered' || variant === 'underlined') ? '!border-zinc-800 dark:!border-white' : ''}
     ${focused && (variant === 'flat' || variant === 'faded' || variant === 'tmn') ? 'outline outline-sky-500 dark:outline-sky-700 outline-offset-1' : ''}
-    `;
-  
-  
-
-  const containerClassNames = `relative w-full shadow-sm flex px-3 min-h-10 flex-col items-start justify-center transition-background duration-150 outline-none py-2 cursor-text 
-    ${getHeightClass()}
-    ${requiredStyles()}
-    ${isDisabled && 'opacity-50'}
-    ${isReadOnly && 'opacity-60'}
-    ${fullWidth ? 'w-full' : 'w-auto'}
-    ${variant === 'underlined' ? 'rounded-0' : radius}
-    ${getColorClass()}
-    ${focused && (variant === 'bordered' || variant === 'underlined') ? '!border-zinc-800 dark:!border-white' : ''}
-    ${focused && (variant === 'flat' || variant === 'faded' || variant === 'tmn') ? 'outline outline-sky-500 dark:outline-sky-700 outline-offset-1' : ''}
+    ${evalActive ? evalResult ? getColorEval(evalColorTrue) : getColorEval(evalColorFalse) : getColorClass()}
     `;
 
   const labelClassNames = `absolute z-10 text-md font-normal pointer-events-none origin-top-left subpixel-antialiased block cursor-text transition-transform transition-color transition-left ease-out duration-200 
@@ -289,7 +265,7 @@ const Input = ({
           {label} {isRequired && <span className="text-red-400">* {(isRequired && hasBeenFocused && displayedValue === '') && requiredMessage}</span>}
         </label>
       )}
-      <div onClick={handleDivClick} className={evalActive? (evalResult ? containerEvalTrue : containerEvalFalse)  : containerClassNames}>
+      <div onClick={handleDivClick} className={containerClassNames}>
         {labelPlacement === 'inside' && label && (
           <label className={labelClassNames} htmlFor={props.id}>
             {label} {isRequired && <span className="text-red-400">*</span>}
