@@ -30,6 +30,10 @@ export function InputAutocomplete({
   onHandleBlur,
   textClass,
   options = [],
+  evalActive = false,
+  evalResult = true,
+  evalColorTrue = '',
+  evalColorFalse = 'red',
   ...props
 }){
   const [focused, setFocused] = useState(false);
@@ -44,6 +48,9 @@ export function InputAutocomplete({
 
   const inputRef = useRef(null);
   const optionRefs = useRef([]);
+
+  if(!evalColorTrue) evalColorTrue = color;
+  if(!evalColorFalse) evalColorFalse = 'red';
 
   useEffect(() => {
     initValues(defaultValue);
@@ -322,11 +329,69 @@ export function InputAutocomplete({
       faded: 'bg-purple-100 dark:bg-purple-800 hover:bg-purple-200 dark:hover:bg-purple-700 border-2 border-purple-200 dark:border-purple-700 hover:border-purple-400 dark:hover:border-purple-500',
       tmn: 'bg-white dark:bg-purple-800/80 hover:bg-purple-50 dark:hover:bg-purple-800/50 border border-purple-200 dark:border-purple-700 hover:border-purple-400 dark:hover:border-purple-500',
     },
+    orange: {
+      flat: 'bg-orange-100 dark:bg-orange-800 hover:bg-orange-200 dark:hover:bg-orange-700',
+      bordered: 'border-2 border-orange-200 dark:border-orange-700 hover:border-orange-400 dark:hover:border-orange-500',
+      underlined: 'border-b-2 !shadow-none dark:border-orange-700 hover:border-orange-400 dark:hover:border-orange-500 !px-1',
+      faded: 'bg-orange-100 dark:bg-orange-800 hover:bg-orange-200 dark:hover:bg-orange-700 border-2 border-orange-200 dark:border-orange-700 hover:border-orange-400 dark:hover:border-orange-500',
+      tmn: 'bg-white dark:bg-orange-800/80 hover:bg-orange-50 dark:hover:bg-orange-800/50 border border-orange-200 dark:border-orange-700 hover:border-orange-400 dark:hover:border-orange-500',
+    },
+    amber: {
+      flat: 'bg-amber-100 dark:bg-amber-800 hover:bg-amber-200 dark:hover:bg-amber-700',
+      bordered: 'border-2 border-amber-200 dark:border-amber-700 hover:border-amber-400 dark:hover:border-amber-500',
+      underlined: 'border-b-2 !shadow-none dark:border-amber-700 hover:border-amber-400 dark:hover:border-amber-500 !px-1',
+      faded: 'bg-amber-100 dark:bg-amber-800 hover:bg-amber-200 dark:hover:bg-amber-700 border-2 border-amber-200 dark:border-amber-700 hover:border-amber-400 dark:hover:border-amber-500',
+      tmn: 'bg-white dark:bg-amber-800/80 hover:bg-amber-50 dark:hover:bg-amber-800/50 border border-amber-200 dark:border-amber-700 hover:border-amber-400 dark:hover:border-amber-500',
+    },
+    lime: {
+      flat: 'bg-lime-100 dark:bg-lime-800 hover:bg-lime-200 dark:hover:bg-lime-700',
+      bordered: 'border-2 border-lime-200 dark:border-lime-700 hover:border-lime-400 dark:hover:border-lime-500',
+      underlined: 'border-b-2 !shadow-none dark:border-lime-700 hover:border-lime-400 dark:hover:border-lime-500 !px-1',
+      faded: 'bg-lime-100 dark:bg-lime-800 hover:bg-lime-200 dark:hover:bg-lime-700 border-2 border-lime-200 dark:border-lime-700 hover:border-lime-400 dark:hover:border-lime-500',
+      tmn: 'bg-white dark:bg-lime-800/80 hover:bg-lime-50 dark:hover:bg-lime-800/50 border border-lime-200 dark:border-lime-700 hover:border-lime-400 dark:hover:border-lime-500',
+    },
+    teal: {
+      flat: 'bg-teal-100 dark:bg-teal-800 hover:bg-teal-200 dark:hover:bg-teal-700',
+      bordered: 'border-2 border-teal-200 dark:border-teal-700 hover:border-teal-400 dark:hover:border-teal-500',
+      underlined: 'border-b-2 !shadow-none dark:border-teal-700 hover:border-teal-400 dark:hover:border-teal-500 !px-1',
+      faded: 'bg-teal-100 dark:bg-teal-800 hover:bg-teal-200 dark:hover:bg-teal-700 border-2 border-teal-200 dark:border-teal-700 hover:border-teal-400 dark:hover:border-teal-500',
+      tmn: 'bg-white dark:bg-teal-800/80 hover:bg-teal-50 dark:hover:bg-teal-800/50 border border-teal-200 dark:border-teal-700 hover:border-teal-400 dark:hover:border-teal-500',
+    },
   };
 
-  const getColorClass = () => {
+  
+  const getColorClass = (xcolor) => {
+    if(xcolor){
+      return colorMap[xcolor] ? colorMap[xcolor][variant] || '' : '';
+    }
     return colorMap[color] ? colorMap[color][variant] || '' : '';
   };
+
+ 
+    const containerEvalTrue = `relative w-full shadow-sm flex px-3 min-h-10 flex-col items-start justify-center transition-background duration-150 outline-none py-2 cursor-text 
+    ${getHeightClass()}
+    ${requiredStyles()}
+    ${isDisabled && 'opacity-50'}
+    ${isReadOnly && 'opacity-60'}
+    ${fullWidth ? 'w-full' : 'w-auto'}
+    ${variant === 'underlined' ? 'rounded-0' : radius}
+    ${getColorClass(evalColorTrue)}
+    ${focused && (variant === 'bordered' || variant === 'underlined') ? '!border-zinc-800 dark:!border-white' : ''}
+    ${focused && (variant === 'flat' || variant === 'faded' || variant === 'tmn') ? 'outline outline-sky-500 dark:outline-sky-700 outline-offset-1' : ''}
+    `;
+
+    const containerEvalFalse = `relative w-full shadow-sm flex px-3 min-h-10 flex-col items-start justify-center transition-background duration-150 outline-none py-2 cursor-text 
+    ${getHeightClass()}
+    ${requiredStyles()}
+    ${isDisabled && 'opacity-50'}
+    ${isReadOnly && 'opacity-60'}
+    ${fullWidth ? 'w-full' : 'w-auto'}
+    ${variant === 'underlined' ? 'rounded-0' : radius}
+    ${getColorClass(evalColorFalse)}
+    ${focused && (variant === 'bordered' || variant === 'underlined') ? '!border-zinc-800 dark:!border-white' : ''}
+    ${focused && (variant === 'flat' || variant === 'faded' || variant === 'tmn') ? 'outline outline-sky-500 dark:outline-sky-700 outline-offset-1' : ''}
+    `;
+  
 
   const containerClassNames = `relative w-full shadow-sm flex px-3 min-h-10 flex-col items-start justify-center transition-background duration-150 outline-none py-2 cursor-text 
     ${getHeightClass()}
@@ -352,7 +417,7 @@ export function InputAutocomplete({
           {label} {isRequired && <span className="text-red-400">*</span>}
         </label>
       )}
-      <div onClick={handleDivClick} className={containerClassNames}>
+      <div onClick={handleDivClick} className={evalActive? (evalResult ? containerEvalTrue : containerEvalFalse)  : containerClassNames}>
         {labelPlacement === 'inside' && label && (
           <label className={labelClassNames} htmlFor={props.id}>
             {label} {isRequired && <span className="text-red-400">*</span>}

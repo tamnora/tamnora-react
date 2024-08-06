@@ -37,10 +37,14 @@ const AutoForm = ({
 	primaryKey = '',
 	colsWidth = {},
 	onUpdateInput = {},
+	onChangeInput = {},
+	evaluteInput = {},
+	onMessage,
 	isUpperCase = [],
 	isLowerCase = [],
 	inputTextClass = {},
-	switchOptions = {},
+	inputColorClass = {},
+	propsPlus = {},
 	placeholder = {},
 	buttonVariant = 'solid',
 	buttonSize = 'md',
@@ -63,6 +67,8 @@ const AutoForm = ({
 	const [submitColor, setSubmitColor] = useState(colorSubmit);
 	const [deleteColor, setDeleteColor] = useState(colorDelete);
 	const [cancelColor, setCancelColor] = useState(colorCancel);
+	
+
 
 
 	function isObject(variable) {
@@ -526,13 +532,24 @@ const AutoForm = ({
 	
 
 	const handleChange = (e, key) => {
-		setFormData({
-			...formData,
-			[key]: e.target.value,
-		});
-
+		let updatedData = { ...formData, [key]: e.target.value };
+		setFormData(updatedData);
+		
 		if(!inputUpdated){
 			setInputUpdated(true);
+		}
+
+		if (onChange) {
+			onChange(updatedData);
+		}
+
+		if (key in onChangeInput) {
+			let res = onChangeInput[key]({ formData: formData, key: key, value: e.target.value, ref: formRef });
+			if (res) {
+				updatedData = { ...updatedData, ...res };
+				// console.log('Resultado', updatedData)
+				setFormData(updatedData);
+			}
 		}
 	};
 
@@ -737,7 +754,12 @@ const AutoForm = ({
 										type={fieldType}
 										defaultValue={formData[key]}
 										textClass={inputTextClass[key]}
+										evalActive={evaluteInput[key]? true : false}
+										evalResult={evaluteInput[key]?.result}
+										evalColorTrue={evaluteInput[key]?.colorTrue}
+										evalColorFalse={evaluteInput[key]?.colorFalse}
 										placeholder={placeholder[key] || ''}
+										color={inputColorClass[key] || ''}
 										isRequiredMessage="Campo requerido"
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
@@ -745,7 +767,33 @@ const AutoForm = ({
 										isLowerCase={isLowerCase.includes(key)}
 										isReadOnly={isReadOnly.includes(key)}
 										isRequired={isRequired.includes(key)}
-										isDisabled={isDisabled.includes(key)} />
+										isDisabled={isDisabled.includes(key)} 
+										{...propsPlus[key]}
+										/>
+								)}
+								{fieldType === 'number' && (
+									<Input
+										label={names[key] || key}
+										labelPlacement={labelPlacement}
+										radius={inputRadius}
+										variant={inputVariant}
+										id={`${name}_${key}`}
+										type={fieldType}
+										defaultValue={formData[key]}
+										placeholder={placeholder[key] || ''}
+										color={inputColorClass[key]}
+										textClass={inputTextClass[key]}
+										evalActive={evaluteInput[key]? true : false}
+										evalResult={evaluteInput[key]?.result}
+										evalColorTrue={evaluteInput[key]?.colorTrue}
+										evalColorFalse={evaluteInput[key]?.colorFalse}
+										onChange={(e) => handleChange(e, key)}
+										onHandleBlur={(e) => handleBlur(e, key)}
+										isReadOnly={isReadOnly.includes(key)}
+										isRequired={isRequired.includes(key)}
+										isDisabled={isDisabled.includes(key)} 
+										{...propsPlus[key]}
+										/>
 								)}
 								{fieldType === 'date' && (
 									<Input
@@ -757,11 +805,18 @@ const AutoForm = ({
 										type={fieldType}
 										defaultValue={formData[key]}
 										textClass={inputTextClass[key]}
+										color={inputColorClass[key]}
+										evalActive={evaluteInput[key]? true : false}
+										evalResult={evaluteInput[key]?.result}
+										evalColorTrue={evaluteInput[key]?.colorTrue}
+										evalColorFalse={evaluteInput[key]?.colorFalse}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly.includes(key)}
 										isRequired={isRequired.includes(key)}
-										isDisabled={isDisabled.includes(key)} />
+										isDisabled={isDisabled.includes(key)} 
+										{...propsPlus[key]}
+										/>
 								)}
 								{fieldType === 'time' && (
 									<Input
@@ -773,11 +828,18 @@ const AutoForm = ({
 										type={fieldType}
 										defaultValue={formatTime(formData[key]).horaEs}
 										textClass={inputTextClass[key]}
+										color={inputColorClass[key]}
+										evalActive={evaluteInput[key]? true : false}
+										evalResult={evaluteInput[key]?.result}
+										evalColorTrue={evaluteInput[key]?.colorTrue}
+										evalColorFalse={evaluteInput[key]?.colorFalse}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly.includes(key)}
 										isRequired={isRequired.includes(key)}
-										isDisabled={isDisabled.includes(key)} />
+										isDisabled={isDisabled.includes(key)} 
+										{...propsPlus[key]}
+										/>
 								)}
 								{fieldType === 'currency' && (
 									// 		onBlur={(e) => handleChangeCurrency(e, key)}
@@ -790,11 +852,13 @@ const AutoForm = ({
 										type={fieldType}
 										defaultValue={formData[key]}
 										textClass={inputTextClass[key]}
+										color={inputColorClass[key]}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly.includes(key)}
 										isRequired={isRequired.includes(key)}
 										isDisabled={isDisabled.includes(key)}
+										{...propsPlus[key]}
 									/>
 								)}
 								{fieldType === 'currency2' && (
@@ -808,28 +872,14 @@ const AutoForm = ({
 										type={fieldType}
 										defaultValue={formatNumberArray(formData[key])[2]}
 										textClass={inputTextClass[key]}
+										color={inputColorClass[key]}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly.includes(key)}
 										isRequired={isRequired.includes(key)}
 										isDisabled={isDisabled.includes(key)}
+										{...propsPlus[key]}
 									/>
-								)}
-								{fieldType === 'number' && (
-									<Input
-										label={names[key] || key}
-										labelPlacement={labelPlacement}
-										radius={inputRadius}
-										variant={inputVariant}
-										id={`${name}_${key}`}
-										type={fieldType}
-										defaultValue={formData[key]}
-										textClass={inputTextClass[key]}
-										onChange={(e) => handleChange(e, key)}
-										onHandleBlur={(e) => handleBlur(e, key)}
-										isReadOnly={isReadOnly.includes(key)}
-										isRequired={isRequired.includes(key)}
-										isDisabled={isDisabled.includes(key)} />
 								)}
 								{fieldType === 'checkbox' && (
 									<Checkbox
@@ -946,6 +996,7 @@ const AutoForm = ({
 										rows={types[key].rows || 2}
 										defaultValue={formData[key]}
 										placeholder={placeholder[key] || ''} 
+										{...propsPlus[key]}
 										/>	
 								)}
 							</div>
@@ -954,6 +1005,11 @@ const AutoForm = ({
 					return null;
 				})}
 			</div>
+			{onMessage && (
+				<div className="">
+					{onMessage}
+				</div>
+			)}
 			{onSubmit && (
 				<div className={footerClasses}>
 
