@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const Input = ({
+const InputSpace = ({
   children,
   variant = 'flat',
   color = 'default',
@@ -33,6 +33,7 @@ const Input = ({
   onChange,
   onHandleBlur,
   textClass,
+  options,
   ...props
 }) => {
   const [focused, setFocused] = useState(false);
@@ -54,23 +55,58 @@ const Input = ({
     }
   };
 
+  // const handleInputChange = (e) => {
+  //   let newValue = e.target.value;
+  //   if (isUpperCase) {
+  //     newValue = e.target.value.toUpperCase();
+  //     e.target.value = newValue;
+  //   }
+  //   if (isLowerCase) {
+  //     newValue = e.target.value.toLowerCase();
+  //     e.target.value = newValue;
+  //   }
+
+  //   setInternalValue(newValue);
+  //   if (!inputUpdated) setInputUpdated(true)
+  //   if (onChange) {
+  //     onChange(e);
+  //   }
+  // };
+
   const handleInputChange = (e) => {
     let newValue = e.target.value;
+
+    // Convert to uppercase or lowercase if needed
     if (isUpperCase) {
-      newValue = e.target.value.toUpperCase();
-      e.target.value = newValue;
+        newValue = newValue.toUpperCase();
     }
     if (isLowerCase) {
-      newValue = e.target.value.toLowerCase();
-      e.target.value = newValue;
+        newValue = newValue.toLowerCase();
+    }
+
+    // Check if the user has entered a space
+    if (newValue.endsWith(' ')) {
+        const words = newValue.trim().split(' ');
+        const lastWord = words[words.length - 1];
+        
+        // Check if the last word matches any option's value
+        const matchingOption = options?.find(option => option.value.toUpperCase() === lastWord.toUpperCase());
+        
+        if (matchingOption) {
+            // Replace the last word with the label
+            words[words.length - 1] = matchingOption.label;
+            newValue = words.join(' ') + ' ';
+        }
     }
 
     setInternalValue(newValue);
-    if (!inputUpdated) setInputUpdated(true)
+
+    if (!inputUpdated) setInputUpdated(true);
     if (onChange) {
-      onChange(e);
+        onChange(e);
     }
-  };
+};
+
 
   const handleFocus = () => {
     setFocused(true);
@@ -318,4 +354,4 @@ const Input = ({
   );
 };
 
-export { Input };
+export { InputSpace };

@@ -1093,6 +1093,25 @@ export function handleStructure(structure) {
   return { groupType, primaryKey };
 }
 
+export function getStructure(structure) {
+  const types = {};
+  const primaryKey = '';
+  const keys = {};
+
+  if (structure.length > 0) {
+    structure.forEach(val => {
+      let name = val.COLUMN_NAME.toLowerCase()
+      types[name] = typeToType(val.DATA_TYPE);
+      keys[name] = val.COLUMN_KEY;
+      if(val.COLUMN_KEY){
+        primaryKey = val.COLUMN_KEY;
+      }
+    })
+  } 
+
+  return { types, keys, primaryKey };
+}
+
 export function typeToType(inType = 'text') {
   let outType;
   if (inType == 'int') outType = 'number';
@@ -1146,6 +1165,33 @@ export async function dataTableRunCode(codeSQL, table, keyPrimary = ''){
     if(table){
       const tableStructure = await setStructure(table, keyPrimary);
       objResult.struc = handleStructure(tableStructure);
+    }
+ 
+    return objResult;
+    
+  } catch (err) {
+    objResult.response = false;
+    objResult.error = err.message || 'Error al traer datos';
+    return objResult;
+  } 
+}
+
+export async function runCodeStruc(codeSQL, table, key = ''){
+  let objResult = {
+    response: true,
+    data : [],
+    struc: {},
+    primaryKey: '',
+    error: ''
+  }
+  try {
+    const value = await runCode(codeSQL);
+    objResult.data = value;
+
+    if(table){
+      const tableStructure = await setStructure(table, key);
+      objResult.struc = getStructure(tableStructure);
+      objResult.primaryKey = key || objResult.struc.primaryKey || '';
     }
  
     return objResult;

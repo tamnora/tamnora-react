@@ -10,6 +10,7 @@ import { Checkbox } from './Checkbox';
 import { InputToggle } from './InputToggle';
 import { InputOptions } from './InputOptions';
 import { InputAutocomplete } from './InputAutocomplete';
+import { InputSpace } from './InputSpace';
 
 const AutoForm = ({
 	idSelected,
@@ -789,6 +790,33 @@ const AutoForm = ({
 										evalColorFalse={evaluteInput[key]?.colorFalse}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
+										isReadOnly={isReadOnly.includes(key)}
+										isRequired={isRequired.includes(key)}
+										isDisabled={isDisabled.includes(key)} 
+										{...propsPlus[key]}
+										/>
+								)}
+								{fieldType === 'codespace' && (
+									<InputSpace
+										label={names[key] || key}
+										labelPlacement={labelPlacement}
+										radius={inputRadius}
+										variant={inputVariant}
+										id={`${name}_${key}`}
+										type='text'
+										defaultValue={formData[key]  || ''}
+										textClass={inputTextClass[key]}
+										evalActive={evaluteInput[key]? true : false}
+										evalResult={evaluteInput[key]?.result}
+										evalColorTrue={evaluteInput[key]?.colorTrue}
+										evalColorFalse={evaluteInput[key]?.colorFalse}
+										placeholder={placeholder[key] || ''}
+										color={inputColorClass[key]}
+										isRequiredMessage="Campo requerido"
+										onChange={(e) => handleChange(e, key)}
+										onHandleBlur={(e) => handleBlur(e, key)}
+										isUpperCase={isUpperCase.includes(key)}
+										isLowerCase={isLowerCase.includes(key)}
 										isReadOnly={isReadOnly.includes(key)}
 										isRequired={isRequired.includes(key)}
 										isDisabled={isDisabled.includes(key)} 

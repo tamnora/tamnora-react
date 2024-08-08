@@ -1,6 +1,6 @@
 import { Tamnora } from "./js/tamnora.js";
-import { inServer, formatDate, originServer, runCode, structure, dbSelect, pesos, formatNumber, formatNumberArray, currency, defaultClass, handleStructure, typeToType, setStructure, dataTableRunCode } from './js/tamnora.js';
-export {Tamnora, inServer, formatDate, originServer, runCode, structure, dbSelect, pesos, formatNumber, formatNumberArray, currency, defaultClass, handleStructure, typeToType, setStructure, dataTableRunCode}
+import { inServer, formatDate, originServer, runCode, structure, dbSelect, pesos, formatNumber, formatNumberArray, currency, defaultClass, handleStructure, typeToType, setStructure, dataTableRunCode, runCodeStruc } from './js/tamnora.js';
+export {Tamnora, inServer, formatDate, originServer, runCode, structure, dbSelect, pesos, formatNumber, formatNumberArray, currency, defaultClass, handleStructure, typeToType, setStructure, dataTableRunCode, runCodeStruc}
 import './main.css';
 
 export { Alert } from './components/Alert';
@@ -22,6 +22,7 @@ export { InputAutocomplete } from './components/InputAutocomplete.jsx'
 export { InputCurrency } from './components/InputCurrency.jsx';
 export { InputCurrency2 } from './components/InputCurrency2.jsx'
 export { InputOptions } from './components/InputOptions.jsx';
+export { InputSpace } from './components/InputSpace.jsx';
 export { InputSubmit } from './components/InputSubmit.jsx';
 export { InputToggle } from './components/InputToggle.jsx';
 export { List } from './components/List.jsx';
