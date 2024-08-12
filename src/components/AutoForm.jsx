@@ -796,7 +796,7 @@ const AutoForm = ({
 										{...propsPlus[key]}
 										/>
 								)}
-								{fieldType === 'codespace' && (
+								{fieldType === 'inputspace' && (
 									<InputSpace
 										label={names[key] || key}
 										labelPlacement={labelPlacement}
@@ -819,7 +819,8 @@ const AutoForm = ({
 										isLowerCase={isLowerCase.includes(key)}
 										isReadOnly={isReadOnly.includes(key)}
 										isRequired={isRequired.includes(key)}
-										isDisabled={isDisabled.includes(key)} 
+										isDisabled={isDisabled.includes(key)}
+										options={types[key].options}
 										{...propsPlus[key]}
 										/>
 								)}

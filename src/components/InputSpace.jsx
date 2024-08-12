@@ -77,11 +77,13 @@ const InputSpace = ({
     let newValue = e.target.value;
 
     // Convert to uppercase or lowercase if needed
-    if (isUpperCase) {
+    if(newValue){
+      if (isUpperCase) {
         newValue = newValue.toUpperCase();
     }
     if (isLowerCase) {
         newValue = newValue.toLowerCase();
+    }
     }
 
     // Check if the user has entered a space
@@ -103,7 +105,7 @@ const InputSpace = ({
 
     if (!inputUpdated) setInputUpdated(true);
     if (onChange) {
-        onChange(e);
+        onChange({target: {value: newValue}});
     }
 };
 
@@ -282,10 +284,6 @@ const InputSpace = ({
   };
 
   
-  const getColorEval = (xcolor) => {
-    return colorMap[xcolor] ? colorMap[xcolor][variant] || '' : '';
-  };
-
   const getColorClass = () => {
     return colorMap[color] ? colorMap[color][variant] || '' : '';;
   };
