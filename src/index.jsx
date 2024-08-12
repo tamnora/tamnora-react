@@ -1,6 +1,6 @@
-import { Tamnora } from "./js/tamnora.js";
-import { inServer, formatDate, originServer, runCode, structure, dbSelect, pesos, formatNumber, formatNumberArray, currency, defaultClass, handleStructure, typeToType, setStructure, dataTableRunCode, runCodeStruc } from './js/tamnora.js';
-export {Tamnora, inServer, formatDate, originServer, runCode, structure, dbSelect, pesos, formatNumber, formatNumberArray, currency, defaultClass, handleStructure, typeToType, setStructure, dataTableRunCode, runCodeStruc}
+
+// import { inServer, formatDate, originServer, runCode, structure, dbSelect, pesos, formatNumber, formatNumberArray, currency, defaultClass, handleStructure, typeToType, setStructure, dataTableRunCode, runCodeStruc } from './js/tamnora.js';
+export { inServer, formatDate, originServer, runCode, structure, dbSelect, pesos, formatNumber, formatNumberArray, currency, defaultClass, handleStructure, typeToType, setStructure, dataTableRunCode, runCodeStruc} from './js/tamnora.js';
 import './main.css';
 
 export { Alert } from './components/Alert';
@@ -8,7 +8,6 @@ export { AutoComplete } from './components/AutoComplete';
 export { Logo } from './components/Logo';
 export { Select } from './components/Select';
 export { TableActions } from './components/TableActions';
-
 export { AutoForm } from './components/AutoForm.jsx';
 export { AutoTable } from './components/AutoTable.jsx';
 export { Background } from './components/Backgroud.jsx';
