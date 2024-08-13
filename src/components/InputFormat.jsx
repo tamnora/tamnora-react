@@ -49,7 +49,7 @@ const InputFormat = ({
   if (!evalColorFalse) evalColorFalse = 'red';
 
   function formatText(text){
-    let formatValue = text.replace(regex, '');
+    let formatValue = (text || '').replace(regex, '');
     return formatValue;
   }
 

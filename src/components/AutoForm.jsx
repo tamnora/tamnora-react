@@ -824,6 +824,34 @@ const AutoForm = ({
 										{...propsPlus[key]}
 										/>
 								)}
+								{fieldType === 'inputformat' && (
+									<InputSpace
+										label={names[key] || key}
+										labelPlacement={labelPlacement}
+										radius={inputRadius}
+										variant={inputVariant}
+										id={`${name}_${key}`}
+										type='text'
+										defaultValue={formData[key]  || ''}
+										textClass={inputTextClass[key]}
+										evalActive={evaluteInput[key]? true : false}
+										evalResult={evaluteInput[key]?.result}
+										evalColorTrue={evaluteInput[key]?.colorTrue}
+										evalColorFalse={evaluteInput[key]?.colorFalse}
+										placeholder={placeholder[key] || ''}
+										color={inputColorClass[key]}
+										isRequiredMessage="Campo requerido"
+										onChange={(e) => handleChange(e, key)}
+										onHandleBlur={(e) => handleBlur(e, key)}
+										isUpperCase={isUpperCase.includes(key)}
+										isLowerCase={isLowerCase.includes(key)}
+										isReadOnly={isReadOnly.includes(key)}
+										isRequired={isRequired.includes(key)}
+										isDisabled={isDisabled.includes(key)}
+										regex={types[key].regex || /[^a-zA-Z0-9]/g}
+										{...propsPlus[key]}
+										/>
+								)}
 								{fieldType === 'date' && (
 									<Input
 										label={names[key] || key}
