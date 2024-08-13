@@ -69,11 +69,11 @@ const InputFormat = ({
     }
 
     if (isUpperCase) {
-      newValue = e.target.value.toUpperCase();
+      newValue = newValue.toUpperCase();
       e.target.value = newValue;
     }
     if (isLowerCase) {
-      newValue = e.target.value.toLowerCase();
+      newValue = newValue.toLowerCase();
       e.target.value = newValue;
     }
 

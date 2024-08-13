@@ -11,6 +11,7 @@ import { InputToggle } from './InputToggle';
 import { InputOptions } from './InputOptions';
 import { InputAutocomplete } from './InputAutocomplete';
 import { InputSpace } from './InputSpace';
+import { InputFormat } from './InputFormat';
 
 const AutoForm = ({
 	idSelected,
@@ -825,7 +826,7 @@ const AutoForm = ({
 										/>
 								)}
 								{fieldType === 'inputformat' && (
-									<InputSpace
+									<InputFormat
 										label={names[key] || key}
 										labelPlacement={labelPlacement}
 										radius={inputRadius}
