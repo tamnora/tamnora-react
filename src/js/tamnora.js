@@ -1204,3 +1204,49 @@ export async function runCodeStruc(codeSQL, table){
 export function originServer() {
   return window.location.origin;
 }
+
+export async function runQuery(server_url, server_type, type, sql) {
+  let datos = {
+    tipo: type.charAt(0),
+    tsql: codeTSQL(sql)
+  };
+
+  try {
+    let resp;
+    if (server_type == 'php') {
+      resp = await fetch(`${server_url}/tsql.php`, {
+        method: 'POST',
+        body: JSON.stringify({
+          data: datos
+        })
+      });
+    } else {
+      resp = await fetch(`${server_url}/tsql`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          data: datos
+        })
+      });
+    }
+
+    const result = await resp.json();
+
+    const newResult = result.map((obj) => {
+      // return convertirClavesAMinusculas(obj)
+      return convertirClavesAMinusculasYFormatoFecha(obj)
+    })
+
+
+    return newResult;
+
+  } catch (error) {
+    console.log(error)
+    console.log(informe)
+    console.log(datos)
+    const err = [{ resp: 'error', msgError: 'Error en la conexión a la base de datos.' }];
+    return err;
+  }
+}
