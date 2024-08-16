@@ -69,7 +69,7 @@ const AutoForm = ({
 	const [submitColor, setSubmitColor] = useState(colorSubmit);
 	const [deleteColor, setDeleteColor] = useState(colorDelete);
 	const [cancelColor, setCancelColor] = useState(colorCancel);
-	
+
 
 
 
@@ -200,6 +200,7 @@ const AutoForm = ({
 	}
 
 	function createQuerySQL(type, params) {
+		//console.log(types, params)
 		if (typeof type !== 'string') {
 			throw new Error('type debe ser un string');
 		}
@@ -531,13 +532,13 @@ const AutoForm = ({
 			// ... (puedes agregar aquí más propiedades si lo deseas)
 		};
 	}
-	
+
 
 	const handleChange = (e, key) => {
 		let updatedData = { ...formData, [key]: e.target.value };
 		setFormData(updatedData);
-		
-		if(!inputUpdated){
+
+		if (!inputUpdated) {
 			setInputUpdated(true);
 		}
 
@@ -546,7 +547,7 @@ const AutoForm = ({
 		}
 
 		if (key in onChangeInput) {
-			let res = onChangeInput[key]({ formData: formData, key: key, value: e.target.value, ref: formRef });
+			let res = onChangeInput[key]({ formData: formData, key: key, value: e.target.value, element: e, ref: formRef });
 			if (res) {
 				updatedData = { ...updatedData, ...res };
 				// console.log('Resultado', updatedData)
@@ -564,7 +565,7 @@ const AutoForm = ({
 		}
 	}
 
-	
+
 	const handleBlur = (e, key) => {
 		if (initialValues[key] != e.target.value || inputUpdated) {
 			initialValues[key] = e.target.value;
@@ -582,42 +583,60 @@ const AutoForm = ({
 			if (onChange) {
 				onChange(updatedData);
 			}
+
+
 		}
 	};
 
-	
+
 	const handleKeyPress = (e) => {
 		if (data) {
 			if (e.ctrlKey && e.keyCode === 13) {
 				e.preventDefault();
-				
+
 				const formElements = Array.from(formRef.current.elements);
 				formElements.forEach(element => {
-					if(element.id === `${name}_submit`){
+					if (element.id === `${name}_submit`) {
 						showSubmit && element.focus();
 					}
 				});
-				
+
 			} else if (e.keyCode === 13) {
 				let typeElement = document.activeElement.tagName.toLowerCase();
 				const formElements = Array.from(formRef.current.elements);
 				const index = formElements.indexOf(document.activeElement);
 				if (typeElement != 'button') {
-					e.preventDefault();
-					let nextIndex = index + 1;
-					while (nextIndex < formElements.length && formElements[nextIndex].tabIndex === -1) {
-						nextIndex++;
-					}
-					if (nextIndex < formElements.length) {
-						formElements[nextIndex].focus();
-						const typeNextElement = formElements[nextIndex].tagName.toLowerCase();
-						if (typeNextElement == 'input') {
-							formElements[nextIndex].select();
+					const role1 = document.activeElement.role || '';
+					if (role1 === 'autocomplete') {
+						e.preventDefault();
+						let nextIndex = index + 1;
+						while (nextIndex < formElements.length && formElements[nextIndex].tabIndex === -1) {
+							nextIndex++;
+						}
+						if (nextIndex < formElements.length) {
+							formElements[nextIndex].focus();
+							const typeNextElement = formElements[nextIndex].tagName.toLowerCase();
+							if (typeNextElement == 'input') {
+								formElements[nextIndex].select();
+							}
+						}
+					} else {
+						e.preventDefault();
+						let nextIndex = index + 1;
+						while (nextIndex < formElements.length && formElements[nextIndex].tabIndex === -1) {
+							nextIndex++;
+						}
+						if (nextIndex < formElements.length) {
+							formElements[nextIndex].focus();
+							const typeNextElement = formElements[nextIndex].tagName.toLowerCase();
+							if (typeNextElement == 'input') {
+								formElements[nextIndex].select();
+							}
 						}
 					}
 				} else {
 					const role = document.activeElement.role || '';
-					if (role === 'switch' || role === 'select') {
+					if (role === 'switch' || role === 'select' || role === 'autocomplete') {
 						e.preventDefault();
 						let nextIndex = index + 1;
 						while (nextIndex < formElements.length && formElements[nextIndex].tabIndex === -1) {
@@ -634,25 +653,25 @@ const AutoForm = ({
 				}
 			} else if (e.ctrlKey && e.key === 'd') {
 				e.preventDefault();
-				
+
 				const formElements = Array.from(formRef.current.elements);
 				formElements.forEach(element => {
-					if(element.id === `${name}_delete`){
+					if (element.id === `${name}_delete`) {
 						showDelete && onDelete && idSelected > 0 && element.focus();
 					}
 				});
-				
+
 			} else if (e.ctrlKey && e.key === 'g') {
 				e.preventDefault();
-				
+
 				const formElements = Array.from(formRef.current.elements);
 				formElements.forEach(element => {
-					if(element.id === `${name}_submit`){
+					if (element.id === `${name}_submit`) {
 						showSubmit && element.focus();
 					}
 				});
-				
-			} 
+
+			}
 		}
 	};
 
@@ -694,7 +713,7 @@ const AutoForm = ({
 		setFormData({ ...data });
 	}, [data]);
 
-	
+
 	useEffect(() => {
 		if (data) {
 			if (focusIn && fieldRefs.current[focusIn]) {
@@ -754,9 +773,9 @@ const AutoForm = ({
 										variant={inputVariant}
 										id={`${name}_${key}`}
 										type={fieldType}
-										defaultValue={formData[key]  || ''}
+										defaultValue={formData[key] || ''}
 										textClass={inputTextClass[key]}
-										evalActive={evaluteInput[key]? true : false}
+										evalActive={evaluteInput[key] ? true : false}
 										evalResult={evaluteInput[key]?.result}
 										evalColorTrue={evaluteInput[key]?.colorTrue}
 										evalColorFalse={evaluteInput[key]?.colorFalse}
@@ -769,9 +788,9 @@ const AutoForm = ({
 										isLowerCase={isLowerCase.includes(key)}
 										isReadOnly={isReadOnly.includes(key)}
 										isRequired={isRequired.includes(key)}
-										isDisabled={isDisabled.includes(key)} 
+										isDisabled={isDisabled.includes(key)}
 										{...propsPlus[key]}
-										/>
+									/>
 								)}
 								{fieldType === 'number' && (
 									<Input
@@ -785,7 +804,7 @@ const AutoForm = ({
 										placeholder={placeholder[key] || ''}
 										color={inputColorClass[key]}
 										textClass={inputTextClass[key]}
-										evalActive={evaluteInput[key]? true : false}
+										evalActive={evaluteInput[key] ? true : false}
 										evalResult={evaluteInput[key]?.result}
 										evalColorTrue={evaluteInput[key]?.colorTrue}
 										evalColorFalse={evaluteInput[key]?.colorFalse}
@@ -793,9 +812,9 @@ const AutoForm = ({
 										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly.includes(key)}
 										isRequired={isRequired.includes(key)}
-										isDisabled={isDisabled.includes(key)} 
+										isDisabled={isDisabled.includes(key)}
 										{...propsPlus[key]}
-										/>
+									/>
 								)}
 								{fieldType === 'inputspace' && (
 									<InputSpace
@@ -805,9 +824,9 @@ const AutoForm = ({
 										variant={inputVariant}
 										id={`${name}_${key}`}
 										type='text'
-										defaultValue={formData[key]  || ''}
+										defaultValue={formData[key] || ''}
 										textClass={inputTextClass[key]}
-										evalActive={evaluteInput[key]? true : false}
+										evalActive={evaluteInput[key] ? true : false}
 										evalResult={evaluteInput[key]?.result}
 										evalColorTrue={evaluteInput[key]?.colorTrue}
 										evalColorFalse={evaluteInput[key]?.colorFalse}
@@ -823,7 +842,7 @@ const AutoForm = ({
 										isDisabled={isDisabled.includes(key)}
 										options={types[key].options}
 										{...propsPlus[key]}
-										/>
+									/>
 								)}
 								{fieldType === 'inputformat' && (
 									<InputFormat
@@ -833,9 +852,9 @@ const AutoForm = ({
 										variant={inputVariant}
 										id={`${name}_${key}`}
 										type='text'
-										defaultValue={formData[key]  || ''}
+										defaultValue={formData[key] || ''}
 										textClass={inputTextClass[key]}
-										evalActive={evaluteInput[key]? true : false}
+										evalActive={evaluteInput[key] ? true : false}
 										evalResult={evaluteInput[key]?.result}
 										evalColorTrue={evaluteInput[key]?.colorTrue}
 										evalColorFalse={evaluteInput[key]?.colorFalse}
@@ -851,7 +870,7 @@ const AutoForm = ({
 										isDisabled={isDisabled.includes(key)}
 										regex={types[key].regex || /[^a-zA-Z0-9]/g}
 										{...propsPlus[key]}
-										/>
+									/>
 								)}
 								{fieldType === 'date' && (
 									<Input
@@ -864,7 +883,7 @@ const AutoForm = ({
 										defaultValue={formData[key] || ''}
 										textClass={inputTextClass[key]}
 										color={inputColorClass[key]}
-										evalActive={evaluteInput[key]? true : false}
+										evalActive={evaluteInput[key] ? true : false}
 										evalResult={evaluteInput[key]?.result}
 										evalColorTrue={evaluteInput[key]?.colorTrue}
 										evalColorFalse={evaluteInput[key]?.colorFalse}
@@ -872,9 +891,9 @@ const AutoForm = ({
 										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly.includes(key)}
 										isRequired={isRequired.includes(key)}
-										isDisabled={isDisabled.includes(key)} 
+										isDisabled={isDisabled.includes(key)}
 										{...propsPlus[key]}
-										/>
+									/>
 								)}
 								{fieldType === 'time' && (
 									<Input
@@ -887,7 +906,7 @@ const AutoForm = ({
 										defaultValue={formatTime(formData[key]).horaEs}
 										textClass={inputTextClass[key]}
 										color={inputColorClass[key]}
-										evalActive={evaluteInput[key]? true : false}
+										evalActive={evaluteInput[key] ? true : false}
 										evalResult={evaluteInput[key]?.result}
 										evalColorTrue={evaluteInput[key]?.colorTrue}
 										evalColorFalse={evaluteInput[key]?.colorFalse}
@@ -895,9 +914,9 @@ const AutoForm = ({
 										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly.includes(key)}
 										isRequired={isRequired.includes(key)}
-										isDisabled={isDisabled.includes(key)} 
+										isDisabled={isDisabled.includes(key)}
 										{...propsPlus[key]}
-										/>
+									/>
 								)}
 								{fieldType === 'currency' && (
 									// 		onBlur={(e) => handleChangeCurrency(e, key)}
@@ -962,7 +981,7 @@ const AutoForm = ({
 										variant={inputVariant}
 										color='emerald'
 										id={`${name}_${key}`}
-										defaultValue={formData[key]  || 0}
+										defaultValue={formData[key] || 0}
 										onChange={(e) => handleChange(e, key)}
 										onHandleBlur={(e) => handleBlur(e, key)}
 										isReadOnly={isReadOnly.includes(key)}
@@ -1034,9 +1053,10 @@ const AutoForm = ({
 										isLowerCase={isLowerCase.includes(key)}
 										isReadOnly={isReadOnly.includes(key)}
 										isRequired={isRequired.includes(key)}
-										isDisabled={isDisabled.includes(key)} 
+										isDisabled={isDisabled.includes(key)}
 										options={types[key].options}
-										/>
+										regex={types[key].regex}
+									/>
 								)}
 								{fieldType === 'textarea' && (
 									<Textarea
@@ -1053,9 +1073,9 @@ const AutoForm = ({
 										isDisabled={isDisabled.includes(key)}
 										rows={types[key].rows || 2}
 										defaultValue={formData[key] || ''}
-										placeholder={placeholder[key] || ''} 
+										placeholder={placeholder[key] || ''}
 										{...propsPlus[key]}
-										/>	
+									/>
 								)}
 							</div>
 						);

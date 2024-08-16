@@ -34,6 +34,7 @@ export function InputAutocomplete({
   evalResult = true,
   evalColorTrue = '',
   evalColorFalse = 'red',
+  regex,
   ...props
 }){
   const [focused, setFocused] = useState(false);
@@ -41,9 +42,9 @@ export function InputAutocomplete({
   const [internalLabel, setInternalLabel] = useState('');
   const [hasBeenFocused, setHasBeenFocused] = useState(false);
   const [requiredMessage, setRequiredMessage] = useState('');
-  const [displayedValue, setDisplayedValue] = useState('');
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [showOptions, setShowOptions] = useState(false);
+  const [isNewItem, setIsNewItem] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
   const inputRef = useRef(null);
@@ -51,6 +52,11 @@ export function InputAutocomplete({
 
   if(!evalColorTrue) evalColorTrue = color;
   if(!evalColorFalse) evalColorFalse = 'red';
+
+  function formatText(text){
+    let formatValue = (text || '').replace(regex, '');
+    return formatValue;
+  }
 
   useEffect(() => {
     initValues(defaultValue);
@@ -75,6 +81,10 @@ export function InputAutocomplete({
     let newValue = e.target.value;
     let normalizedValue = newValue.trim().toLowerCase();
 
+    if(regex){
+      newValue = formatText(newValue);
+    }
+
     let textValue = '';
     if (options.length > 0) {
       options.forEach(option => {
@@ -84,15 +94,15 @@ export function InputAutocomplete({
       });
     }
     if (isUpperCase) {
-      newValue = e.target.value.toUpperCase();
+      newValue = newValue.toUpperCase();
       e.target.value = newValue;
     } 
     if (isLowerCase) {
-      newValue = e.target.value.toLowerCase();
+      newValue = newValue.toLowerCase();
       e.target.value = newValue;
     }
 
-    setDisplayedValue(textValue)
+   
     setInternalLabel(newValue);
     const arrOptions = filterOptions(newValue);
     if(newValue && arrOptions.length > 0){
@@ -111,7 +121,6 @@ export function InputAutocomplete({
     if (onChange) {
       if (filteredOptions.length > 0) {
         if (matchedOption) {
-
           onChange({ target: { value: matchedOption.value, label: matchedOption.label } });
         } else {
           onChange({ target: { value: 0, label: newValue } });
@@ -144,6 +153,7 @@ export function InputAutocomplete({
       if (highlightedIndex >= 0 && highlightedIndex < filteredOptions.length) {
         selectOption(filteredOptions[highlightedIndex]);
       }
+      
     } else if (e.key === 'Tab') {
       setShowOptions(false);
       setFocused(false);
@@ -156,6 +166,9 @@ export function InputAutocomplete({
     setShowOptions(false);
     if (onChange) {
       onChange({ target: { value: option.value, label: option.label } });
+    }
+    if (onHandleBlur) {
+      onHandleBlur({ target: { value: option.value, label: option.label }});
     }
   };
 
@@ -218,12 +231,13 @@ export function InputAutocomplete({
     }
     setInternalValue(value);
     setInternalLabel(textLabel)
-    setDisplayedValue(textLabel);
+   
     
     inputRef.current.value = textLabel;
   };
 
   const inputProps = {
+    role: "autocomplete",
     value: internalLabel,
     placeholder,
     ref: baseRef || inputRef,
@@ -256,14 +270,28 @@ export function InputAutocomplete({
   };
 
   const requiredStyles = () => {
-    if (isRequired && hasBeenFocused && displayedValue === '') {
+    if (isRequired && hasBeenFocused && internalLabel === '') {
       if (variant === 'underlined') {
         return '';
       } else {
-        return 'outline outline-red-600/50 dark:outline-red-800 outline-offset-1';
+        if(internalValue == 0 && internalLabel != ''){
+          return 'outline outline-emerald-600/50 dark:outline-emerald-800 outline-offset-1';
+        } else {
+          return 'outline outline-red-600/50 dark:outline-red-800 outline-offset-1';
+        }
       }
     }
   };
+
+  const renderNuevo = () => {
+    if(internalValue == 0 && internalLabel != ''){
+      return (<span className="absolute top-0 right-0 bg-emerald-600 text-emerald-100 text-xs font-medium me-2 mt-1 px-2.5 py-0.5 rounded ">nuevo</span>);
+    } else {
+      return '';
+    }
+  };
+
+  
 
   const colorMap = {
     default: {
@@ -406,12 +434,13 @@ export function InputAutocomplete({
     `;
 
   const labelClassNames = `absolute z-10 text-md font-normal pointer-events-none origin-top-left subpixel-antialiased block cursor-text transition-transform transition-color transition-left ease-out duration-200 
-    ${displayedValue || focused || placeholder || props.type === 'date' || props.type === 'time' || defaultValue == '0' ? 'text-zinc-600 dark:text-zinc-300 scale-75 -translate-y-2' : 'scale-100 translate-y-0 text-zinc-500 dark:text-zinc-400'} `;
+    text-zinc-600 dark:text-zinc-300 scale-75 -translate-y-2 `;
   const outsideLabelClassNames = `${isDisabled && 'opacity-50'} text-xs font-medium text-zinc-600 dark:text-zinc-400`;
 
 
   return (
     <div className="relative w-full min-w-2xl">
+    
       {labelPlacement === 'outside' && label && (
         <label className="block text-sm text-zinc-600 dark:text-zinc-400 font-normal mb-1">
           {label} {isRequired && <span className="text-red-400">*</span>}
@@ -423,6 +452,7 @@ export function InputAutocomplete({
             {label} {isRequired && <span className="text-red-400">*</span>}
           </label>
         )}
+        { renderNuevo()}
         <div className={`flex w-full items-center h-full ${labelPlacement === 'inside' && 'translate-y-2'}`}>
           {startContent &&
             <div className='text-zinc-400 pe-2 select-none'>
