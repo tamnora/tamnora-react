@@ -117,7 +117,7 @@ const Modal = ({
 
   const wrapperClasses = `${modalBackdrops[backdrop]} fixed inset-0 z-50 ${customClassNames.wrapper || ''}`;
 
-  const baseClasses = `${modalSizes[size]} ${modalRadius[radius]} ${modalShadows[shadow]} ${modalPlacements[placement]} dark:text-white bg-zinc-100 dark:bg-zinc-900 tmn-fadeIn relative ${customClassNames.base || ''}`;
+  const baseClasses = `${modalSizes[size]} ${modalRadius[radius]} ${modalShadows[shadow]} ${modalPlacements[placement]} dark:text-white bg-white dark:bg-zinc-900 tmn-fadeIn relative ${customClassNames.base || ''}`;
 
   if (!isModalOpen) {
     return null;
@@ -141,7 +141,7 @@ const Modal = ({
                 }}
                 role="button"
                 aria-label="Close"
-                className="appearance-none select-none p-2 text-zinc-500 rounded-full hover:bg-white dark:hover:bg-zinc-800 outline-none"
+                className="appearance-none select-none p-2 text-zinc-500 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 outline-none"
                 type="button">
                 <svg aria-hidden="true" fill="none" focusable="false" height="1em" role="presentation" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="1em">
                   <path d="M18 6L6 18M6 6l12 12"></path>
