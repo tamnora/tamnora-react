@@ -36,7 +36,7 @@ export function InputAutocomplete({
   evalColorFalse = 'red',
   regex,
   ...props
-}){
+}) {
   const [focused, setFocused] = useState(false);
   const [internalValue, setInternalValue] = useState(defaultValue || '0');
   const [internalLabel, setInternalLabel] = useState('');
@@ -50,10 +50,10 @@ export function InputAutocomplete({
   const inputRef = useRef(null);
   const optionRefs = useRef([]);
 
-  if(!evalColorTrue) evalColorTrue = color;
-  if(!evalColorFalse) evalColorFalse = 'red';
+  if (!evalColorTrue) evalColorTrue = color;
+  if (!evalColorFalse) evalColorFalse = 'red';
 
-  function formatText(text){
+  function formatText(text) {
     let formatValue = (text || '').replace(regex, '');
     return formatValue;
   }
@@ -68,7 +68,7 @@ export function InputAutocomplete({
     }
   }, [internalLabel, options]);
 
-  
+
 
   const handleDivClick = () => {
     setFocused(true);
@@ -81,7 +81,7 @@ export function InputAutocomplete({
     let newValue = e.target.value;
     let normalizedValue = newValue.trim().toLowerCase();
 
-    if(regex){
+    if (regex) {
       newValue = formatText(newValue);
     }
 
@@ -96,28 +96,28 @@ export function InputAutocomplete({
     if (isUpperCase) {
       newValue = newValue.toUpperCase();
       e.target.value = newValue;
-    } 
+    }
     if (isLowerCase) {
       newValue = newValue.toLowerCase();
       e.target.value = newValue;
     }
 
-   
+
     setInternalLabel(newValue);
     const arrOptions = filterOptions(newValue);
-    if(newValue && arrOptions.length > 0){
+    if (newValue && arrOptions.length > 0) {
       setShowOptions(true);
     } else {
       setShowOptions(false);
     }
-    
+
     const matchedOption = arrOptions.find(option => option.label === newValue);
-    if(matchedOption){
+    if (matchedOption) {
       setInternalValue(matchedOption.value);
     } else {
       setInternalValue(0);
     }
-    
+
     if (onChange) {
       if (filteredOptions.length > 0) {
         if (matchedOption) {
@@ -153,7 +153,7 @@ export function InputAutocomplete({
       if (highlightedIndex >= 0 && highlightedIndex < filteredOptions.length) {
         selectOption(filteredOptions[highlightedIndex]);
       }
-      
+
     } else if (e.key === 'Tab') {
       setShowOptions(false);
       setFocused(false);
@@ -168,7 +168,7 @@ export function InputAutocomplete({
       onChange({ target: { value: option.value, label: option.label } });
     }
     if (onHandleBlur) {
-      onHandleBlur({ target: { value: option.value, label: option.label }});
+      onHandleBlur({ target: { value: option.value, label: option.label } });
     }
   };
 
@@ -186,7 +186,7 @@ export function InputAutocomplete({
     setFocused(false);
     setShowOptions(false);
     if (onHandleBlur) {
-      onHandleBlur({ target: { value: internalValue, label: internalLabel }});
+      onHandleBlur({ target: { value: internalValue, label: internalLabel } });
     }
   };
 
@@ -208,7 +208,7 @@ export function InputAutocomplete({
 
   const filterOptions = (inputValue) => {
     let resultOptions = [];
-    if(inputValue){
+    if (inputValue) {
       const normalizedInput = (inputValue || '').trim().toLowerCase();
       const filtered = options.filter(option => option.label.toLowerCase().includes(normalizedInput));
       setFilteredOptions(filtered);
@@ -221,7 +221,7 @@ export function InputAutocomplete({
 
   const initValues = (value) => {
     let textLabel = '';
-   
+
     if (options.length > 0) {
       options.forEach(option => {
         if (option.value == value) {
@@ -231,8 +231,8 @@ export function InputAutocomplete({
     }
     setInternalValue(value);
     setInternalLabel(textLabel)
-   
-    
+
+
     inputRef.current.value = textLabel;
   };
 
@@ -274,7 +274,7 @@ export function InputAutocomplete({
       if (variant === 'underlined') {
         return '';
       } else {
-        if(internalValue == 0 && internalLabel != ''){
+        if (internalValue == 0 && internalLabel != '') {
           return 'outline outline-emerald-600/50 dark:outline-emerald-800 outline-offset-1';
         } else {
           return 'outline outline-red-600/50 dark:outline-red-800 outline-offset-1';
@@ -284,14 +284,19 @@ export function InputAutocomplete({
   };
 
   const renderNuevo = () => {
-    if(internalValue == 0 && internalLabel != ''){
-      return (<span className="absolute top-0 right-0 bg-emerald-600 text-emerald-100 text-xs font-medium me-2 mt-1 px-2.5 py-0.5 rounded ">nuevo</span>);
-    } else {
-      return '';
+    if (internalValue == 0 && internalLabel != '' && labelPlacement == 'inside') {
+      return (
+        <span className="absolute top-1 right-1 bg-emerald-600 text-emerald-100 text-xs px-1.5 py-[0.5px] rounded-full ">Nuevo</span>
+      );
+    }
+    if (internalValue == 0 && internalLabel != '' && labelPlacement == 'outside') {
+      return (
+        <span className="absolute right-0 top-[-22px] bg-emerald-600 text-emerald-100 text-xs px-1.5 rounded-full">Nuevo</span>
+      );
     }
   };
 
-  
+
 
   const colorMap = {
     default: {
@@ -387,16 +392,16 @@ export function InputAutocomplete({
     },
   };
 
-  
+
   const getColorClass = (xcolor) => {
-    if(xcolor){
+    if (xcolor) {
       return colorMap[xcolor] ? colorMap[xcolor][variant] || '' : '';
     }
     return colorMap[color] ? colorMap[color][variant] || '' : '';
   };
 
- 
-    const containerEvalTrue = `relative w-full shadow-sm flex px-3 min-h-10 flex-col items-start justify-center transition-background duration-150 outline-none py-2 cursor-text 
+
+  const containerEvalTrue = `relative w-full shadow-sm flex px-3 min-h-10 flex-col items-start justify-center transition-background duration-150 outline-none py-2 cursor-text 
     ${getHeightClass()}
     ${requiredStyles()}
     ${isDisabled && 'opacity-50'}
@@ -408,7 +413,7 @@ export function InputAutocomplete({
     ${focused && (variant === 'flat' || variant === 'faded' || variant === 'tmn') ? 'outline outline-sky-500 dark:outline-sky-700 outline-offset-1' : ''}
     `;
 
-    const containerEvalFalse = `relative w-full shadow-sm flex px-3 min-h-10 flex-col items-start justify-center transition-background duration-150 outline-none py-2 cursor-text 
+  const containerEvalFalse = `relative w-full shadow-sm flex px-3 min-h-10 flex-col items-start justify-center transition-background duration-150 outline-none py-2 cursor-text 
     ${getHeightClass()}
     ${requiredStyles()}
     ${isDisabled && 'opacity-50'}
@@ -419,7 +424,7 @@ export function InputAutocomplete({
     ${focused && (variant === 'bordered' || variant === 'underlined') ? '!border-zinc-800 dark:!border-white' : ''}
     ${focused && (variant === 'flat' || variant === 'faded' || variant === 'tmn') ? 'outline outline-sky-500 dark:outline-sky-700 outline-offset-1' : ''}
     `;
-  
+
 
   const containerClassNames = `relative w-full shadow-sm flex px-3 min-h-10 flex-col items-start justify-center transition-background duration-150 outline-none py-2 cursor-text 
     ${getHeightClass()}
@@ -435,24 +440,25 @@ export function InputAutocomplete({
 
   const labelClassNames = `absolute z-10 text-md font-normal pointer-events-none origin-top-left subpixel-antialiased block cursor-text transition-transform transition-color transition-left ease-out duration-200 
     text-zinc-600 dark:text-zinc-300 scale-75 -translate-y-2 `;
-  const outsideLabelClassNames = `${isDisabled && 'opacity-50'} text-xs font-medium text-zinc-600 dark:text-zinc-400`;
+  const outsideLabelClassNames = `${isDisabled && 'opacity-50'} text-xs font-medium text-zinc-600 dark:text-zinc-400 w-full`;
 
 
   return (
     <div className="relative w-full min-w-2xl">
-    
       {labelPlacement === 'outside' && label && (
-        <label className="block text-sm text-zinc-600 dark:text-zinc-400 font-normal mb-1">
+        <label className={outsideLabelClassNames}>
           {label} {isRequired && <span className="text-red-400">*</span>}
         </label>
       )}
-      <div onClick={handleDivClick} className={evalActive? (evalResult ? containerEvalTrue : containerEvalFalse)  : containerClassNames}>
+      <div onClick={handleDivClick} className={evalActive ? (evalResult ? containerEvalTrue : containerEvalFalse) : containerClassNames}>
+        {renderNuevo()}
         {labelPlacement === 'inside' && label && (
-          <label className={labelClassNames} htmlFor={props.id}>
-            {label} {isRequired && <span className="text-red-400">*</span>}
-          </label>
+          <>
+            <label className={labelClassNames} htmlFor={props.id}>
+              {label} {isRequired && <span className="text-red-400">*</span>}
+            </label>
+          </>
         )}
-        { renderNuevo()}
         <div className={`flex w-full items-center h-full ${labelPlacement === 'inside' && 'translate-y-2'}`}>
           {startContent &&
             <div className='text-zinc-400 pe-2 select-none'>
@@ -482,18 +488,18 @@ export function InputAutocomplete({
       {errorMessage && <p className="text-xs ms-1 mt-1 text-red-400">{errorMessage}</p>}
       {showOptions && (
         <div className="absolute z-20 mt-2 w-full bg-white dark:bg-zinc-800 shadow-lg rounded-xl text-sm text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-600 tmn-fadeIn">
-        <ul className="p-2 max-h-72 overflow-y-auto">
-          {filteredOptions.map((option, index) => (
-            <li
-              key={option.value}
-              ref={el => optionRefs.current[index] = el}
-              className={`flex justify-between items-center cursor-pointer px-2 py-1.5 hover:bg-zinc-200 rounded-lg dark:hover:bg-zinc-700 ${highlightedIndex === index ? 'bg-zinc-200 dark:bg-zinc-700' : ''} ${internalValue === option.value ? ' text-sky-700 dark:text-sky-500' : ''}`}
-              onMouseDown={() => selectOption(option)}
-            >
-              {option.label}
-            </li>
-          ))}
-        </ul>
+          <ul className="p-2 max-h-72 overflow-y-auto">
+            {filteredOptions.map((option, index) => (
+              <li
+                key={option.value}
+                ref={el => optionRefs.current[index] = el}
+                className={`flex justify-between items-center cursor-pointer px-2 py-1.5 hover:bg-zinc-200 rounded-lg dark:hover:bg-zinc-700 ${highlightedIndex === index ? 'bg-zinc-200 dark:bg-zinc-700' : ''} ${internalValue === option.value ? ' text-sky-700 dark:text-sky-500' : ''}`}
+                onMouseDown={() => selectOption(option)}
+              >
+                {option.label}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
       {description && (
