@@ -9,7 +9,7 @@ export { Logo } from './components/Logo';
 export { Select } from './components/Select';
 export { TableActions } from './components/TableActions';
 export { AutoForm } from './components/AutoForm.jsx';
-export { AutoTable } from './components/AutoTable.jsx';
+export { AutoTable } from './components/AutoTable';
 export { Background } from './components/Backgroud.jsx';
 export { Button } from './components/Button.jsx';
 export { Card, CardBody } from './components/Card.jsx';
