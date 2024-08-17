@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import './index.css'
 
 const AutoTable = ({
   name = 'table',
