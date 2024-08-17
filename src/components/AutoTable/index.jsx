@@ -279,7 +279,7 @@ const AutoTable = ({
                   if (!isHidden.includes(column)) return (
                     <th
                       key={column}
-                      className={`px-4 py-4 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 whitespace-nowrap ${getColumnAlignmentClass(index)}`}
+                      className={`px-4 py-4 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 md:whitespace-nowrap ${getColumnAlignmentClass(index)}`}
                       style={{ width: columnWidths ? columnWidths[column] : 'auto' }}>
                       {columnNames[column] ? columnNames[column] : column}
                     </th>
@@ -289,7 +289,7 @@ const AutoTable = ({
                 {extraColumns && extraColumns.map((col, indexExtra) => (
                   <th
                     key={`extra-${indexExtra}`}
-                    className={`px-4 py-4 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 whitespace-nowrap ${getColumnAlignmentClass(effectiveColumns.length + indexExtra)}`}
+                    className={`px-4 py-4 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 md:whitespace-nowrap ${getColumnAlignmentClass(effectiveColumns.length + indexExtra)}`}
                     style={{ width: col.width || 'auto' }}>
                     {col.header}
                   </th>
@@ -323,10 +323,10 @@ const AutoTable = ({
                     if (!isHidden.includes(column)) return (
                       <td
                         key={column}
-                        className={`${tdPadding} select-none whitespace-nowrap ${cellPointer} ${getColumnAlignmentClass(index)} ${selectedRowIndex === rowIndex && selectedCellIndex === index && onCellClick ? 'bg-zinc-300 dark:bg-zinc-700' : ''}`}
+                        className={`${tdPadding} select-none md:whitespace-nowrap ${cellPointer} ${getColumnAlignmentClass(index)} ${selectedRowIndex === rowIndex && selectedCellIndex === index && onCellClick ? 'bg-zinc-300 dark:bg-zinc-700' : ''}`}
                         onClick={onCellClick ? (e) => handleCellClick(e, row, column) : null}
                         style={{ width: columnWidths ? columnWidths[column] : 'auto' }}
-                        data-label={column}>
+                        data-label={columnNames[column] ? columnNames[column] : column}>
                         {renderCellContent(row[column], row, column)}
                       </td>
                     )
@@ -335,7 +335,7 @@ const AutoTable = ({
                   {extraColumns && extraColumns.map((col, indexExtra) => (
                     <td
                       key={`extra-${indexExtra}`}
-                      className={`${tdPadding} select-none whitespace-nowrap ${cellPointer} ${getColumnAlignmentClass(effectiveColumns.length + indexExtra)}`}
+                      className={`${tdPadding} select-none md:whitespace-nowrap ${cellPointer} ${getColumnAlignmentClass(effectiveColumns.length + indexExtra)}`}
                       onClick={onCellClick ? (e) => handleCellClick(e, row, `extra-${indexExtra}`) : null}>
                       {col.render ? col.render(row) : ''}
                     </td>
@@ -355,7 +355,7 @@ const AutoTable = ({
                     if (!isHidden.includes(column)) return (
                       <td
                         key={column + index}
-                        className={`px-4 py-3 select-none whitespace-nowrap `}
+                        className={`px-4 py-3 select-none md:whitespace-nowrap `}
 
                         style={{ width: columnWidths ? columnWidths[column] : 'auto' }}>
                         {renderCellFooter(column)}
@@ -366,7 +366,7 @@ const AutoTable = ({
                   {extraColumns && extraColumns.map((col, indexExtra) => (
                     <td
                       key={`extrafooter-${indexExtra}`}
-                      className={`px-4 py-3 select-none whitespace-nowrap `}
+                      className={`px-4 py-3 select-none md:whitespace-nowrap `}
                     >
                       {renderCellFooter(col)}
                     </td>

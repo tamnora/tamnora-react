@@ -81,11 +81,11 @@ const Modal = ({
     md: 'max-w-md',
     lg: 'max-w-lg',
     xl: 'max-w-xl',
-    '2xl': 'max-w-2xl',
-    '3xl': 'max-w-3xl',
-    '4xl': 'max-w-4xl',
-    '5xl': 'max-w-5xl',
-    full: 'w-full h-full',
+    '2xl': 'max-w-2xl overflow-y-auto h-full md:h-auto',
+    '3xl': 'max-w-3xl overflow-y-auto h-full md:h-auto',
+    '4xl': 'max-w-4xl overflow-y-auto h-full md:h-auto',
+    '5xl': 'max-w-5xl overflow-y-auto h-full md:h-auto',
+    full: 'w-full h-full overflow-y-auto',
   };
 
   const modalRadius = {
@@ -109,7 +109,7 @@ const Modal = ({
   };
 
   const modalPlacements = {
-    auto: 'top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2',
+    auto: 'md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2',
     top: 'top-0 left-1/2 transform -translate-x-1/2',
     center: 'top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2',
     bottom: 'bottom-0 left-1/2 transform -translate-x-1/2',
@@ -155,7 +155,7 @@ const Modal = ({
           <h2 className='text-zinc-600 dark:text-white text-lg font-medium leading-4'>{title}</h2>
           <p className='text-zinc-400 text-sm leading-3'>{subtitle}</p>
         </div>
-        <div className={`${overflow} pt-4 pb-6 px-6 ${scrollBehavior === 'inside' ? 'max-h-full' : ''} ${customClassNames.body || ''}`}>
+        <div className={`${overflow} pt-4 pb-6 px-6  ${scrollBehavior === 'inside' ? 'max-h-full' : ''} ${customClassNames.body || ''}`}>
           {children}
         </div>
       </div>
