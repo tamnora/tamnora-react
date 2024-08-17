@@ -2,6 +2,7 @@
   td {
     position: relative;
     padding-left: 50%;
+    text-align: right;
     white-space: nowrap;
   }
 
