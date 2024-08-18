@@ -1,6 +1,6 @@
 
 // Exportaciones de Tamnora
-export { inServer, formatDate, originServer, runCode, structure, dbSelect, pesos, formatNumber, formatNumberArray, currency, defaultClass, handleStructure, typeToType, setStructure, dataTableRunCode, runCodeStruc, objToSQL} from './js/tamnora.js';
+export { inServer, formatDate, originServer, runCode, structure, dbSelect, pesos, formatNumber, formatNumberArray, currency, defaultClass, handleStructure, typeToType, setStructure, dataTableRunCode, runCodeStruc} from './js/tamnora.js';
 import './main.css';
 
 export { Alert } from './components/Alert';
