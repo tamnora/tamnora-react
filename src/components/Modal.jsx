@@ -152,7 +152,7 @@ const Modal = ({
         )}
 
         <div className={customClassNames.header ? customClassNames.header : 'pt-6 px-6 pb-4 flex-initial flex flex-col gap-2'}>
-          <h2 className='text-zinc-600 dark:text-white text-lg font-medium leading-4'>{title}</h2>
+          <h2 className='text-zinc-600 dark:text-white text-lg font-medium leading-5'>{title}</h2>
           <p className='text-zinc-400 text-sm leading-3'>{subtitle}</p>
         </div>
         <div className={`${overflow} pt-4 pb-6 px-6  ${scrollBehavior === 'inside' ? 'max-h-full' : ''} ${customClassNames.body || ''}`}>
