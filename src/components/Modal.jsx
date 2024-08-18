@@ -130,7 +130,7 @@ const Modal = ({
         onClick={(e) => e.stopPropagation()}
       >
         {!hideCloseButton && (
-          <div className={`absolute top-1 right-1 ${customClassNames.closeButton || ''}`}>
+          <div className={`absolute top-3 md:top-1 right-3 md:right-1 ${customClassNames.closeButton || ''}`}>
             {closeButton || (
               <button
                 onClick={() => {
@@ -141,9 +141,9 @@ const Modal = ({
                 }}
                 role="button"
                 aria-label="Close"
-                className="appearance-none select-none p-2 text-zinc-500 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 outline-none"
+                className=" appearance-none select-none p-2 text-zinc-500 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 outline-none"
                 type="button">
-                <svg aria-hidden="true" fill="none" focusable="false" height="1em" role="presentation" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" width="1em">
+                <svg className='size-6 md:size-[1rem]' aria-hidden="true" fill="none" focusable="false" role="presentation" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24">
                   <path d="M18 6L6 18M6 6l12 12"></path>
                 </svg>
               </button>
