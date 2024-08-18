@@ -1270,9 +1270,6 @@ let objects = {
 }
 
 
-function formatoDeCeros(valor) {
-  return valor < 10 ? `0${valor}` : valor;
-}
 
 function convertirFormatoFecha(objeto) {
   const resultado = {};
