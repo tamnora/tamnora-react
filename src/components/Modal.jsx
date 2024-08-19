@@ -36,6 +36,12 @@ const Modal = ({
     } else {
       document.body.style.overflow = '';
     }
+
+     // Limpieza del efecto
+  return () => {
+    document.body.style.overflow = '';
+  };
+  
   }, [isModalOpen, shouldBlockScroll]);
 
   const handleClose = () => {
@@ -81,11 +87,11 @@ const Modal = ({
     md: 'max-w-md',
     lg: 'max-w-lg',
     xl: 'max-w-xl',
-    '2xl': 'max-w-2xl overflow-y-auto h-full md:h-auto',
-    '3xl': 'max-w-3xl overflow-y-auto h-full md:h-auto',
-    '4xl': 'max-w-4xl overflow-y-auto h-full md:h-auto',
-    '5xl': 'max-w-5xl overflow-y-auto h-full md:h-auto',
-    full: 'w-full h-full overflow-y-auto',
+    '2xl': 'max-w-2xl overflow-y-auto md:overflow-y-visible h-full md:h-auto',
+    '3xl': 'max-w-3xl overflow-y-auto md:overflow-y-visible h-full md:h-auto',
+    '4xl': 'max-w-4xl overflow-y-auto md:overflow-y-visible h-full md:h-auto',
+    '5xl': 'max-w-5xl overflow-y-auto md:overflow-y-visible h-full md:h-auto',
+    full: 'w-full h-full overflow-y-auto md:overflow-y-visible',
   };
 
   const modalRadius = {

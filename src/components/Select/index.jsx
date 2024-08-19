@@ -103,7 +103,7 @@ export function Select({
     return heightMap[labelPlacement] ? heightMap[labelPlacement][size] || '' : '';
   };
 
-  const selectedLabel = options.find(option => option.value === selectedValue)?.label;
+  const selectedLabel = options.find(option => option.value == selectedValue)?.label;
   
   const containerClassNames = `
     relative w-full shadow-sm flex px-3 min-h-10 flex-col items-start justify-center transition-background duration-150 outline-none py-2 cursor-text 
