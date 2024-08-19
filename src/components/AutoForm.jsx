@@ -60,6 +60,7 @@ const AutoForm = ({
 	showSubmit = true,
 	showDelete = true,
 	showCancel = true,
+	focusActive = false,
 }) => {
 	const [formData, setFormData] = useState({ ...data });
 	const [initialValues, setInitialValues] = useState({ ...data });
@@ -706,7 +707,7 @@ const AutoForm = ({
 
 
 
-	const footerDefaultClass = `flex items-center justify-start gap-2 border-zinc-300 dark:border-zinc-600 ${formVariant === 'tmn' && 'border-t mt-2 pt-6'}`
+	const footerDefaultClass = `flex flex-col md:flex-row items-center justify-start gap-2 border-zinc-300 dark:border-zinc-600 ${formVariant === 'tmn' && 'border-t mt-2 pt-6'}`
 	const footerClasses = `${footerClass ? footerClass : footerDefaultClass}`
 
 	useEffect(() => {
@@ -725,7 +726,7 @@ const AutoForm = ({
 					!element.disabled &&
 					!element.readOnly
 				);
-				if (firstFocusableElement) {
+				if (firstFocusableElement && focusActive) {
 					firstFocusableElement.focus();
 				}
 			}
@@ -1092,17 +1093,17 @@ const AutoForm = ({
 				<div className={footerClasses}>
 
 					{showSubmit && (
-						<Button radius='rounded-xl' color={submitColor} id={`${name}_submit`} type="submit" name='submit' variant={buttonVariant} size={buttonSize} >
+						<Button radius='rounded-xl' addClassNames='w-full md:w-auto' color={submitColor} id={`${name}_submit`} type="submit" name='submit' variant={buttonVariant} size={buttonSize} >
 							{textSubmit}
 						</Button>
 					)}
 					{showDelete && onDelete && idSelected > 0 && (
-						<Button radius='rounded-xl' color={deleteColor} id={`${name}_delete`} type="button" name='delete' variant={buttonVariant} size={buttonSize} onClick={handleDelete}>
+						<Button radius='rounded-xl' addClassNames='w-full md:w-auto' color={deleteColor} id={`${name}_delete`} type="button" name='delete' variant={buttonVariant} size={buttonSize} onClick={handleDelete}>
 							{deleteText}
 						</Button>
 					)}
 					{showCancel && onCancel && (
-						<Button radius='rounded-xl' color={cancelColor} id={`${name}_cancel`} type="button" name='cancel' variant={buttonVariant} size={buttonSize} onClick={handleCancel}>
+						<Button radius='rounded-xl' addClassNames='w-full md:w-auto' color={cancelColor} id={`${name}_cancel`} type="button" name='cancel' variant={buttonVariant} size={buttonSize} onClick={handleCancel}>
 							{textCancel}
 						</Button>
 					)}

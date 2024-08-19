@@ -7,6 +7,7 @@ export function Button({
   variant = 'solid',
   children,
   isDisabled = false,
+  addClassNames = '',
   ...props
 }) {
   const sizeStyles = {
@@ -130,6 +131,7 @@ export function Button({
     classDisable[isDisabled],
     variantStyles[variant],
     radiusClass,
+    addClassNames,
     'outline-none'
   ].filter(Boolean).join(' ');
 
