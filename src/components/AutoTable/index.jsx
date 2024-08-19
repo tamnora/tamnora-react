@@ -7,7 +7,7 @@ const AutoTable = ({
   data,
   rowsPerView = 10,
   searchText = '',
-  classTextSelect = 'text-sky-500 dark:text-sky-500 border border-sky-600/80 dark:border-sky-700/70',
+  classTextSelect = 'sm:text-sky-500 sm:dark:text-sky-500 rounded-xl border-2 sm:border sm:border-sky-600/80 sm:dark:border-sky-700/70',
   classBgSelect,
   onRowFocus,
   onRowClick,
@@ -15,7 +15,7 @@ const AutoTable = ({
   extraColumns,
   columnWidths,
   renderCell,
-  tdPadding = 'px-4 py-3',
+  tdPadding = 'p-0 sm:px-4 sm:py-3',
   columnAlignments,
   columns = [],
   showRowSelection = true,
@@ -250,11 +250,11 @@ const AutoTable = ({
 
   //border-t border-zinc-200 dark:border-zinc-700/70 
 
-  const styleRow = `flex flex-col sm:table-row hover:bg-zinc-200/40 dark:hover:bg-zinc-800/70 `;
-  const trA = `bg-transparent  ${rowPointer} `;
-  const trB = `bg-zinc-50 dark:bg-zinc-800/20  ${rowPointer} `;
+  const styleRow = `flex flex-col gap-2.5 p-4 sm:p-0 font-medium sm:font-normal sm:gap-0 sm:table-row hover:bg-zinc-200/40 dark:hover:bg-zinc-800/70 `;
+  const trA = `bg-white dark:bg-zinc-800/20 sm:bg-transparent  ${rowPointer} `;
+  const trB = `bg-white sm:bg-zinc-50 dark:bg-zinc-800/20  ${rowPointer} `;
   const tr3 = `hover:text-zinc-900 dark:hover:text-zinc-100 ${rowPointer} `;
-  const border = `border-t border-zinc-200 dark:border-zinc-700/70`;
+  const border = `border-2 rounded-xl sm:border-0 sm:border-t border-zinc-200 dark:border-zinc-700/70`;
   const tr1 = `${trA} ${border} hover:text-zinc-900 dark:hover:text-zinc-100`;
   const tr2 = `${trB} ${border} hover:text-zinc-800 dark:hover:text-zinc-100`;
 
@@ -270,7 +270,7 @@ const AutoTable = ({
   return (
     <div>
       <>
-        <div ref={tableRef} tabIndex={0} name={name} className={`overflow-x-auto rounded-lg border border-zinc-400/30 dark:border-zinc-700/50 w-full tmn-fadeIn `} style={{ outline: 'none' }}>
+        <div ref={tableRef} tabIndex={0} name={name} className={`overflow-x-auto sm:rounded-lg sm:border border-zinc-400/30 dark:border-zinc-700/50 w-full tmn-fadeIn `} style={{ outline: 'none' }}>
           <table className="w-full text-sm text-left text-zinc-500 dark:text-zinc-400">
             <thead className="hidden sm:table-header-group text-xs border-b text-zinc-700 bg-zinc-50 dark:bg-zinc-800/20 border-zinc-200 uppercase dark:text-zinc-400 dark:border-zinc-800">
               <tr className="text-md font-semibold">
@@ -343,7 +343,7 @@ const AutoTable = ({
                 </tr>
               )) : (
                 <tr>
-                  <td colSpan={effectiveColumns.length} className="px-4 py-3 text-center">
+                  <td colSpan={effectiveColumns.length} className={`${tdPadding} text-center`}>
                     No hay datos disponibles
                   </td>
                 </tr>
@@ -355,7 +355,7 @@ const AutoTable = ({
                     if (!isHidden.includes(column)) return (
                       <td
                         key={column + index}
-                        className={`px-4 py-3 select-none md:whitespace-nowrap `}
+                        className={`${tdPadding} select-none md:whitespace-nowrap `}
 
                         style={{ width: columnWidths ? columnWidths[column] : 'auto' }}>
                         {renderCellFooter(column)}
@@ -366,7 +366,7 @@ const AutoTable = ({
                   {extraColumns && extraColumns.map((col, indexExtra) => (
                     <td
                       key={`extrafooter-${indexExtra}`}
-                      className={`px-4 py-3 select-none md:whitespace-nowrap `}
+                      className={`${tdPadding} select-none md:whitespace-nowrap `}
                     >
                       {renderCellFooter(col)}
                     </td>
