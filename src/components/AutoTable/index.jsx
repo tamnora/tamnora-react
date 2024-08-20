@@ -280,7 +280,7 @@ const AutoTable = ({
                   if (!isHidden.includes(column)) return (
                     <th
                       key={column}
-                      className={`px-4 py-4 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 md:whitespace-nowrap ${getColumnAlignmentClass(index)}`}
+                      className={`px-4 py-4 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 md:whitespace-nowrap ${getColumnAlignmentClass(column)}`}
                       style={{ width: columnWidths ? columnWidths[column] : 'auto' }}>
                       {columnNames[column] ? columnNames[column] : column}
                     </th>
@@ -290,7 +290,7 @@ const AutoTable = ({
                 {extraColumns && extraColumns.map((col, indexExtra) => (
                   <th
                     key={`extra-${indexExtra}`}
-                    className={`px-4 py-4 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 md:whitespace-nowrap ${getColumnAlignmentClass(effectiveColumns.length + indexExtra)}`}
+                    className={`px-4 py-4 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 md:whitespace-nowrap ${getColumnAlignmentClass(col)}`}
                     style={{ width: col.width || 'auto' }}>
                     {col.header}
                   </th>
@@ -350,7 +350,7 @@ const AutoTable = ({
                 </tr>
               )}
               {rowFooter &&
-                <tr className={classFooter ? classFooter : 'text-sm font-semibold border-t text-zinc-700 bg-zinc-100 dark:bg-zinc-900 border-zinc-200  dark:text-zinc-400 dark:border-zinc-800'}>
+                <tr className={classFooter ? classFooter : 'text-sm font-semibold border-t text-zinc-700 bg-zinc-50 dark:bg-zinc-800/20 border-zinc-200  dark:text-zinc-400 dark:border-zinc-800'}>
                   {showRowSelection && showIconSelection && <td></td>}
                   {effectiveColumns.map((column, index) => {
                     if (!isHidden.includes(column)) return (
