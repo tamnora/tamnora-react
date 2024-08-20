@@ -252,6 +252,7 @@ const AutoTable = ({
   //border-t border-zinc-200 dark:border-zinc-700/70 
 
   const styleRow = `flex flex-col gap-2.5 p-4 sm:p-0 font-medium sm:font-normal sm:gap-0 sm:table-row hover:bg-zinc-200/40 dark:hover:bg-zinc-800/70 `;
+  const styleRowFooter = `flex flex-col gap-1 py-3 px-4 sm:p-0 font-medium sm:font-normal sm:gap-0 sm:table-row text-sm border-t text-zinc-700 bg-zinc-50 dark:bg-zinc-800/20 border-zinc-200  dark:text-zinc-400 dark:border-zinc-800`;
   const trA = `bg-white dark:bg-zinc-800 sm:bg-transparent sm:dark:bg-transparent ${rowPointer} `;
   const trB = `bg-white sm:bg-zinc-50 dark:bg-zinc-800 sm:dark:bg-zinc-800/20  ${rowPointer} `;
   const tr3 = `hover:text-zinc-900 dark:hover:text-zinc-100 ${rowPointer} `;
@@ -350,13 +351,13 @@ const AutoTable = ({
                 </tr>
               )}
               {rowFooter &&
-                <tr className={classFooter ? classFooter : 'text-sm font-semibold border-t text-zinc-700 bg-zinc-50 dark:bg-zinc-800/20 border-zinc-200  dark:text-zinc-400 dark:border-zinc-800'}>
+                <tr className={classFooter ? classFooter : styleRowFooter}>
                   {showRowSelection && showIconSelection && <td></td>}
                   {effectiveColumns.map((column, index) => {
                     if (!isHidden.includes(column)) return (
                       <td
                         key={column + index}
-                        className={`${tdPadding} select-none ${isWrap.includes(column)? '': 'md:whitespace-nowrap'} ${getColumnAlignmentClass(column)}`}
+                        className={`${tdPadding}  ${isWrap.includes(column)? '': 'md:whitespace-nowrap'} ${getColumnAlignmentClass(column)}`}
 
                         style={{ width: columnWidths ? columnWidths[column] : 'auto' }}>
                         {renderCellFooter(column)}
@@ -367,7 +368,7 @@ const AutoTable = ({
                   {extraColumns && extraColumns.map((col, indexExtra) => (
                     <td
                       key={`extrafooter-${indexExtra}`}
-                      className={`${tdPadding} select-none ${isWrap.includes(col)? '': 'md:whitespace-nowrap'} ${getColumnAlignmentClass(col)}`}
+                      className={`${tdPadding}  ${isWrap.includes(col)? '': 'md:whitespace-nowrap'} ${getColumnAlignmentClass(col)}`}
                     >
                       {renderCellFooter(col)}
                     </td>
