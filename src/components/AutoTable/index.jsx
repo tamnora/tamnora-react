@@ -24,7 +24,8 @@ const AutoTable = ({
   iconSelection,
   rowFooter,
   classFooter,
-  isHidden = []
+  isHidden = [],
+  isWrap = [],
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
@@ -323,7 +324,7 @@ const AutoTable = ({
                     if (!isHidden.includes(column)) return (
                       <td
                         key={column}
-                        className={`${tdPadding} select-none md:whitespace-nowrap ${cellPointer} ${getColumnAlignmentClass(index)} ${selectedRowIndex === rowIndex && selectedCellIndex === index && onCellClick ? 'bg-zinc-300 dark:bg-zinc-700' : ''}`}
+                        className={`${tdPadding} select-none ${isWrap.includes(column)? '': 'md:whitespace-nowrap'} ${cellPointer} ${getColumnAlignmentClass(column)} ${selectedRowIndex === rowIndex && selectedCellIndex === index && onCellClick ? 'bg-zinc-300 dark:bg-zinc-700' : ''}`}
                         onClick={onCellClick ? (e) => handleCellClick(e, row, column) : null}
                         style={{ width: columnWidths ? columnWidths[column] : 'auto' }}
                         data-label={columnNames[column] ? columnNames[column] : column}>
@@ -335,7 +336,7 @@ const AutoTable = ({
                   {extraColumns && extraColumns.map((col, indexExtra) => (
                     <td
                       key={`extra-${indexExtra}`}
-                      className={`${tdPadding} select-none md:whitespace-nowrap ${cellPointer} ${getColumnAlignmentClass(effectiveColumns.length + indexExtra)}`}
+                      className={`${tdPadding} select-none ${isWrap.includes(col)? '': 'md:whitespace-nowrap'} ${cellPointer} ${getColumnAlignmentClass(col)}`}
                       onClick={onCellClick ? (e) => handleCellClick(e, row, `extra-${indexExtra}`) : null}>
                       {col.render ? col.render(row) : ''}
                     </td>
@@ -355,7 +356,7 @@ const AutoTable = ({
                     if (!isHidden.includes(column)) return (
                       <td
                         key={column + index}
-                        className={`${tdPadding} select-none md:whitespace-nowrap `}
+                        className={`${tdPadding} select-none ${isWrap.includes(column)? '': 'md:whitespace-nowrap'} ${getColumnAlignmentClass(column)}`}
 
                         style={{ width: columnWidths ? columnWidths[column] : 'auto' }}>
                         {renderCellFooter(column)}
@@ -366,7 +367,7 @@ const AutoTable = ({
                   {extraColumns && extraColumns.map((col, indexExtra) => (
                     <td
                       key={`extrafooter-${indexExtra}`}
-                      className={`${tdPadding} select-none md:whitespace-nowrap `}
+                      className={`${tdPadding} select-none ${isWrap.includes(col)? '': 'md:whitespace-nowrap'} ${getColumnAlignmentClass(col)}`}
                     >
                       {renderCellFooter(col)}
                     </td>
