@@ -12,6 +12,7 @@ import { InputOptions } from './InputOptions';
 import { InputAutocomplete } from './InputAutocomplete';
 import { InputSpace } from './InputSpace';
 import { InputFormat } from './InputFormat';
+import { InputSelect } from './InputSelect';
 
 const AutoForm = ({
 	idSelected,
@@ -1044,6 +1045,29 @@ const AutoForm = ({
 										variant={inputVariant}
 										id={`${name}_${key}`}
 										type={fieldType}
+										defaultValue={formData[key] || ''}
+										placeholder={placeholder[key] || ''}
+										textClass={inputTextClass[key]}
+										isRequiredMessage="Campo requerido"
+										onChange={(e) => handleChange(e, key)}
+										onHandleBlur={(e) => handleBlur(e, key)}
+										isUpperCase={isUpperCase.includes(key)}
+										isLowerCase={isLowerCase.includes(key)}
+										isReadOnly={isReadOnly.includes(key)}
+										isRequired={isRequired.includes(key)}
+										isDisabled={isDisabled.includes(key)}
+										options={types[key].options}
+										regex={types[key].regex}
+									/>
+								)}
+								{fieldType === 'inputSelect' && (
+									<InputSelect
+										label={names[key] || key}
+										labelPlacement={labelPlacement}
+										radius={inputRadius}
+										variant={inputVariant}
+										id={`${name}_${key}`}
+										type='text'
 										defaultValue={formData[key] || ''}
 										placeholder={placeholder[key] || ''}
 										textClass={inputTextClass[key]}

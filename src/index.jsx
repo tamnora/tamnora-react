@@ -22,6 +22,7 @@ export { InputCurrency } from './components/InputCurrency.jsx';
 export { InputCurrency2 } from './components/InputCurrency2.jsx'
 export { InputFormat } from './components/InputFormat.jsx';
 export { InputOptions } from './components/InputOptions.jsx';
+export { InputSelect } from './components/InputSelect.jsx';
 export { InputSpace } from './components/InputSpace.jsx';
 export { InputSubmit } from './components/InputSubmit.jsx';
 export { InputToggle } from './components/InputToggle.jsx';
