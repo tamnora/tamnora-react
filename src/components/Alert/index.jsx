@@ -15,7 +15,7 @@ const Alert = ({
   timeOff,
   position = 'top-right',
 }) => {
-  
+
   const alertType = {
     info: 'dark:text-blue-400 text-blue-800',
     danger: 'dark:text-red-400 text-red-800',
@@ -50,7 +50,7 @@ const Alert = ({
   }, [timeOff, onClose]);
 
   return (
-    <div className={`bg-white/60 dark:bg-black/60 backdrop-filter min-w-96  backdrop-blur-xl p-3 flex overflow-hidden ${message === '' ? 'items-center' : 'items-start'} justify-between fixed ${positionClasses[position]} min-w-56 max-w-96 shadow-xl ${alertType[type]} ${radius}  z-50`} role="alert">
+    <div className={`bg-white/60 dark:bg-black/60 backdrop-filter w-[335px] sm:w-fit sm:min-w-96  backdrop-blur-xl p-3 flex overflow-hidden ${message === '' ? 'items-center' : 'items-start'} justify-between fixed ${positionClasses[position]} shadow-xl ${alertType[type]} ${radius}  z-50`} role="alert">
       <div className='flex flex-col'>
         <h3 className='flex items-center'>
           {icon && alertIcons[type]}
