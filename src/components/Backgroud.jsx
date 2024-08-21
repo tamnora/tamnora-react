@@ -1,4 +1,4 @@
-const Background = ({classA0='text-neutral-100 dark:text-neutral-900', classA1='text-neutral-200 dark:text-neutral-800', classB0='text-neutral-300 dark:text-neutral-900', classB1='text-neutral-200 dark:text-neutral-800'}) => {
+const Background = ({classA0='text-zinc-100 dark:text-zinc-900', classA1='text-zinc-200 dark:text-zinc-800', classB0='text-zinc-300 dark:text-zinc-900', classB1='text-zinc-200 dark:text-zinc-800'}) => {
     return (
         <div className="absolute top-0 left-0 h-full w-full overflow-hidden">
         <svg xmlns="http://www.w3.org/2000/svg" className="h-full w-full">

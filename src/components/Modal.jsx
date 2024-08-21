@@ -8,6 +8,8 @@ const Modal = ({
   backdrop = 'opaque',
   scrollBehavior = 'normal',
   placement = 'auto',
+  bgClass='bg-white dark:bg-zinc-900',
+  textClass='text-zinc-800 dark:text-white',
   isOpen = false,
   defaultOpen,
   isDismissable = false,
@@ -96,9 +98,9 @@ const Modal = ({
 
   const modalRadius = {
     none: 'rounded-none',
-    sm: 'rounded-sm',
-    md: 'rounded-md',
-    lg: 'rounded-lg',
+    sm: 'sm:rounded-sm',
+    md: 'sm:rounded-md',
+    lg: 'sm:rounded-lg',
   };
 
   const modalShadows = {
@@ -123,7 +125,7 @@ const Modal = ({
 
   const wrapperClasses = `${modalBackdrops[backdrop]} fixed inset-0 z-50 ${customClassNames.wrapper || ''}`;
 
-  const baseClasses = `${modalSizes[size]} ${modalRadius[radius]} ${modalShadows[shadow]} ${modalPlacements[placement]} dark:text-white bg-white dark:bg-zinc-900 tmn-fadeIn relative ${customClassNames.base || ''}`;
+  const baseClasses = `${modalSizes[size]} ${modalRadius[radius]} ${modalShadows[shadow]} ${modalPlacements[placement]} ${bgClass} ${textClass} tmn-fadeIn relative ${customClassNames.base || ''}`;
 
   if (!isModalOpen) {
     return null;
