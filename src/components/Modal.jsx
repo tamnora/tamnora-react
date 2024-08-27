@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 const Modal = ({
   children,
+  name='modal',
   size = 'md',
   radius = 'lg',
   shadow = 'lg',
@@ -9,7 +10,7 @@ const Modal = ({
   scrollBehavior = 'normal',
   placement = 'auto',
   bgClass='bg-white dark:bg-zinc-900',
-  textClass='text-zinc-800 dark:text-white',
+  textClass='text-black dark:text-white',
   isOpen = false,
   defaultOpen,
   isDismissable = false,
@@ -25,11 +26,37 @@ const Modal = ({
   overflow = 'overflow-y-visible'
 }) => {
   const [isModalOpen, setIsModalOpen] = React.useState(defaultOpen || false);
+  const modalRef = useRef(null);
+
+  // Función para obtener la altura del viewport
+function getViewportHeight() {
+  return window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+}
+
+// Función para obtener la altura del div
+function getDivHeight() {
+  const div = document.getElementById(name);
+  return div ? div.clientHeight : 0;
+}
+
+// Función para verificar si el div es más alto que el viewport
+function isDivTallerThanViewport() {
+  const viewportHeight = getViewportHeight();
+  const divHeight = getDivHeight();
+  return divHeight > viewportHeight;
+}
 
   useEffect(() => {
     if (isOpen !== undefined) {
       setIsModalOpen(isOpen);
     }
+    setTimeout(() => {
+      if(isDivTallerThanViewport(name)){
+        const div = document.getElementById(name);
+        div.classList.remove('md:overflow-y-visible');
+        div.classList.remove('md:h-auto');
+      }
+    }, 200);
   }, [isOpen]);
 
   useEffect(() => {
@@ -70,6 +97,8 @@ const Modal = ({
       }
     }
   };
+
+  
 
   useEffect(() => {
     if (isModalOpen) {
@@ -134,6 +163,8 @@ const Modal = ({
   return (
     <div className={wrapperClasses} onClick={handleBackdropClose}>
       <div
+        id={name}
+        ref={modalRef}
         className={baseClasses}
         onClick={(e) => e.stopPropagation()}
       >

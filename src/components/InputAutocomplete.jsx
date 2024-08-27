@@ -59,7 +59,9 @@ export function InputAutocomplete({
   }
 
   useEffect(() => {
-    initValues(defaultValue);
+    if(!focused){
+      initValues(defaultValue);
+    }
   }, [defaultValue]);
 
   useEffect(() => {
@@ -169,13 +171,13 @@ export function InputAutocomplete({
   const selectOption = (option) => {
     setInternalValue(option.value)
     setInternalLabel(option.label);
-    setShowOptions(false);
     if (onChange) {
       onChange({ target: { value: option.value, label: option.label } });
     }
     if (onHandleBlur) {
       onHandleBlur({ target: { value: option.value, label: option.label } });
     }
+    setShowOptions(false);
   };
 
   const handleKeyDown = (e) => {
@@ -204,6 +206,7 @@ export function InputAutocomplete({
   };
 
   useEffect(() => {
+    initValues(defaultValue);
     document.addEventListener('mousedown', handleOutsideClick);
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, []);

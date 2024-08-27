@@ -538,16 +538,15 @@ const AutoForm = ({
 
 	const handleChange = (e, key) => {
 		let updatedData = { ...formData, [key]: e.target.value };
-		setFormData(updatedData);
-
+		
 		if (!inputUpdated) {
 			setInputUpdated(true);
 		}
-
+		
 		if (onChange) {
 			onChange(updatedData);
 		}
-
+		
 		if (key in onChangeInput) {
 			let res = onChangeInput[key]({ formData: formData, key: key, value: e.target.value, element: e, ref: formRef });
 			if (res) {
@@ -556,6 +555,7 @@ const AutoForm = ({
 				setFormData(updatedData);
 			}
 		}
+		setFormData(updatedData);
 	};
 
 	const handleSelect = (key, value) => {
@@ -618,18 +618,21 @@ const AutoForm = ({
 				if (typeElement != 'button') {
 					const role1 = document.activeElement.role || '';
 					if (role1 === 'autocomplete') {
-						e.preventDefault();
-						let nextIndex = index + 1;
-						while (nextIndex < formElements.length && formElements[nextIndex].tabIndex === -1) {
-							nextIndex++;
-						}
-						if (nextIndex < formElements.length) {
-							formElements[nextIndex].focus();
-							const typeNextElement = formElements[nextIndex].tagName.toLowerCase();
-							if (typeNextElement == 'input') {
-								formElements[nextIndex].select();
+						console.log('Es autocomplete');
+						// e.preventDefault();
+						setTimeout(() => {
+							let nextIndex = index + 1;
+							while (nextIndex < formElements.length && formElements[nextIndex].tabIndex === -1) {
+								nextIndex++;
 							}
-						}
+							if (nextIndex < formElements.length) {
+								formElements[nextIndex].focus();
+								const typeNextElement = formElements[nextIndex].tagName.toLowerCase();
+								if (typeNextElement == 'input') {
+									formElements[nextIndex].select();
+								}
+							}
+						}, 200);
 					} else {
 						e.preventDefault();
 						let nextIndex = index + 1;
