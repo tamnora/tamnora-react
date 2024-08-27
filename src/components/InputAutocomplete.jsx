@@ -119,15 +119,21 @@ export function InputAutocomplete({
     }
 
     if (onChange) {
-      if (filteredOptions.length > 0) {
-        if (matchedOption) {
-          onChange({ target: { value: matchedOption.value, label: matchedOption.label } });
-        } else {
-          onChange({ target: { value: 0, label: newValue } });
-        }
+      if (matchedOption) {
+        onChange({ target: { value: matchedOption.value, label: matchedOption.label } });
       } else {
         onChange({ target: { value: 0, label: newValue } });
       }
+
+      // if (filteredOptions.length > 0) {
+      //   if (matchedOption) {
+      //     onChange({ target: { value: matchedOption.value, label: matchedOption.label } });
+      //   } else {
+      //     onChange({ target: { value: 0, label: newValue } });
+      //   }
+      // } else {
+      //   onChange({ target: { value: 0, label: newValue } });
+      // }
     }
   };
 

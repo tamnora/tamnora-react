@@ -565,6 +565,15 @@ const AutoForm = ({
 		if (onChange) {
 			onChange(updatedData);
 		}
+
+		if (key in onChangeInput) {
+			let res = onChangeInput[key]({ formData: formData, key: key, value: value, ref: formRef });
+			if (res) {
+				updatedData = { ...updatedData, ...res };
+				// console.log('Resultado', updatedData)
+				setFormData(updatedData);
+			}
+		}
 	}
 
 
@@ -573,8 +582,9 @@ const AutoForm = ({
 			initialValues[key] = e.target.value;
 			setInputUpdated(false);
 			let updatedData = { ...formData, [key]: e.target.value };
+
 			if (key in onUpdateInput) {
-				let res = onUpdateInput[key]({ formData: formData, key: key, value: e.target.value, ref: formRef });
+				let res = onUpdateInput[key]({ formData: formData, key: key, value: e.target.value, element: e, ref: formRef });
 				if (res) {
 					updatedData = { ...updatedData, ...res };
 					// console.log('Resultado', updatedData)
@@ -585,8 +595,6 @@ const AutoForm = ({
 			if (onChange) {
 				onChange(updatedData);
 			}
-
-
 		}
 	};
 
