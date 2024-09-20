@@ -14,7 +14,7 @@ export function Button({
     xs: 'h-6 px-2 text-xs min-w-10',
     sm: 'h-8 px-3 text-xs min-w-16',
     md: 'h-10 px-4 text-sm min-w-20',
-    lg: 'h-12 px-6 text-md min-w-24',
+    lg: 'h-12 px-6 text-base min-w-24',
   };
 
   const defaultRadius = {

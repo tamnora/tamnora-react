@@ -272,7 +272,7 @@ const AutoTable = ({
         <div ref={tableRef} tabIndex={0} name={name} className={`overflow-x-auto rounded-lg border border-zinc-400/30 dark:border-zinc-700/50 w-full tmn-fadeIn `} style={{ outline: 'none' }}>
           <table className="w-full text-sm text-left text-zinc-500 dark:text-zinc-400">
             <thead className="text-xs border-b text-zinc-700 bg-zinc-50 dark:bg-zinc-800/20 border-zinc-200 uppercase dark:text-zinc-400 dark:border-zinc-800">
-              <tr className="text-md font-semibold">
+              <tr className="text-base font-semibold">
                 {showRowSelection && showIconSelection && <th></th>}
                 {effectiveColumns.length > 0 && effectiveColumns.map((column, index) => {
                   if (!isHidden.includes(column)) return (

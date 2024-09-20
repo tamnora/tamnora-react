@@ -42,7 +42,7 @@ const Table = ({ data = [], columns = [], rowsPerView = 10, onRowClick, columnNa
             >
                 <table className="w-full text-sm text-left text-zinc-500 dark:text-zinc-400">
                     <thead className="text-xs border-b text-zinc-700 bg-zinc-200 dark:bg-zinc-900 border-zinc-200 uppercase dark:text-zinc-400 dark:border-zinc-800">
-                        <tr className="text-md font-semibold">
+                        <tr className="text-base font-semibold">
                             {tableColumns.map((column, index) => (
                                 <th
                                     key={index}
