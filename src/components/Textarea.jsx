@@ -1,9 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { inputColor, inputOutline } from '../js/tamnora';
+
 
 const Textarea = ({
   children,
   variant = 'flat',
   color = 'default',
+  outline = 'default',
+  text='text-sm',
   size = 'md',
   radius = 'rounded-xl',
   label,
@@ -70,21 +74,26 @@ const Textarea = ({
     ...props
   };
 
-  const containerClassNames = `relative w-full shadow-sm flex px-3 min-h-10 flex-col items-start justify-start transition-background duration-150 outline-none py-2 cursor-text h-auto
+  const getColorClass = () => {
+    return inputColor(color) ? inputColor(color)[variant] || '' : '';;
+  };
+
+  const containerClassNames = `tmn-normal relative w-full shadow-sm flex px-3 min-h-10 flex-col items-start justify-center transition-background duration-150 outline-none py-2 cursor-text 
+    ${getHeightClass()}
+    ${requiredStyles()}
     ${isDisabled && 'opacity-50'}
+    ${isReadOnly && 'opacity-60'}
+    ${getColorClass()} 
     ${fullWidth ? 'w-full' : 'w-auto'}
     ${variant === 'underlined' ? 'rounded-0' : radius}
-    ${variant === 'flat' ? 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700' : ''}
-    ${variant === 'bordered' ? 'border-2 border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500' : ''}
-    ${variant === 'underlined' ? 'border-b-2 !shadow-none dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500 !px-1' : ''}
-    ${variant === 'faded' ? 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border-2 border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500' : ''}
-    ${variant === 'tmn' ? 'bg-white dark:bg-zinc-800/80 hover:bg-zinc-50 dark:hover:bg-zinc-700/80 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500' : ''}
     ${focused && (variant === 'bordered' || variant === 'underlined') ? '!border-zinc-800 dark:!border-white' : ''}
-    ${focused && (variant === 'flat' || variant === 'faded' || variant === 'tmn') ? 'outline outline-sky-500 dark:outline-sky-700 outline-offset-1' : ''}`;
+    ${focused && (variant === 'flat' || variant === 'faded' || variant === 'tmn') ? evalActive ? evalResult ? inputOutline(evalColorTrue) : inputOutline(evalColorFalse) : inputOutline(outline) : ''}
+    `;
 
-  const labelClassNames = `text-base font-normal pointer-events-none origin-top-left subpixel-antialiased block cursor-text transition-transform transition-color transition-left ease-out duration-200 text-zinc-600 dark:text-zinc-300 text-xs
-    ${customClassNames.label || ''}`;
-  const outsideLabelClassNames = `${isDisabled && 'opacity-50'} text-xs font-medium text-zinc-600 dark:text-zinc-300`;
+  const labelClassNames = `absolute z-10 text-base font-normal pointer-events-none origin-top-left subpixel-antialiased block cursor-text transition-transform transition-color transition-left ease-out duration-200 
+    ${displayedValue || focused || placeholder || props.type === 'date' || props.type === 'time' || defaultValue == '0' ? 'text-zinc-600 dark:text-zinc-300 scale-75 -translate-y-2' : 'scale-100 translate-y-0 text-zinc-500 dark:text-zinc-400'} `;
+  const outsideLabelClassNames = `${isDisabled && 'opacity-50'} text-xs font-medium text-zinc-600 dark:text-zinc-400`;
+
 
   useEffect(() => {
     setInternalValue(defaultValue);
@@ -105,7 +114,7 @@ const Textarea = ({
         )}
         <textarea
           {...textareaProps}
-          className="w-full font-normal bg-transparent !outline-none focus-visible:outline-none data-text-small transition-none pt-0 resize-y min-h-[40px] dark:text-white placeholder:text-zinc-500 text-sm"
+          className={`w-full font-normal bg-transparent !outline-none focus-visible:outline-none data-text-small transition-none pt-0 resize-y min-h-[40px] dark:text-white placeholder:text-zinc-500 ${text}`}
         />
       </div>
       {errorMessage && <p className="text-xs ms-1 mt-1 text-red-400">{errorMessage}</p>}

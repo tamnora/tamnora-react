@@ -253,8 +253,8 @@ const AutoTable = ({
 
   const styleRow = `flex flex-col gap-2.5 p-4 sm:p-0 font-medium sm:font-normal sm:gap-0 sm:table-row hover:bg-zinc-200/40 dark:hover:bg-zinc-800/70 `;
   const styleRowFooter = `flex flex-col gap-1 py-3 px-4 sm:p-0 font-medium sm:font-normal sm:gap-0 sm:table-row text-sm border-t text-zinc-700 bg-zinc-50 dark:bg-zinc-800/20 border-zinc-200  dark:text-zinc-400 dark:border-zinc-800`;
-  const trA = `bg-white dark:bg-zinc-800 sm:bg-transparent sm:dark:bg-transparent ${rowPointer} `;
-  const trB = `bg-white sm:bg-zinc-50 dark:bg-zinc-800 sm:dark:bg-zinc-800/20  ${rowPointer} `;
+  const trA = `bg-white dark:bg-zinc-900 sm:bg-transparent sm:dark:bg-transparent ${rowPointer} `;
+  const trB = `bg-white sm:bg-zinc-50 dark:bg-zinc-900 sm:dark:bg-zinc-800/20  ${rowPointer} `;
   const tr3 = `hover:text-zinc-900 dark:hover:text-zinc-100 ${rowPointer} `;
   const border = `border-2 rounded-xl sm:border-0 sm:border-t border-zinc-200 dark:border-zinc-700/70`;
   const tr1 = `${trA} ${border} hover:text-zinc-900 dark:hover:text-zinc-100`;

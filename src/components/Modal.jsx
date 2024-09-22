@@ -117,7 +117,7 @@ function isDivTallerThanViewport() {
     sm: 'max-w-sm',
     md: 'max-w-md',
     lg: 'max-w-lg',
-    xl: 'max-w-xl',
+    xl: 'max-w-xl overflow-y-auto md:overflow-y-visible h-full md:h-auto',
     '2xl': 'max-w-2xl overflow-y-auto md:overflow-y-visible h-full md:h-auto',
     '3xl': 'max-w-3xl overflow-y-auto md:overflow-y-visible h-full md:h-auto',
     '4xl': 'max-w-4xl overflow-y-auto md:overflow-y-visible h-full md:h-auto',

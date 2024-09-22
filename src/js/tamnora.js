@@ -1251,3 +1251,139 @@ export async function runQuery(server_url, server_type, type, sql) {
   }
 }
 
+export function inputColor(color = 'default'){
+  const colorMap = {
+    default: {
+      flat: 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700',
+      bordered: 'border-2 border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500',
+      underlined: 'border-b-2 !shadow-none dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500 !px-1',
+      faded: 'bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border-2 border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500',
+      tmn: 'bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500',
+    },
+    blue: {
+      flat: 'bg-blue-100 dark:bg-blue-800 hover:bg-blue-200 dark:hover:bg-blue-700',
+      bordered: 'border-2 border-blue-200 dark:border-blue-700 hover:border-blue-400 dark:hover:border-blue-500',
+      underlined: 'border-b-2 !shadow-none dark:border-blue-700 hover:border-blue-400 dark:hover:border-blue-500 !px-1',
+      faded: 'bg-blue-100 dark:bg-blue-800 hover:bg-blue-200 dark:hover:bg-blue-700 border-2 border-blue-200 dark:border-blue-700 hover:border-blue-400 dark:hover:border-blue-500',
+      tmn: 'bg-white dark:bg-blue-800/80 hover:bg-blue-50 dark:hover:bg-blue-800/50 border border-blue-200 dark:border-blue-700 hover:border-blue-400 dark:hover:border-blue-500',
+    },
+    red: {
+      flat: 'bg-red-100 dark:bg-red-800 hover:bg-red-200 dark:hover:bg-red-700',
+      bordered: 'border-2 border-red-200 dark:border-red-700 hover:border-red-400 dark:hover:border-red-500',
+      underlined: 'border-b-2 !shadow-none dark:border-red-700 hover:border-red-400 dark:hover:border-red-500 !px-1',
+      faded: 'bg-red-100 dark:bg-red-800 hover:bg-red-200 dark:hover:bg-red-700 border-2 border-red-200 dark:border-red-700 hover:border-red-400 dark:hover:border-red-500',
+      tmn: 'bg-red-100 text-red-700 dark:bg-red-800/80 hover:bg-red-50 dark:hover:bg-red-800/50 border border-red-200 dark:border-red-700 hover:border-red-400 dark:hover:border-red-500',
+    },
+    green: {
+      flat: 'bg-green-100 dark:bg-green-800 hover:bg-green-200 dark:hover:bg-green-700',
+      bordered: 'border-2 border-green-200 dark:border-green-700 hover:border-green-400 dark:hover:border-green-500',
+      underlined: 'border-b-2 !shadow-none dark:border-green-700 hover:border-green-400 dark:hover:border-green-500 !px-1',
+      faded: 'bg-green-100 dark:bg-green-800 hover:bg-green-200 dark:hover:bg-green-700 border-2 border-green-200 dark:border-green-700 hover:border-green-400 dark:hover:border-green-500',
+      tmn: 'bg-white dark:bg-green-800/80 hover:bg-green-50 dark:hover:bg-green-800/50 border border-green-200 dark:border-green-700 hover:border-green-400 dark:hover:border-green-500',
+    },
+    yellow: {
+      flat: 'bg-yellow-100 dark:bg-yellow-800 hover:bg-yellow-200 dark:hover:bg-yellow-700',
+      bordered: 'border-2 border-yellow-200 dark:border-yellow-700 hover:border-yellow-400 dark:hover:border-yellow-500',
+      underlined: 'border-b-2 !shadow-none dark:border-yellow-700 hover:border-yellow-400 dark:hover:border-yellow-500 !px-1',
+      faded: 'bg-yellow-100 dark:bg-yellow-800 hover:bg-yellow-200 dark:hover:bg-yellow-700 border-2 border-yellow-200 dark:border-yellow-700 hover:border-yellow-400 dark:hover:border-yellow-500',
+      tmn: 'bg-white dark:bg-zinc-800/80 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 border border-yellow-200 dark:border-yellow-700 hover:border-yellow-400 dark:hover:border-yellow-500',
+    },
+    sky: {
+      flat: 'bg-sky-100 dark:bg-sky-800 hover:bg-sky-200 dark:hover:bg-sky-700',
+      bordered: 'border-2 border-sky-200 dark:border-sky-700 hover:border-sky-400 dark:hover:border-sky-500',
+      underlined: 'border-b-2 !shadow-none dark:border-sky-700 hover:border-sky-400 dark:hover:border-sky-500 !px-1',
+      faded: 'bg-sky-100 dark:bg-sky-800 hover:bg-sky-200 dark:hover:bg-sky-700 border-2 border-sky-200 dark:border-sky-700 hover:border-sky-400 dark:hover:border-sky-500',
+      tmn: 'bg-white dark:bg-sky-800/80 hover:bg-sky-50 dark:hover:bg-sky-800/50 border border-sky-200 dark:border-sky-700 hover:border-sky-400 dark:hover:border-sky-500',
+    },
+    emerald: {
+      flat: 'bg-emerald-100 dark:bg-emerald-800 hover:bg-emerald-200 dark:hover:bg-emerald-700',
+      bordered: 'border-2 border-emerald-200 dark:border-emerald-700 hover:border-emerald-400 dark:hover:border-emerald-500',
+      underlined: 'border-b-2 !shadow-none dark:border-emerald-700 hover:border-emerald-400 dark:hover:border-emerald-500 !px-1',
+      faded: 'bg-emerald-100 dark:bg-emerald-800 hover:bg-emerald-200 dark:hover:bg-emerald-700 border-2 border-emerald-200 dark:border-emerald-700 hover:border-emerald-400 dark:hover:border-emerald-500',
+      tmn: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-800/80 hover:bg-emerald-50 dark:hover:bg-emerald-800/50 border border-emerald-200 dark:border-emerald-700 hover:border-emerald-400 dark:hover:border-emerald-500',
+    },
+    violet: {
+      flat: 'bg-violet-100 dark:bg-violet-800 hover:bg-violet-200 dark:hover:bg-violet-700',
+      bordered: 'border-2 border-violet-200 dark:border-violet-700 hover:border-violet-400 dark:hover:border-violet-500',
+      underlined: 'border-b-2 !shadow-none dark:border-violet-700 hover:border-violet-400 dark:hover:border-violet-500 !px-1',
+      faded: 'bg-violet-100 dark:bg-violet-800 hover:bg-violet-200 dark:hover:bg-violet-700 border-2 border-violet-200 dark:border-violet-700 hover:border-violet-400 dark:hover:border-violet-500',
+      tmn: 'bg-white dark:bg-violet-800/80 hover:bg-violet-50 dark:hover:bg-violet-800/50 border border-violet-200 dark:border-violet-700 hover:border-violet-400 dark:hover:border-violet-500',
+    },
+    purple: {
+      flat: 'bg-purple-100 dark:bg-purple-800 hover:bg-purple-200 dark:hover:bg-purple-700',
+      bordered: 'border-2 border-purple-200 dark:border-purple-700 hover:border-purple-400 dark:hover:border-purple-500',
+      underlined: 'border-b-2 !shadow-none dark:border-purple-700 hover:border-purple-400 dark:hover:border-purple-500 !px-1',
+      faded: 'bg-purple-100 dark:bg-purple-800 hover:bg-purple-200 dark:hover:bg-purple-700 border-2 border-purple-200 dark:border-purple-700 hover:border-purple-400 dark:hover:border-purple-500',
+      tmn: 'bg-white dark:bg-purple-800/80 hover:bg-purple-50 dark:hover:bg-purple-800/50 border border-purple-200 dark:border-purple-700 hover:border-purple-400 dark:hover:border-purple-500',
+    },
+    orange: {
+      flat: 'bg-orange-100 dark:bg-orange-800 hover:bg-orange-200 dark:hover:bg-orange-700',
+      bordered: 'border-2 border-orange-200 dark:border-orange-700 hover:border-orange-400 dark:hover:border-orange-500',
+      underlined: 'border-b-2 !shadow-none dark:border-orange-700 hover:border-orange-400 dark:hover:border-orange-500 !px-1',
+      faded: 'bg-orange-100 dark:bg-orange-800 hover:bg-orange-200 dark:hover:bg-orange-700 border-2 border-orange-200 dark:border-orange-700 hover:border-orange-400 dark:hover:border-orange-500',
+      tmn: 'bg-white dark:bg-orange-800/80 hover:bg-orange-50 dark:hover:bg-orange-800/50 border border-orange-200 dark:border-orange-700 hover:border-orange-400 dark:hover:border-orange-500',
+    },
+    amber: {
+      flat: 'bg-amber-100 dark:bg-amber-800 hover:bg-amber-200 dark:hover:bg-amber-700',
+      bordered: 'border-2 border-amber-200 dark:border-amber-700 hover:border-amber-400 dark:hover:border-amber-500',
+      underlined: 'border-b-2 !shadow-none dark:border-amber-700 hover:border-amber-400 dark:hover:border-amber-500 !px-1',
+      faded: 'bg-amber-100 dark:bg-amber-800 hover:bg-amber-200 dark:hover:bg-amber-700 border-2 border-amber-200 dark:border-amber-700 hover:border-amber-400 dark:hover:border-amber-500',
+      tmn: 'bg-white dark:bg-amber-800/80 hover:bg-amber-50 dark:hover:bg-amber-800/50 border border-amber-200 dark:border-amber-700 hover:border-amber-400 dark:hover:border-amber-500',
+    },
+    lime: {
+      flat: 'bg-lime-100 dark:bg-lime-800 hover:bg-lime-200 dark:hover:bg-lime-700',
+      bordered: 'border-2 border-lime-200 dark:border-lime-700 hover:border-lime-400 dark:hover:border-lime-500',
+      underlined: 'border-b-2 !shadow-none dark:border-lime-700 hover:border-lime-400 dark:hover:border-lime-500 !px-1',
+      faded: 'bg-lime-100 dark:bg-lime-800 hover:bg-lime-200 dark:hover:bg-lime-700 border-2 border-lime-200 dark:border-lime-700 hover:border-lime-400 dark:hover:border-lime-500',
+      tmn: 'bg-white dark:bg-lime-800/80 hover:bg-lime-50 dark:hover:bg-lime-800/50 border border-lime-200 dark:border-lime-700 hover:border-lime-400 dark:hover:border-lime-500',
+    },
+    teal: {
+      flat: 'bg-teal-100 dark:bg-teal-800 hover:bg-teal-200 dark:hover:bg-teal-700',
+      bordered: 'border-2 border-teal-200 dark:border-teal-700 hover:border-teal-400 dark:hover:border-teal-500',
+      underlined: 'border-b-2 !shadow-none dark:border-teal-700 hover:border-teal-400 dark:hover:border-teal-500 !px-1',
+      faded: 'bg-teal-100 dark:bg-teal-800 hover:bg-teal-200 dark:hover:bg-teal-700 border-2 border-teal-200 dark:border-teal-700 hover:border-teal-400 dark:hover:border-teal-500',
+      tmn: 'bg-white dark:bg-teal-800/80 hover:bg-teal-50 dark:hover:bg-teal-800/50 border border-teal-200 dark:border-teal-700 hover:border-teal-400 dark:hover:border-teal-500',
+    },
+  };
+
+  return colorMap[color];
+
+}
+
+export function inputOutline(color = 'default'){
+  // const typesOutlines = {
+  //   default: 'outline outline-zinc-500 dark:outline-zinc-700 outline-offset-1',
+  //   blue: 'outline outline-blue-500 dark:outline-blue-700 outline-offset-1',
+  //   red: 'outline outline-red-500 dark:outline-red-700 outline-offset-1',
+  //   green: 'outline outline-green-500 dark:outline-green-700 outline-offset-1',
+  //   yellow: 'outline outline-yellow-500 dark:outline-yellow-700 outline-offset-1',
+  //   sky: 'outline outline-sky-500 dark:outline-sky-700 outline-offset-1',
+  //   emerald: 'outline outline-emerald-500 dark:outline-emerald-700 outline-offset-1',
+  //   violet: 'outline outline-violet-500 dark:outline-violet-700 outline-offset-1',
+  //   purple: 'outline outline-purple-500 dark:outline-purple-700 outline-offset-1',
+  //   orange: 'outline outline-orange-500 dark:outline-orange-700 outline-offset-1',
+  //   amber: 'outline outline-amber-500 dark:outline-amber-700 outline-offset-1',
+  //   lime: 'outline outline-lime-500 dark:outline-lime-700 outline-offset-1',
+  //   teal: 'outline outline-teal-500 dark:outline-teal-700 outline-offset-1',
+  // };
+
+  const typesBorders = {
+    default: 'outline-none !border-zinc-500 !dark:border-zinc-700',
+    blue: 'outline-none !border-blue-500 !dark:border-blue-700',
+    red: 'outline-none !border-red-500 !dark:border-red-700',
+    green: 'outline-none !border-green-500 !dark:border-green-700',
+    yellow: 'outline-none !border-yellow-500 !dark:border-yellow-700',
+    sky: 'outline-none !border-sky-500 !dark:border-sky-700',
+    emerald: 'outline-none !border-emerald-500 !dark:border-emerald-700',
+    violet: 'outline-none !border-violet-500 !dark:border-violet-700',
+    purple: 'outline-none !border-purple-500 !dark:border-purple-700',
+    orange: 'outline-none !border-orange-500 !dark:border-orange-700',
+    amber: 'outline-none !border-amber-500 !dark:border-amber-700',
+    lime: 'outline-none !border-lime-500 !dark:border-lime-700',
+    teal: 'outline-none !border-teal-500 !dark:border-teal-700',
+};
+
+
+  return typesBorders[color];
+
+}
