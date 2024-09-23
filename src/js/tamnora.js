@@ -1368,7 +1368,7 @@ export function inputOutline(color = 'default'){
   // };
 
   const typesBorders = {
-    default: 'outline-none !border-zinc-500 !dark:border-zinc-700',
+    default: 'outline-none !border-zinc-700 !dark:border-zinc-200',
     blue: 'outline-none !border-blue-500 !dark:border-blue-700',
     red: 'outline-none !border-red-500 !dark:border-red-700',
     green: 'outline-none !border-green-500 !dark:border-green-700',

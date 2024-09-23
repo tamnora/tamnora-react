@@ -43,7 +43,7 @@ const Tabs = ({ children }) => {
           </button>
         ))}
       </div>
-      <div className="p-4 pt-6">
+      <div className="pt-6 pb-3">
         {children[activeTab]}
       </div>
     </div>
