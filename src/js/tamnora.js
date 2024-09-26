@@ -1351,39 +1351,39 @@ export function inputColor(color = 'default'){
 }
 
 export function inputOutline(color = 'default'){
-  // const typesOutlines = {
-  //   default: 'outline outline-zinc-500 dark:outline-zinc-700 outline-offset-1',
-  //   blue: 'outline outline-blue-500 dark:outline-blue-700 outline-offset-1',
-  //   red: 'outline outline-red-500 dark:outline-red-700 outline-offset-1',
-  //   green: 'outline outline-green-500 dark:outline-green-700 outline-offset-1',
-  //   yellow: 'outline outline-yellow-500 dark:outline-yellow-700 outline-offset-1',
-  //   sky: 'outline outline-sky-500 dark:outline-sky-700 outline-offset-1',
-  //   emerald: 'outline outline-emerald-500 dark:outline-emerald-700 outline-offset-1',
-  //   violet: 'outline outline-violet-500 dark:outline-violet-700 outline-offset-1',
-  //   purple: 'outline outline-purple-500 dark:outline-purple-700 outline-offset-1',
-  //   orange: 'outline outline-orange-500 dark:outline-orange-700 outline-offset-1',
-  //   amber: 'outline outline-amber-500 dark:outline-amber-700 outline-offset-1',
-  //   lime: 'outline outline-lime-500 dark:outline-lime-700 outline-offset-1',
-  //   teal: 'outline outline-teal-500 dark:outline-teal-700 outline-offset-1',
-  // };
+  const typesOutlines = {
+    default: 'outline outline-zinc-600/50 dark:outline-zinc-100/50 outline-offset-0',
+    blue: 'outline outline-blue-500 dark:outline-blue-700 outline-offset-0',
+    red: 'outline outline-red-500 dark:outline-red-700 outline-offset-0',
+    green: 'outline outline-green-500 dark:outline-green-700 outline-offset-0',
+    yellow: 'outline outline-yellow-500 dark:outline-yellow-700 outline-offset-0 focus:border-yellow-500 dark:focus:border-yellow-700',
+    sky: 'outline outline-sky-500 dark:outline-sky-700 outline-offset-0',
+    emerald: 'outline outline-emerald-500 dark:outline-emerald-700 outline-offset-0',
+    violet: 'outline outline-violet-500 dark:outline-violet-700 outline-offset-0',
+    purple: 'outline outline-purple-500 dark:outline-purple-700 outline-offset-0',
+    orange: 'outline outline-orange-500 dark:outline-orange-700 outline-offset-0',
+    amber: 'outline outline-amber-500 dark:outline-amber-700 outline-offset-0',
+    lime: 'outline outline-lime-500 dark:outline-lime-700 outline-offset-0',
+    teal: 'outline outline-teal-500 dark:outline-teal-700 outline-offset-0',
+  };
 
   const typesBorders = {
-    default: 'outline-none !border-zinc-700 !dark:border-zinc-200',
-    blue: 'outline-none !border-blue-500 !dark:border-blue-700',
-    red: 'outline-none !border-red-500 !dark:border-red-700',
-    green: 'outline-none !border-green-500 !dark:border-green-700',
-    yellow: 'outline-none !border-yellow-500 !dark:border-yellow-700',
-    sky: 'outline-none !border-sky-500 !dark:border-sky-700',
-    emerald: 'outline-none !border-emerald-500 !dark:border-emerald-700',
-    violet: 'outline-none !border-violet-500 !dark:border-violet-700',
-    purple: 'outline-none !border-purple-500 !dark:border-purple-700',
-    orange: 'outline-none !border-orange-500 !dark:border-orange-700',
-    amber: 'outline-none !border-amber-500 !dark:border-amber-700',
-    lime: 'outline-none !border-lime-500 !dark:border-lime-700',
-    teal: 'outline-none !border-teal-500 !dark:border-teal-700',
+    default: 'outline-none focus:border-zinc-700 dark:focus:border-zinc-500',
+    blue: 'outline-none focus:border-blue-500 dark:focus:border-blue-700',
+    red: 'outline-none focus:border-red-500 dark:focus:border-red-700',
+    green: 'outline-none focus:border-green-500 dark:focus:border-green-700',
+    yellow: 'outline-none focus:border-yellow-500 dark:focus:border-yellow-700',
+    sky: 'outline-none focus:border-sky-500 dark:focus:border-sky-700',
+    emerald: 'outline-none focus:border-emerald-500 dark:focus:border-emerald-700',
+    violet: 'outline-none focus:border-violet-500 dark:focus:border-violet-700',
+    purple: 'outline-none focus:border-purple-500 dark:focus:border-purple-700',
+    orange: 'outline-none focus:border-orange-500 dark:focus:border-orange-700',
+    amber: 'outline-none focus:border-amber-500 dark:focus:border-amber-700',
+    lime: 'outline-none focus:border-lime-500 dark:focus:border-lime-700',
+    teal: 'outline-none focus:border-teal-500 dark:focus:border-teal-700',
 };
 
 
-  return typesBorders[color];
+  return typesOutlines[color];
 
 }

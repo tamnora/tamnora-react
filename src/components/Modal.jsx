@@ -12,6 +12,9 @@ const Modal = ({
   bgClass='bg-white dark:bg-zinc-900',
   textClass='text-black dark:text-white',
   isOpen = false,
+  fadeIn = 'tmn-fadeIn',
+  position = 'relative',
+
   defaultOpen,
   isDismissable = false,
   isKeyboardDismissDisabled = false,
@@ -154,7 +157,7 @@ function isDivTallerThanViewport() {
 
   const wrapperClasses = `${modalBackdrops[backdrop]} fixed inset-0 z-50 ${customClassNames.wrapper || ''}`;
 
-  const baseClasses = `${modalSizes[size]} ${modalRadius[radius]} ${modalShadows[shadow]} ${modalPlacements[placement]} ${bgClass} ${textClass} tmn-fadeIn relative ${customClassNames.base || ''}`;
+  const baseClasses = `${modalSizes[size]} ${modalRadius[radius]} ${modalShadows[shadow]} ${modalPlacements[placement]} ${bgClass} ${textClass} ${fadeIn} ${position} ${customClassNames.base || ''}`;
 
   if (!isModalOpen) {
     return null;
@@ -191,7 +194,7 @@ function isDivTallerThanViewport() {
         )}
 
         <div className={customClassNames.header ? customClassNames.header : 'pt-6 px-6 pb-4 flex-initial flex flex-col gap-2'}>
-          <h2 className='text-zinc-600 dark:text-white text-lg font-medium leading-5'>{title}</h2>
+          <h2 className='text-zinc-600 dark:text-white text-xl font-medium leading-5'>{title}</h2>
           <p className='text-zinc-400 text-sm leading-3'>{subtitle}</p>
         </div>
         <div className={`${overflow} pt-4 pb-6 px-6  ${scrollBehavior === 'inside' ? 'max-h-full' : ''} ${customClassNames.body || ''}`}>

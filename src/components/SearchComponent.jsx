@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { inputColor, inputOutline } from '../js/tamnora';
 
-const SearchComponent = ({ onSearchChange, onEnter, myRef, name='inputSearch', placeholder='Buscar ...' }) => {
+const SearchComponent = ({ onSearchChange, onEnter, myRef, name = 'inputSearch', placeholder = 'Buscar ...', outline = 'default' }) => {
   const [textoBuscar, setTextoBuscar] = useState('');
   const [myPlaceHolder, setMyPlaceHolder] = useState(placeholder)
   const searchRef = useRef(null);
@@ -9,6 +10,22 @@ const SearchComponent = ({ onSearchChange, onEnter, myRef, name='inputSearch', p
     const newValue = event.target.value;
     setTextoBuscar(newValue);
     onSearchChange(newValue);
+  };
+
+  const typesOutlines = {
+    default: 'focus:outline focus:outline-zinc-600/50 dark:focus:outline-zinc-100/50 outline-offset-0',
+    blue: 'focus:outline focus:outline-blue-500 dark:focus:outline-blue-600 outline-offset-0',
+    red: 'focus:outline focus:outline-red-500 dark:focus:outline-red-600 outline-offset-0',
+    green: 'focus:outline focus:outline-green-500 dark:focus:outline-green-600 outline-offset-0',
+    yellow: 'focus:outline focus:outline-yellow-500 dark:focus:outline-yellow-600 outline-offset-0',
+    sky: 'focus:outline focus:outline-sky-500 dark:focus:outline-sky-600 outline-offset-0',
+    emerald: 'focus:outline focus:outline-emerald-500 dark:focus:outline-emerald-600 outline-offset-0',
+    violet: 'focus:outline focus:outline-violet-500 dark:focus:outline-violet-600 outline-offset-0',
+    purple: 'focus:outline focus:outline-purple-500 dark:focus:outline-purple-600 outline-offset-0',
+    orange: 'focus:outline focus:outline-orange-500 dark:focus:outline-orange-600 outline-offset-0',
+    amber: 'focus:outline focus:outline-amber-500 dark:focus:outline-amber-600 outline-offset-0',
+    lime: 'focus:outline focus:outline-lime-500 dark:focus:outline-lime-600 outline-offset-0',
+    teal: 'focus:outline focus:outline-teal-500 dark:focus:outline-teal-600 outline-offset-0',
   };
 
   const handleKeyDown = (e) => {
@@ -23,6 +40,8 @@ const SearchComponent = ({ onSearchChange, onEnter, myRef, name='inputSearch', p
         break;
     }
   }
+
+ 
 
   const searchElement = searchRef.current;
 
@@ -46,12 +65,14 @@ const SearchComponent = ({ onSearchChange, onEnter, myRef, name='inputSearch', p
         type="search"
         name={name}
         autoComplete="off"
-        className="block w-full py-2 px-3 ps-10 text-sm text-zinc-800 dark:text-zinc-100 font-normal rounded-lg shadow-sm bg-white dark:bg-zinc-800/40 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500 focus:outline focus:outline-sky-500 dark:focus:outline-sky-700 focus:ring-blue-500 focus:border-sky-500 dark:focus:ring-sky-700 dark:focus:border-sky-700"
+        className={`block w-full ring-0 py-3 px-3 ps-10 text-sm text-zinc-800 dark:text-zinc-100 font-normal rounded-lg shadow-sm bg-white dark:bg-zinc-800/40 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700  ${typesOutlines[outline]}`}
         placeholder={myPlaceHolder}
         value={textoBuscar}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
       />
+
+      
     </div>
   );
 };

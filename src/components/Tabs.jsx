@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-const Tabs = ({ children }) => {
+const Tabs = ({ 
+  children, 
+  colorActive = 'border-sky-500 text-sky-600 dark:text-sky-500', 
+  colorInactive = 'border-transparent text-zinc-500 hover:text-zinc-600 hover:border-zinc-600 dark:hover:text-zinc-200 dark:hover:border-zinc-200', 
+}) => {
   const [activeTab, setActiveTab] = useState(0);
 
   const handleTabClick = (index) => {
@@ -30,8 +34,8 @@ const Tabs = ({ children }) => {
         {children.map((tab, index) => (
           <button
             key={index}
-            className={`flex items-center gap-2 pl-2 pr-6 py-2 -mb-px text-sm font-medium border-b transition-colors duration-500 ${
-              activeTab === index ? 'border-sky-500 text-sky-600 dark:text-sky-500' : 'border-transparent text-zinc-500 hover:text-zinc-600 hover:border-zinc-600 dark:hover:text-zinc-200 dark:hover:border-zinc-200'
+            className={`flex items-center gap-2 pl-2 pr-6 py-2 -mb-px text-base font-medium border-b transition-colors duration-500 ${
+              activeTab === index ? colorActive : colorInactive
             }`}
             onClick={() => handleTabClick(index)}
             aria-label={`Alt+${tab.props.accessKey}`}

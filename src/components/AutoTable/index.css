@@ -13,7 +13,7 @@
     display: block;
     width: 100%;
     color: #3F3F46;
-    font-size: 17px;
+    font-size: 18px;
   }
   .dark td{
     color: white;
@@ -21,7 +21,7 @@
   td::before {
     content: attr(data-label);
     font-weight: 500;
-    font-size: 13px;
+    font-size: 14px;
     display: block;
     white-space: nowrap;
     color: #A1A1AA;

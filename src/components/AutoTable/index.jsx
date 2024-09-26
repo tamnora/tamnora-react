@@ -23,6 +23,7 @@ const AutoTable = ({
   isStriped = true,
   iconSelection,
   rowFooter,
+  onPagination,
   classFooter,
   isHidden = [],
   isWrap = [],
@@ -251,8 +252,8 @@ const AutoTable = ({
 
   //border-t border-zinc-200 dark:border-zinc-700/70 
 
-  const styleRow = `flex flex-col gap-2.5 p-4 sm:p-0 font-medium sm:font-normal sm:gap-0 sm:table-row hover:bg-zinc-200/40 dark:hover:bg-zinc-800/70 `;
-  const styleRowFooter = `flex flex-col gap-1 py-3 px-4 sm:p-0 font-medium sm:font-normal sm:gap-0 sm:table-row text-sm border-t text-zinc-700 bg-zinc-50 dark:bg-zinc-800/20 border-zinc-200  dark:text-zinc-400 dark:border-zinc-800`;
+  const styleRow = `flex flex-col gap-2.5 p-4 sm:p-0 font-medium sm:font-normal sm:gap-0 sm:table-row hover:bg-zinc-200/40 dark:hover:bg-zinc-800/70 tmn-fadeIn`;
+  const styleRowFooter = `flex flex-col gap-1 py-3 px-4 sm:p-0 font-medium sm:font-normal sm:gap-0 sm:table-row text-sm border-t text-zinc-700 bg-zinc-50 dark:bg-zinc-800/20 border-zinc-200  dark:text-zinc-400 dark:border-zinc-800 tmn-fadeIn `;
   const trA = `bg-white dark:bg-zinc-900 sm:bg-transparent sm:dark:bg-transparent ${rowPointer} `;
   const trB = `bg-white sm:bg-zinc-50 dark:bg-zinc-900 sm:dark:bg-zinc-800/20  ${rowPointer} `;
   const tr3 = `hover:text-zinc-900 dark:hover:text-zinc-100 ${rowPointer} `;
@@ -275,7 +276,7 @@ const AutoTable = ({
         <div ref={tableRef} tabIndex={0} name={name} className={`overflow-x-auto sm:rounded-lg sm:border border-zinc-400/30 dark:border-zinc-700/50 w-full tmn-fadeIn `} style={{ outline: 'none' }}>
           <table className="w-full text-sm text-left text-zinc-500 dark:text-zinc-400">
             <thead className="hidden sm:table-header-group text-xs border-b text-zinc-700 bg-zinc-50 dark:bg-zinc-800/20 border-zinc-200 uppercase dark:text-zinc-400 dark:border-zinc-800">
-              <tr className="text-base font-semibold">
+              <tr className="text-base font-semibold tmn-fadeIn">
                 {showRowSelection && showIconSelection && <th></th>}
                 {effectiveColumns.length > 0 && effectiveColumns.map((column, index) => {
                   if (!isHidden.includes(column)) return (
@@ -384,7 +385,12 @@ const AutoTable = ({
             </span>
             <div className="inline-flex rounded-lg overflow-hidden">
               <button
-                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+                onClick={() => {
+                  setCurrentPage((prev) => Math.max(prev - 1, 0));
+                  if(onPagination){
+                    onPagination();
+                  }
+                }}
                 disabled={currentPage === 0}
                 className="flex items-center justify-center py-2 px-3 text-xs font-medium bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:border-zinc-700/50 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-white border-0 border-r  disabled:opacity-50 disabled:cursor-not-allowed">
                 <svg className="w-3.5 h-3.5 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
@@ -393,7 +399,12 @@ const AutoTable = ({
                 Anterior
               </button>
               <button
-                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))}
+                onClick={() => {
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
+                  if(onPagination){
+                    onPagination();
+                  }
+                }}
                 disabled={currentPage >= totalPages - 1}
                 className="flex items-center justify-center py-2 px-3 text-xs font-medium bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:border-zinc-700/50 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-white border-0 border-l  disabled:opacity-50 disabled:cursor-not-allowed">
                 Siguiente
