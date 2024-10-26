@@ -64,6 +64,8 @@ const AutoForm = ({
 	showDelete = true,
 	showCancel = true,
 	focusActive = false,
+	altControl = {delete: {key: 'd', action: ()=>{}}, submit: {key: 's', action: ()=>{}}},
+	altActions = {t: (data)=>{console.log('Soy Tamnora')}},
 }) => {
 	const [formData, setFormData] = useState({ ...data });
 	const [initialValues, setInitialValues] = useState({ ...data });
@@ -366,7 +368,7 @@ const AutoForm = ({
 								} else {
 									elValor = '';
 								}
-							} else if (typeInput == 'datetime-local' || typeInput == 'date') {
+							} else if (typeInput == 'datetime-local' || typeInput == 'date' || typeInput == 'time') {
 								if (json[key].value !== '') {
 									elValor = json[key].value;
 								} else {
@@ -686,6 +688,46 @@ const AutoForm = ({
 					}
 				});
 
+			} else if (e.altKey) {
+				let keyDelete = altControl?.delete?.key || 'd';
+				let keySubmit = altControl?.submit?.key || 'g';
+				let actionDelete = altControl?.delete?.action ;
+				let actionSubmit = altControl?.submit?.action ;
+				let actionKey = altActions[e.key] || '';
+
+				if (e.key === keyDelete) {
+					e.preventDefault();
+	
+					const formElements = Array.from(formRef.current.elements);
+					formElements.forEach(element => {
+						if (element.id === `${name}_delete`) {
+							showDelete && onDelete && idSelected > 0 && element.focus();
+							if(actionDelete){
+								showDelete && onDelete && idSelected > 0 && actionDelete();
+							}
+						}
+					});
+	
+				} else if (e.key === keySubmit) {
+					e.preventDefault();
+	
+					const formElements = Array.from(formRef.current.elements);
+					formElements.forEach(element => {
+						if (element.id === `${name}_submit`) {
+							showSubmit && element.focus();
+							if( actionSubmit){
+								showSubmit  && actionSubmit();
+							}
+						}
+					});
+	
+				}
+				if (typeof actionKey === 'function') {
+					const formElements = Array.from(formRef.current.elements);
+					
+					actionKey({setFormData, formData, formElements});
+				}
+				
 			}
 		}
 	};

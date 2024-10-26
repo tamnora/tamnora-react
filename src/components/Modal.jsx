@@ -14,7 +14,6 @@ const Modal = ({
   isOpen = false,
   fadeIn = 'tmn-fadeIn',
   position = 'relative',
-
   defaultOpen,
   isDismissable = false,
   isKeyboardDismissDisabled = false,
