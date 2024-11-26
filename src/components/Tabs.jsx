@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const Tabs = ({ 
   children, 
+  textClass = 'text-sm font-medium',
   colorActive = 'border-sky-500 text-sky-600 dark:text-sky-500', 
   colorInactive = 'border-transparent text-zinc-500 hover:text-zinc-600 hover:border-zinc-600 dark:hover:text-zinc-200 dark:hover:border-zinc-200', 
 }) => {
@@ -34,7 +35,7 @@ const Tabs = ({
         {children.map((tab, index) => (
           <button
             key={index}
-            className={`flex items-center gap-2 pl-2 pr-6 py-2 -mb-px text-base font-medium border-b transition-colors duration-500 ${
+            className={`flex items-center gap-2 pl-2 pr-6 py-2 -mb-px ${textClass} border-b transition-colors duration-500 ${
               activeTab === index ? colorActive : colorInactive
             }`}
             onClick={() => handleTabClick(index)}

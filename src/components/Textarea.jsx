@@ -25,6 +25,10 @@ const Textarea = ({
   isInvalid = false,
   isUpperCase = false,
   isLowerCase = false,
+  evalActive = false,
+  evalResult = true,
+  evalColorTrue,
+  evalColorFalse = 'red',
   baseRef,
   disableAnimation = false,
   classNames: customClassNames = {},
@@ -74,8 +78,38 @@ const Textarea = ({
     ...props
   };
 
+  const heightMap = {
+    inside: {
+      sm: 'h-12',
+      md: 'h-14',
+      lg: 'h-16',
+    },
+    outside: {
+      sm: 'h-auto',
+      md: 'h-10',
+      lg: 'h-12',
+    },
+  };
+
+  const requiredStyles = () => {
+    if (isRequired && hasBeenFocused && displayedValue === '') {
+      if (variant === 'underlined') {
+        return '';
+      } else {
+        return 'outline outline-red-600/50 dark:outline-red-800 outline-offset-1';
+      }
+    }
+  };
+
+  
+ 
+
   const getColorClass = () => {
     return inputColor(color) ? inputColor(color)[variant] || '' : '';;
+  };
+
+  const getHeightClass = () => {
+    return heightMap[labelPlacement] ? heightMap[labelPlacement][size] || '' : '';
   };
 
   const containerClassNames = `tmn-normal relative w-full shadow-sm flex px-3 min-h-10 flex-col items-start justify-center transition-background duration-150 outline-none py-2 cursor-text 

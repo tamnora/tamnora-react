@@ -7,11 +7,15 @@ const Logo = ({ borderColor = 'stroke-emerald-600', fillColorFrom = 'fill-emeral
     const paths = document.querySelectorAll('.path');
     paths.forEach(path => {
       path.addEventListener('animationend', (event) => {
-        if (event.animationName === 'draw') {
-          path.classList.remove(fillColorFrom);
-          path.classList.add(fillColorTo);
-        }
+        // if (event.animationName === 'draw') {
+        //   path.classList.remove(fillColorFrom);
+        //   path.classList.add(fillColorTo);
+        // }
       });
+      setTimeout(() => {
+        path.classList.remove(fillColorFrom);
+        path.classList.add(fillColorTo);
+      }, 1000); // Ajusta el tiempo si es necesario
     });
 
     return () => {
