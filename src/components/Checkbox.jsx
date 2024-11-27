@@ -63,6 +63,9 @@ export const Checkbox = ({
     blue: 'checked:hover:bg-blue-500 checked:bg-blue-500 checked:border-blue-500 dark:checked:border-blue-600 dark:checked:bg-blue-600 dark:hover:checked:bg-blue-600',
     purple: 'checked:hover:bg-purple-500 checked:bg-purple-500 checked:border-purple-500 dark:checked:border-purple-600 dark:checked:bg-purple-600 dark:hover:checked:bg-purple-600',
     sky: 'checked:hover:bg-sky-500 checked:bg-sky-500 checked:border-sky-500 dark:checked:border-sky-600 dark:checked:bg-sky-600 dark:hover:checked:bg-sky-600',
+    lime: 'checked:hover:bg-lime-500 checked:bg-lime-500 checked:border-lime-500 dark:checked:border-lime-600 dark:checked:bg-lime-600 dark:hover:checked:bg-lime-600',
+    rose: 'checked:hover:bg-rose-500 checked:bg-rose-500 checked:border-rose-500 dark:checked:border-rose-600 dark:checked:bg-rose-600 dark:hover:checked:bg-rose-600',
+    indigo: 'checked:hover:bg-indigo-500 checked:bg-indigo-500 checked:border-indigo-500 dark:checked:border-indigo-600 dark:checked:bg-indigo-600 dark:hover:checked:bg-indigo-600',
     emerald: 'checked:hover:bg-emerald-500 checked:bg-emerald-500 checked:border-emerald-500 dark:checked:border-emerald-600 dark:checked:bg-emerald-600 dark:hover:checked:bg-emerald-600',
     yellow: 'checked:hover:bg-yellow-500 checked:bg-yellow-500 checked:border-yellow-500 dark:checked:border-yellow-600 dark:checked:bg-yellow-600 dark:hover:checked:bg-yellow-600',
     red: 'checked:hover:bg-red-500 checked:bg-red-500 checked:border-red-500 dark:checked:border-red-600 dark:checked:bg-red-600 dark:hover:checked:bg-red-600',
@@ -75,6 +78,9 @@ export const Checkbox = ({
     blue: 'border-blue-500',
     purple: 'border-purple-500',
     sky: 'border-sky-500',
+    lime: 'border-lime-500',
+    rose: 'border-rose-500',
+    indigo: 'border-indigo-500',
     emerald: 'border-emerald-500',
     yellow: 'border-yellow-500',
     red: 'border-red-500',
@@ -104,7 +110,7 @@ export const Checkbox = ({
   }
 
   return (
-    <label className={`${labelClassNames} ${withBorder ? sizeBorder[size] : ''} ${withBackground ? 'bg-white dark:bg-zinc-800' : '' }  ${ isChecked ? colorBorder[color] : colorBorder['default']}`}>
+    <label className={`${labelClassNames} ${withBorder ? sizeBorder[size] : ''} ${withBackground ? 'bg-white dark:bg-zinc-800' : ''}  ${isChecked ? colorBorder[color] : colorBorder['default']}`}>
       <div className='flex items-center'>
         <input
           type="checkbox"
