@@ -31,6 +31,15 @@ const Textarea = ({
   const [internalValue, setInternalValue] = useState(defaultValue || '');
   const textareaRef = useRef(null);
 
+  // Función para ajustar automáticamente la altura del textarea
+  const adjustHeight = () => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto'; // Restablece la altura
+      textarea.style.height = `${textarea.scrollHeight}px`; // Ajusta al contenido
+    }
+  };
+
   const handleDivClick = () => {
     setFocused(true);
     if (textareaRef.current) {
@@ -64,7 +73,11 @@ const Textarea = ({
     ref: baseRef || textareaRef,
     onFocus: () => setFocused(true),
     onBlur: () => setFocused(false),
-    onChange: handleTextareaChange,
+    onChange: (e) => {
+      handleTextareaChange(e);
+      adjustHeight(); // Ajusta la altura en cada cambio
+    },
+    onInput: adjustHeight, // Ajusta la altura al escribir
     readOnly: isReadOnly,
     disabled: isDisabled,
     ...props
@@ -88,10 +101,11 @@ const Textarea = ({
 
   useEffect(() => {
     setInternalValue(defaultValue);
-  }, [defaultValue])
+    adjustHeight(); // Ajusta la altura inicial
+  }, [defaultValue]);
 
   return (
-    <div className='flex flex-col gap-1'>
+    <div className="flex flex-col gap-1">
       {labelPlacement === 'outside' && label && (
         <label className={outsideLabelClassNames} htmlFor={props.id}>
           {label} {isRequired && <span className="text-red-400">*</span>}
@@ -105,7 +119,7 @@ const Textarea = ({
         )}
         <textarea
           {...textareaProps}
-          className="w-full font-normal bg-transparent !outline-none focus-visible:outline-none data-text-small transition-none pt-0 resize-y min-h-[40px] dark:text-white placeholder:text-zinc-500 text-sm"
+          className="w-full font-normal bg-transparent !outline-none focus-visible:outline-none data-text-small transition-none pt-0 resize-y min-h-[40px] max-h-[400px] dark:text-white placeholder:text-zinc-500 text-sm"
         />
       </div>
       {errorMessage && <p className="text-xs ms-1 mt-1 text-red-400">{errorMessage}</p>}
