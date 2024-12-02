@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const SelectSearch = ({ options, selectedOption, onChange, onSelect }) => {
+const SelectSearch = ({ options, selectedOption, onChange, onSelect, defaultValue='' }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(selectedOption || 'Automático');
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState(defaultValue);
 
   const handleOptionClick = (option) => {
     setSelected(option);
@@ -22,6 +22,14 @@ const SelectSearch = ({ options, selectedOption, onChange, onSelect }) => {
       onChange(selected, inputValue);
     }
   };
+
+  useEffect(()=>{
+    setInputValue(defaultValue);
+  }, [defaultValue])
+
+  useEffect(()=>{
+    setSelected(selectedOption);
+  }, [selectedOption])
 
   return (
     <div className="flex">
