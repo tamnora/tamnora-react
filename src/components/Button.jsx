@@ -18,9 +18,11 @@ export function Button({
   };
 
   const defaultRadius = {
-    sm: 'rounded-md',
-    md: 'rounded-lg',
-    lg: 'rounded-xl',
+    none: 'rounded-none',
+    sm: 'rounded-sm',
+    md: 'rounded-md',
+    lg: 'rounded-lg',
+    xl: 'rounded-xl',
   };
 
   const classDisable = {
@@ -55,6 +57,15 @@ export function Button({
       flat: 'ring-red-500 bg-red-600/25 text-red-500 ',
       ghost: 'ring-red-500 text-red-600 dark:text-red-400 hover:text-white dark:hover:text-white border-2 border-red-600 hover:bg-red-600',
       shadow: 'ring-red-500 bg-red-600 text-white  shadow-lg shadow-red-500/40 dark:shadow-red-500',
+    },
+    rose: {
+      solid: 'ring-rose-500 bg-rose-600 text-white ',
+      faded: 'ring-rose-500 bg-zinc-100 dark:bg-zinc-800 text-rose-500 border-2 border-zinc-200 dark:border-zinc-700 ',
+      borderose: 'ring-rose-500 text-rose-600 dark:text-rose-400 border-2 border-rose-600 ',
+      light: 'ring-rose-500 hover:bg-rose-600/25 text-rose-500',
+      flat: 'ring-rose-500 bg-rose-600/25 text-rose-500 ',
+      ghost: 'ring-rose-500 text-rose-600 dark:text-rose-400 hover:text-white dark:hover:text-white border-2 border-rose-600 hover:bg-rose-600',
+      shadow: 'ring-rose-500 bg-rose-600 text-white  shadow-lg shadow-rose-500/40 dark:shadow-rose-500',
     },
     zinc: {
       solid: 'ring-zinc-500 bg-zinc-600 text-white ',
@@ -110,6 +121,24 @@ export function Button({
       ghost: 'ring-green-500 text-green-600 dark:text-green-400 hover:text-white dark:hover:text-white border-2 border-green-600 hover:bg-green-600',
       shadow: 'ring-green-500 bg-green-600 text-white  shadow-lg shadow-green-500/40 dark:shadow-green-500',
     },
+    lime: {
+      solid: 'ring-lime-500 bg-lime-600 text-white ',
+      faded: 'ring-lime-500 bg-zinc-100 dark:bg-zinc-800 text-lime-500 border-2 border-zinc-200 dark:border-zinc-700 ',
+      bordered: 'ring-lime-500 text-lime-600 dark:text-lime-400 border-2 border-lime-600 ',
+      light: 'ring-lime-500 hover:bg-lime-600/25 text-lime-500',
+      flat: 'ring-lime-500 bg-lime-600/25 text-lime-500 ',
+      ghost: 'ring-lime-500 text-lime-600 dark:text-lime-400 hover:text-white dark:hover:text-white border-2 border-lime-600 hover:bg-lime-600',
+      shadow: 'ring-lime-500 bg-lime-600 text-white  shadow-lg shadow-lime-500/40 dark:shadow-lime-500',
+    },
+    indigo: {
+      solid: 'ring-indigo-500 bg-indigo-600 text-white ',
+      faded: 'ring-indigo-500 bg-zinc-100 dark:bg-zinc-800 text-indigo-500 border-2 border-zinc-200 dark:border-zinc-700 ',
+      bordered: 'ring-indigo-500 text-indigo-600 dark:text-indigo-400 border-2 border-indigo-600 ',
+      light: 'ring-indigo-500 hover:bg-indigo-600/25 text-indigo-500',
+      flat: 'ring-indigo-500 bg-indigo-600/25 text-indigo-500 ',
+      ghost: 'ring-indigo-500 text-indigo-600 dark:text-indigo-400 hover:text-white dark:hover:text-white border-2 border-indigo-600 hover:bg-indigo-600',
+      shadow: 'ring-indigo-500 bg-indigo-600 text-white  shadow-lg shadow-indigo-500/40 dark:shadow-indigo-500',
+    },
     white: {
       solid: 'ring-zinc-200 bg-white text-zinc-900 ',
       faded: 'ring-zinc-200 bg-zinc-100 dark:bg-zinc-800 text-black border-2 border-zinc-200 dark:border-zinc-700 ',
@@ -119,6 +148,7 @@ export function Button({
       ghost: 'ring-zinc-200 text-black dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-900 border-2 border-black hover:bg-white',
       shadow: 'ring-zinc-200 bg-white text-zinc-900  shadow-lg shadow-black/40 dark:shadow-black',
     },
+    
   };
 
   const variantStyles = colorStyles[color] || colorStyles['blue'];
