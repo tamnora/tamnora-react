@@ -2,15 +2,20 @@ import React, { useState, useEffect } from 'react';
 
 const Tabs = ({ 
   children, 
+  active = 0,
   textClass = 'text-sm font-medium',
   colorActive = 'border-sky-500 text-sky-600 dark:text-sky-500', 
   colorInactive = 'border-transparent text-zinc-500 hover:text-zinc-600 hover:border-zinc-600 dark:hover:text-zinc-200 dark:hover:border-zinc-200', 
 }) => {
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(active);
 
   const handleTabClick = (index) => {
     setActiveTab(index);
   };
+
+  useEffect(()=>{
+    setActiveTab(active)
+  },[active])
 
   useEffect(() => {
     const handleKeyDown = (event) => {

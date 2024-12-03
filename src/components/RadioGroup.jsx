@@ -66,7 +66,7 @@ const RadioGroup = ({ options, name, color = 'blue', orientation = 'horizontal',
             type="radio"
             name={name}
             value={option.value}
-            checked={selectedValue === option.value} // marcar la opción seleccionada
+            checked={selectedValue == option.value} // marcar la opción seleccionada
             onChange={handleOnChange} // función de cambio de valor
             className={inputClasses}
           />
