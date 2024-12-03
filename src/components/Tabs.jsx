@@ -53,7 +53,7 @@ const Tabs = ({
           </button>
         ))}
       </div>
-      <div className="pt-6 pb-3">
+      <div>
         {children[activeTab]}
       </div>
     </div>
