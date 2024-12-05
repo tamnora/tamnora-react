@@ -37,6 +37,8 @@ const SearchComponent = ({
     orange: 'focus:outline focus:outline-orange-500 dark:focus:outline-orange-600 outline-offset-0',
     amber: 'focus:outline focus:outline-amber-500 dark:focus:outline-amber-600 outline-offset-0',
     lime: 'focus:outline focus:outline-lime-500 dark:focus:outline-lime-600 outline-offset-0',
+    indigo: 'focus:outline focus:outline-indigo-500 dark:focus:outline-indigo-600 outline-offset-0',
+    rose: 'focus:outline focus:outline-rose-500 dark:focus:outline-rose-600 outline-offset-0',
     teal: 'focus:outline focus:outline-teal-500 dark:focus:outline-teal-600 outline-offset-0',
   };
 
@@ -75,7 +77,7 @@ const SearchComponent = ({
         type="search"
         name={name}
         autoComplete="off"
-        className={`block w-full ring-0 py-3 px-3 ps-10 text-sm text-zinc-800 dark:text-zinc-100 font-normal rounded-lg shadow-sm bg-white dark:bg-zinc-800/40 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700  ${typesOutlines[outline]}`}
+        className={`block w-full ring-0 py-2.5 px-3 ps-10 text-sm text-zinc-800 dark:text-zinc-100 font-normal rounded-lg shadow-sm bg-white dark:bg-zinc-800/40 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700  ${typesOutlines[outline]}`}
         placeholder={myPlaceHolder}
         value={textoBuscar}
         onChange={handleInputChange}

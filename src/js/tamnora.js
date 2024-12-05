@@ -874,12 +874,9 @@ export function formatNumber(str, options = { dec: 2, leng: 'es', symb: '', type
 }
 
 export function formatDate(valor = null, separador = '-') {
+  if (valor == null) return null 
   let myDate;
   let sep = separador || '-';
-  if (valor == null) {
-    valor = new Date();
-    myDate = valor;
-  }
 
   let exp = /^\d{2,4}\-\d{1,2}\-\d{1,2}\s\d{1,2}\:\d{1,2}\:\d{1,2}$/gm;
   let exp2 = /^\d{2,4}\-\d{1,2}\-\d{1,2}$/gm;
