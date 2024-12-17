@@ -1202,6 +1202,16 @@ export function originServer() {
   return window.location.origin;
 }
 
+export function toggleClass(element, initialClass, finalClass) {
+  if (element.classList.contains(initialClass)) {
+    element.classList.remove(initialClass);
+    element.classList.add(finalClass);
+  } else {
+    element.classList.remove(finalClass);
+    element.classList.add(initialClass);
+  }
+}
+
 export async function runQuery(server_url, server_type, type, sql) {
   let datos = {
     tipo: type.charAt(0),

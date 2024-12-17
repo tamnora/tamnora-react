@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Tab = ({ children }) => {
+const Tab = ({ className = '', children }) => {
   return (
-    <div>
+    <div className={className}>
       {children}
     </div>
   );
