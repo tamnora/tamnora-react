@@ -3,10 +3,10 @@ import {ShimmerBox} from './ShimmerBox';
 
 const DataListItem = ({ label, value, loading, classShimmer = 'h-[14px] my-[3px] w-24' }) => {
   return (
-    <div className="flex flex-col items-start px-2 py-1 rounded-lg">
+    <div className="flex flex-col items-start px-2 py-1 rounded-lg truncate text-ellipsis">
       <span className="text-xs text-zinc-500 dark:text-zinc-400">{label}</span>
       {loading && <ShimmerBox className={classShimmer} />}
-      {!loading && <span className="text-sm font-semibold text-black dark:text-white">{value}</span>}
+      {!loading && <span className="text-sm font-semibold truncate  text-black dark:text-white">{value}</span>}
     </div>
   );
 };
