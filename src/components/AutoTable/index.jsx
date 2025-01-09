@@ -27,6 +27,9 @@ const AutoTable = ({
   classFooter,
   isHidden = [],
   isWrap = [],
+  hiddenRow,
+  orderColumns,
+  onAddNewRow,
 }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedRowIndex, setSelectedRowIndex] = useState(0);
@@ -56,24 +59,54 @@ const AutoTable = ({
     </div>
   );
 
+  // const filteredData = useMemo(() => {
+  //   if (searchText) {
+  //     const lowercasedFilter = searchText.toLowerCase();
+  //     return data.filter(item =>
+  //       Object.values(item).some(value =>
+  //         String(value).toLowerCase().includes(lowercasedFilter)
+  //       )
+  //     );
+  //   }
+  //   return data;
+  // }, [searchText, data]);
+
   const filteredData = useMemo(() => {
+    let filtered = data;
+
+    // Filtra por texto de búsqueda
     if (searchText) {
       const lowercasedFilter = searchText.toLowerCase();
-      return data.filter(item =>
+      filtered = filtered.filter(item =>
         Object.values(item).some(value =>
           String(value).toLowerCase().includes(lowercasedFilter)
         )
       );
     }
-    return data;
-  }, [searchText, data]);
+
+    // Filtra por la condición de hiddenRow
+    if (hiddenRow) {
+      filtered = filtered.filter(row => !hiddenRow(row));
+    }
+
+    return filtered;
+  }, [searchText, data, hiddenRow]);
 
   useEffect(() => {
     setCurrentPage(0);
   }, [filteredData]);
 
   // Utilizar las columnas especificadas o todas las columnas de los datos
-  const effectiveColumns = columns.length > 0 ? columns : data.length > 0 ? Object.keys(data[0]) : [];
+  const effectiveColumns = useMemo(() => {
+    // Si no se especifica orderColumns, usa el orden por defecto
+    if (!orderColumns) {
+      return columns.length > 0 ? columns : data.length > 0 ? Object.keys(data[0]) : [];
+    }
+
+    // Filtra y ordena las columnas basado en orderColumns
+    const allColumns = columns.length > 0 ? columns : data.length > 0 ? Object.keys(data[0]) : [];
+    return orderColumns.filter(column => allColumns.includes(column) || (extraColumns && extraColumns.some(ec => ec.header === column)));
+  }, [columns, data, orderColumns, extraColumns]);
 
   const start = currentPage * rowsPerView;
   const end = start + rowsPerView;
@@ -277,72 +310,54 @@ const AutoTable = ({
           <table className="w-full text-sm text-left text-zinc-500 dark:text-zinc-400">
             <thead className="hidden sm:table-header-group text-xs border-b text-zinc-700 bg-zinc-50 dark:bg-zinc-800/20 border-zinc-200 uppercase dark:text-zinc-400 dark:border-zinc-800">
               <tr className="text-base font-semibold tmn-fadeIn">
+                {/* Columna de selección (si está habilitada) */}
                 {showRowSelection && showIconSelection && <th></th>}
-                {effectiveColumns.length > 0 && effectiveColumns.map((column, index) => {
-                  if (!isHidden.includes(column)) return (
-                    <th
-                      key={column}
-                      className={`px-4 py-4 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 md:whitespace-nowrap ${getColumnAlignmentClass(column)}`}
-                      style={{ width: columnWidths ? columnWidths[column] : 'auto' }}>
-                      {columnNames[column] ? columnNames[column] : column}
-                    </th>
-                  )
-                })
-                }
-                {extraColumns && extraColumns.map((col, indexExtra) => (
-                  <th
-                    key={`extra-${indexExtra}`}
-                    className={`px-4 py-4 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 md:whitespace-nowrap ${getColumnAlignmentClass(col)}`}
-                    style={{ width: col.width || 'auto' }}>
-                    {col.header}
-                  </th>
-                ))}
+
+                {/* Columnas ordenadas según effectiveColumns */}
+                {effectiveColumns.map((column, index) => {
+                  if (!isHidden.includes(column)) {
+                    const extraColumn = extraColumns?.find(ec => ec.header === column);
+                    return (
+                      <th
+                        key={column}
+                        className={`px-4 py-4 select-none text-xs text-zinc-500 uppercase dark:text-zinc-500 md:whitespace-nowrap ${getColumnAlignmentClass(column)}`}
+                        style={{ width: columnWidths ? columnWidths[column] : 'auto' }}>
+                        {extraColumn ? extraColumn.header : (columnNames[column] ? columnNames[column] : column)}
+                      </th>
+                    );
+                  }
+                  return null;
+                })}
               </tr>
             </thead>
             <tbody>
-              {data.length > 0 ? paginatedData.map((row, rowIndex) => (
+              {filteredData.length > 0 ? paginatedData.map((row, rowIndex) => (
                 <tr
                   key={rowIndex}
                   data-row={selectedRowIndex === rowIndex ? 'selected' : `fila${rowIndex}`}
                   data-id={rowIndex}
-                  className={`${styleRow}
-                  ${isStriped ?
-                      (rowIndex % 2 ?
-                        ((selectedRowIndex === rowIndex && inFocus && showRowSelection) ? classRowSelect2 : tr2)
-                        :
-                        ((selectedRowIndex === rowIndex && inFocus && showRowSelection) ? classRowSelect1 : tr1))
-                      :
-                      ((selectedRowIndex === rowIndex && inFocus && showRowSelection) ? classRowSelect2 : tr2)
-                    }`}
-
+                  className={`${styleRow} ${isStriped ? (rowIndex % 2 ? tr2 : tr1) : tr2}`}
                   onClick={onRowClick ? () => handleRowClick(row, rowIndex) : null}>
                   {(selectedRowIndex === rowIndex && inFocus && showRowSelection) && showIconSelection &&
-                    <td>
-                      {optionIcon}
-                    </td>}
+                    <td>{optionIcon}</td>}
                   {!(selectedRowIndex === rowIndex && inFocus) && showRowSelection && showIconSelection &&
                     <td className='text-transparent'>{optionIcon}</td>}
                   {effectiveColumns.map((column, index) => {
-                    if (!isHidden.includes(column)) return (
-                      <td
-                        key={column}
-                        className={`${tdPadding} select-none ${isWrap.includes(column)? '': 'md:whitespace-nowrap'} ${cellPointer} ${getColumnAlignmentClass(column)} ${selectedRowIndex === rowIndex && selectedCellIndex === index && onCellClick ? 'bg-zinc-300 dark:bg-zinc-700' : ''}`}
-                        onClick={onCellClick ? (e) => handleCellClick(e, row, column) : null}
-                        style={{ width: columnWidths ? columnWidths[column] : 'auto' }}
-                        data-label={columnNames[column] ? columnNames[column] : column}>
-                        {renderCellContent(row[column], row, column)}
-                      </td>
-                    )
-                  }
-                  )}
-                  {extraColumns && extraColumns.map((col, indexExtra) => (
-                    <td
-                      key={`extra-${indexExtra}`}
-                      className={`${tdPadding} select-none ${isWrap.includes(col)? '': 'md:whitespace-nowrap'} ${cellPointer} ${getColumnAlignmentClass(col)}`}
-                      onClick={onCellClick ? (e) => handleCellClick(e, row, `extra-${indexExtra}`) : null}>
-                      {col.render ? col.render(row) : ''}
-                    </td>
-                  ))}
+                    if (!isHidden.includes(column)) {
+                      const extraColumn = extraColumns?.find(ec => ec.header === column);
+                      return (
+                        <td
+                          key={column}
+                          className={`${tdPadding} select-none ${isWrap.includes(column) ? '' : 'md:whitespace-nowrap'} ${cellPointer} ${getColumnAlignmentClass(column)} ${selectedRowIndex === rowIndex && selectedCellIndex === index && onCellClick ? 'bg-zinc-300 dark:bg-zinc-700' : ''}`}
+                          onClick={onCellClick ? (e) => handleCellClick(e, row, column) : null}
+                          style={{ width: columnWidths ? columnWidths[column] : 'auto' }}
+                          data-label={columnNames[column] ? columnNames[column] : column}>
+                          {extraColumn ? extraColumn.render(row) : renderCellContent(row[column], row, column)}
+                        </td>
+                      );
+                    }
+                    return null;
+                  })}
                 </tr>
               )) : (
                 <tr>
@@ -351,30 +366,22 @@ const AutoTable = ({
                   </td>
                 </tr>
               )}
-              {rowFooter &&
-                <tr className={classFooter ? classFooter : styleRowFooter}>
-                  {showRowSelection && showIconSelection && <td></td>}
-                  {effectiveColumns.map((column, index) => {
-                    if (!isHidden.includes(column)) return (
-                      <td
-                        key={column + index}
-                        className={`${tdPadding}  ${isWrap.includes(column)? '': 'md:whitespace-nowrap'} ${getColumnAlignmentClass(column)}`}
-
-                        style={{ width: columnWidths ? columnWidths[column] : 'auto' }}>
-                        {renderCellFooter(column)}
-                      </td>
-                    )
-                  }
-                  )}
-                  {extraColumns && extraColumns.map((col, indexExtra) => (
-                    <td
-                      key={`extrafooter-${indexExtra}`}
-                      className={`${tdPadding}  ${isWrap.includes(col)? '': 'md:whitespace-nowrap'} ${getColumnAlignmentClass(col)}`}
-                    >
-                      {renderCellFooter(col)}
-                    </td>
-                  ))}
-                </tr>}
+              {/* Fila de acción para nuevo registro (condicional) */}
+  {onAddNewRow && (
+    <tr
+      className={`${styleRow} ${tr2} cursor-pointer hover:bg-zinc-300/50 dark:hover:bg-zinc-700/50`}
+      onClick={onAddNewRow} // Ejecuta la función pasada como prop
+    >
+      <td colSpan={effectiveColumns.length} className={`${tdPadding} text-center font-semibold`}>
+        <span className="flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+          Agregar nuevo registro
+        </span>
+      </td>
+    </tr>
+  )}
             </tbody>
           </table>
         </div>
@@ -386,13 +393,24 @@ const AutoTable = ({
             <div className="inline-flex rounded-lg overflow-hidden">
               <button
                 onClick={() => {
-                  setCurrentPage((prev) => Math.max(prev - 1, 0));
-                  if(onPagination){
+                  setCurrentPage(0); // Ir a la primera página
+                  if (onPagination) {
                     onPagination();
                   }
                 }}
                 disabled={currentPage === 0}
-                className="flex items-center justify-center py-2 px-3 text-xs font-medium bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:border-zinc-700/50 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-white border-0 border-r  disabled:opacity-50 disabled:cursor-not-allowed">
+                className="flex items-center justify-center py-2 px-3 text-xs font-medium bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:border-zinc-700/50 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-white border-0 border-r disabled:opacity-50 disabled:cursor-not-allowed">
+                Primero
+              </button>
+              <button
+                onClick={() => {
+                  setCurrentPage((prev) => Math.max(prev - 1, 0));
+                  if (onPagination) {
+                    onPagination();
+                  }
+                }}
+                disabled={currentPage === 0}
+                className="flex items-center justify-center py-2 px-3 text-xs font-medium bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:border-zinc-700/50 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-white border-0 border-r disabled:opacity-50 disabled:cursor-not-allowed">
                 <svg className="w-3.5 h-3.5 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 5H1m0 0 4 4M1 5l4-4"></path>
                 </svg>
@@ -401,16 +419,27 @@ const AutoTable = ({
               <button
                 onClick={() => {
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
-                  if(onPagination){
+                  if (onPagination) {
                     onPagination();
                   }
                 }}
                 disabled={currentPage >= totalPages - 1}
-                className="flex items-center justify-center py-2 px-3 text-xs font-medium bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:border-zinc-700/50 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-white border-0 border-l  disabled:opacity-50 disabled:cursor-not-allowed">
+                className="flex items-center justify-center py-2 px-3 text-xs font-medium bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:border-zinc-700/50 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-white border-0 border-l disabled:opacity-50 disabled:cursor-not-allowed">
                 Siguiente
                 <svg className="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"></path>
                 </svg>
+              </button>
+              <button
+                onClick={() => {
+                  setCurrentPage(totalPages - 1); // Ir a la última página
+                  if (onPagination) {
+                    onPagination();
+                  }
+                }}
+                disabled={currentPage >= totalPages - 1}
+                className="flex items-center justify-center py-2 px-3 text-xs font-medium bg-zinc-100 text-zinc-700 hover:bg-zinc-200 dark:bg-zinc-800 dark:border-zinc-700/50 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-white border-0 border-l disabled:opacity-50 disabled:cursor-not-allowed">
+                Último
               </button>
             </div>
           </div>

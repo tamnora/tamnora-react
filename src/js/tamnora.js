@@ -572,6 +572,52 @@ export async function dbSelect(type, sql) {
   }
 }
 
+export async function runSQL(sql) {
+  let datos = {
+    token: '?',
+    tsql: encodeTmn(sql)
+  };
+
+  try {
+    let resp;
+    if (TYPE_SERVER == 'php') {
+      resp = await fetch(`${SERVER}/tsql.php`, {
+        method: 'POST',
+        body: JSON.stringify({
+          data: datos
+        })
+      });
+    } else {
+      resp = await fetch(`${SERVER}/tsql`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          data: datos
+        })
+      });
+    }
+
+    const result = await resp.json();
+
+    const newResult = result.map((obj) => {
+      // return convertirClavesAMinusculas(obj)
+      return convertirClavesAMinusculasYFormatoFecha(obj)
+    })
+
+
+    return newResult;
+
+  } catch (error) {
+    console.log(error)
+    console.log(informe)
+    console.log(datos)
+    const err = [{ resp: 'error', msgError: 'Error en la conexión a la base de datos.' }];
+    return err;
+  }
+}
+
 export async function login(user, password) {
   let datos = {
     user, password
@@ -642,14 +688,26 @@ export async function structure(type, name) {
 }
 
 export async function runCode(input) {
-  let opcion = '';
-  let data = '';
-  const codwords = ['-sl', '-st', '-in', '-up', '-dl'];
+  if (typeof input !== 'string') {
+    throw new Error('La entrada debe ser una cadena de texto');
+  }
+
+  const opciones = {
+    '-sl': 'select',
+    '-st': 'select * from',
+    '-in': 'insert into',
+    '-up': 'update',
+    '-dl': 'delete from',
+    '-ct': 'create table',
+    '-at': 'alter table',
+    '-dt': 'drop table',
+    '-sd': 'select distinct',
+  };
 
   const lista = [
     { str: 'select', cod: '-sl' },
     { str: 'select * from', cod: '-st' },
-    { str: '*', cod: '-kk' },
+    { str: 'select distinct', cod: '-sd' },
     { str: 'from', cod: '-fr' },
     { str: 'join', cod: '-jn' },
     { str: 'inner join', cod: '-ij' },
@@ -658,8 +716,7 @@ export async function runCode(input) {
     { str: 'left', cod: '-lf' },
     { str: 'right', cod: '-rg' },
     { str: 'update', cod: '-up' },
-    { str: 'delete', cod: '-dl' },
-    { str: 'delete from', cod: '-df' },
+    { str: 'delete from', cod: '-dl' },
     { str: 'insert into', cod: '-in' },
     { str: 'values', cod: '-va' },
     { str: 'set', cod: '-se' },
@@ -669,30 +726,40 @@ export async function runCode(input) {
     { str: 'and', cod: '&' },
     { str: 'order by', cod: '-ob' },
     { str: 'order', cod: '-od' },
-    { str: 'by', cod: '-yy' },
     { str: 'desc', cod: '-ds' },
     { str: 'asc', cod: '-as' },
     { str: '<', cod: '-me' },
     { str: '>', cod: '-ma' },
     { str: '<>', cod: '-mm' },
     { str: 'group by', cod: '-gb' },
-    { str: 'group', cod: '-gr' },
     { str: 'having', cod: '-hv' },
     { str: 'limit', cod: '-lt' },
     { str: 'like', cod: '-lk' },
-    { str: ' ', cod: '-__' }
+    { str: 'between', cod: '-bt' },
+    { str: 'in', cod: '-in' },
+    { str: 'not', cod: '-nt' },
+    { str: 'is null', cod: '-nl' },
+    { str: 'is not null', cod: '-nn' },
+    { str: 'union', cod: '-un' },
+    { str: 'union all', cod: '-ua' },
+    { str: 'case', cod: '-cs' },
+    { str: 'when', cod: '-wn' },
+    { str: 'then', cod: '-th' },
+    { str: 'else', cod: '-el' },
+    { str: 'end', cod: '-en' },
+    { str: 'exists', cod: '-ex' },
+    { str: 'create table', cod: '-ct' },
+    { str: 'alter table', cod: '-at' },
+    { str: 'drop table', cod: '-dt' },
+    { str: 'primary key', cod: '-pk' },
+    { str: 'foreign key', cod: '-fk' },
+    { str: 'references', cod: '-rf' }
   ];
 
-  let inicharter = input.toLowerCase();
-
-  for (let keyword of codwords) {
-    if (inicharter.startsWith(keyword)) {
-      lista.forEach(val => {
-        if (val.cod == keyword) {
-          opcion = val.str;
-        }
-      })
-    }
+  let opcion = opciones[input.toLowerCase().split(' ')[0]];
+  console.log('Opcion', opcion)
+  if (!opcion) {
+    throw new Error('No se reconoce la estructura');
   }
 
   for (let item of lista) {
@@ -703,12 +770,12 @@ export async function runCode(input) {
 
   input = input.replace(/\s+-/g, '-').replace(/-\s+/g, '-');
 
-  if (opcion) {
-    data = await dbSelect(opcion, input);
+  try {
+    const data = await dbSelect(opcion, input);
     return data;
-  } else {
-    console.error('No se reconoce la estructura!')
-    return [{ resp: 'error', msgError: 'No se reconoce la estructura!' }]
+  } catch (error) {
+    console.error(error);
+    return [{ resp: 'error', msgError: error.message }];
   }
 
 }
