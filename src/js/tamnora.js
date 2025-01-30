@@ -792,6 +792,10 @@ export function inServer(folder) {
   }
 }
 
+export function typeServer() {
+  return `${TYPE_SERVER}`
+}
+
 export function formatNumberArray(str, dec = 2) {
   if (!str) {
     str = '0.00t';

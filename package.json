@@ -1,7 +1,7 @@
 {
   "name": "tamnora-react",
-  "version": "1.2.44",
-  "main": "src/index.jsx",
+  "version": "1.2.45",
+  "main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/tamnora/tamnora-react"

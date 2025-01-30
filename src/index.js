@@ -1,15 +1,15 @@
 
 // Exportaciones de Tamnora
-export { inServer, formatDate, originServer, runCode, structure, dbSelect, pesos, formatNumber, formatNumberArray, currency, defaultClass, handleStructure, typeToType, setStructure, dataTableRunCode, runCodeStruc, toggleClass} from './js/tamnora.js';
+export { inServer, typeServer, formatDate, originServer, runCode, structure, dbSelect, pesos, formatNumber, formatNumberArray, currency, defaultClass, handleStructure, typeToType, setStructure, dataTableRunCode, runCodeStruc, toggleClass} from './js/tamnora.js';
 import './main.css';
 
-export { Alert } from './components/Alert';
-export { AutoComplete } from './components/AutoComplete';
-export { Logo } from './components/Logo';
-export { Select } from './components/Select';
-export { TableActions } from './components/TableActions';
+export { Alert } from './components/Alert/index.jsx';
+export { AutoComplete } from './components/AutoComplete/index.jsx';
+export { Logo } from './components/Logo/index.jsx';
+export { Select } from './components/Select/index.jsx';
+export { TableActions } from './components/TableActions/index.jsx';
 export { AutoForm } from './components/AutoForm.jsx';
-export { AutoTable } from './components/AutoTable';
+export { AutoTable } from './components/AutoTable/index.jsx';
 export { Background } from './components/Backgroud.jsx';
 export { Button } from './components/Button.jsx';
 export { Card, CardBody } from './components/Card.jsx';
