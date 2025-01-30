@@ -1,7 +1,8 @@
-const SERVER_REMOTE = import.meta.env.VITE_SERVER_REMOTE;
-const SERVER_LOCAL = import.meta.env.VITE_SERVER_LOCAL;
-const TYPE_SERVER = import.meta.env.VITE_TYPE_SERVER;
-const SERVER_USE = import.meta.env.VITE_SERVER_USE;
+const SERVER_REMOTE = import.meta.env.VITE_SERVER_REMOTE ?? '';
+const SERVER_LOCAL = import.meta.env.VITE_SERVER_LOCAL ?? 'http://localhost';
+const TYPE_SERVER = import.meta.env.VITE_TYPE_SERVER ?? 'php'; 
+const SERVER_USE = import.meta.env.VITE_SERVER_USE ?? 'local'; 
+
 let SERVER;
 
 if(SERVER_USE == 'local'){

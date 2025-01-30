@@ -1,71 +1,79 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { inputColor, inputOutline } from '../js/tamnora';
 
-const InputCuenta = ({cuentas}) => {
+const InputCuenta = ({
+  cuentas = {},
+  variant = 'flat',
+  color = 'default',
+  outline = 'default',
+  text = 'text-sm',
+  size = 'md',
+  radius = 'rounded-xl',
+  label = 'Cuenta',
+  fullWidth = true,
+  isReadOnly = false,
+  isDisabled = false,
+  startContent,
+  endContent,
+  onChange,
+  ...props
+}) => {
   const [valor, setValor] = useState('');
   const [nombreCuenta, setNombreCuenta] = useState('');
-  const [listCuentas, setListCuentas] = useState(cuentas || {});
+  const inputRef = useRef(null);
 
-  // Función para formatear el texto según el formato deseado
   const formatInput = (input) => {
-    // Eliminar cualquier carácter no numérico
     const soloNumeros = input.replace(/[^0-9]/g, '');
-
-    // Dividir los números en grupos para formar el formato deseado
     const secciones = [
       soloNumeros.slice(0, 1),
       soloNumeros.slice(1, 2),
       soloNumeros.slice(2, 4),
       soloNumeros.slice(4, 7),
     ];
-
-    // Unir las secciones con puntos, omitiendo las vacías
     return secciones.filter(Boolean).join('.');
   };
 
   const handleInputChange = (e) => {
-    // Obtener el valor del input y formatearlo
     const inputValue = e.target.value;
     const formattedValue = formatInput(inputValue);
-
-    // Actualizar el estado con el valor formateado
     setValor(formattedValue);
-
-    // Actualizar el nombre de la cuenta si existe
-    if (listCuentas[formattedValue]) {
-      setNombreCuenta(listCuentas[formattedValue]);
-    } else {
-      setNombreCuenta('');
-    }
+    setNombreCuenta(cuentas[formattedValue] || '');
+    if (onChange) onChange(e);
   };
 
   const handleKeyDown = (e) => {
     if (e.key === ' ') {
-      // Buscar la cuenta más próxima cuando se presiona la tecla de espacio
-      const cuentaEncontrada = Object.keys(listCuentas).find((cuenta) => cuenta.startsWith(valor));
+      const cuentaEncontrada = Object.keys(cuentas).find((cuenta) => cuenta.startsWith(valor));
       if (cuentaEncontrada) {
-        setValor(cuentaEncontrada); // Autocompletar con la cuenta más próxima
-        setNombreCuenta(listCuentas[cuentaEncontrada]); // Actualizar el nombre de la cuenta
+        setValor(cuentaEncontrada);
+        setNombreCuenta(cuentas[cuentaEncontrada]);
       }
     }
   };
 
-  
-
   return (
-    <div className="flex gap-4">
-      <input
-        type="text"
-        value={valor}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
-        className="block w-full p-2 pl-10 text-sm text-gray-700 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-600"
-        placeholder="Ingrese la cuenta"
-      />
+    <div className={`relative w-full ${fullWidth ? 'w-full' : 'w-auto'}`}>
+      <div className={`relative flex items-center ${radius} px-3 py-2 ${inputColor(color)?.[variant] || ''} ${inputOutline(outline)}`}>
+        {startContent && <div className='text-zinc-400 pe-2 select-none'>{startContent}</div>}
+        <input
+          type="text"
+          value={valor}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          ref={inputRef}
+          readOnly={isReadOnly}
+          disabled={isDisabled}
+          className={`w-full bg-transparent outline-none border-0 dark:text-white placeholder:text-zinc-500 ${text}`}
+          placeholder="Ingrese la cuenta"
+          {...props}
+        />
+        {endContent && <div className='text-zinc-400 ps-2 select-none'>{endContent}</div>}
+      </div>
       <input
         type="text"
         value={nombreCuenta}
         readOnly
-        className="block w-full p-2 text-sm text-gray-500 bg-gray-100 rounded-lg border border-gray-300 focus:outline-none"
+        className="w-full mt-2 p-2 text-sm text-gray-500 bg-gray-100 rounded-lg border border-gray-300 focus:outline-none"
         placeholder="Nombre de la cuenta"
       />
     </div>
