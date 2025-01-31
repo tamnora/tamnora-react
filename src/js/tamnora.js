@@ -1,7 +1,21 @@
-const SERVER_REMOTE = import.meta.env.VITE_SERVER_REMOTE ?? '';
-const SERVER_LOCAL = import.meta.env.VITE_SERVER_LOCAL ?? 'http://localhost';
-const TYPE_SERVER = import.meta.env.VITE_TYPE_SERVER ?? 'php'; 
-const SERVER_USE = import.meta.env.VITE_SERVER_USE ?? 'local'; 
+const config = typeof import.meta !== 'undefined'
+  ? {
+      VITE_SERVER_REMOTE: import.meta.env.VITE_SERVER_REMOTE ?? 'http://localhost',
+      VITE_SERVER_LOCAL: import.meta.env.VITE_SERVER_LOCAL ?? 'http://localhost',
+      VITE_TYPE_SERVER: import.meta.env.VITE_TYPE_SERVER ?? 'php',
+      VITE_SERVER_USE: import.meta.env.VITE_SERVER_USE ?? 'local'
+    }
+  : {
+      VITE_SERVER_REMOTE: 'http://localhost',
+      VITE_SERVER_LOCAL: 'http://localhost',
+      VITE_TYPE_SERVER: 'php',
+      VITE_SERVER_USE: 'local'
+    };
+
+const SERVER_REMOTE = config.VITE_SERVER_REMOTE;
+const SERVER_LOCAL = config.VITE_SERVER_LOCAL;
+const TYPE_SERVER = config.VITE_TYPE_SERVER;
+const SERVER_USE = config.VITE_SERVER_USE;
 
 let SERVER;
 
@@ -758,7 +772,7 @@ export async function runCode(input) {
   ];
 
   let opcion = opciones[input.toLowerCase().split(' ')[0]];
-  console.log('Opcion', opcion)
+  
   if (!opcion) {
     throw new Error('No se reconoce la estructura');
   }
