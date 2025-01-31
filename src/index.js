@@ -20,6 +20,7 @@ export { Dropdown } from './components/Dropdown.jsx';
 export { GoTo } from './components/GoTo.jsx'
 export { Input } from './components/Input.jsx';
 export { InputAutocomplete } from './components/InputAutocomplete.jsx'
+export { InputContable } from './components/InputContable.jsx'
 export { InputCurrency } from './components/InputCurrency.jsx';
 export { InputCurrency2 } from './components/InputCurrency2.jsx'
 export { InputFormat } from './components/InputFormat.jsx';

@@ -13,6 +13,7 @@ import { InputAutocomplete } from './InputAutocomplete';
 import { InputSpace } from './InputSpace';
 import { InputFormat } from './InputFormat';
 import { InputSelect } from './InputSelect';
+import { InputContable } from './InputContable';
 
 const AutoForm = ({
 	idSelected,
@@ -1112,6 +1113,30 @@ const AutoForm = ({
 										isRequired={isRequired.includes(key)}
 										isDisabled={isDisabled.includes(key)}
 										options={types[key].options}
+									/>
+								)}
+								{fieldType === 'contable' && (
+									<InputContable
+										label={names[key] || key}
+										labelPlacement={labelPlacement}
+										radius={inputRadius}
+										variant={inputVariant}
+										text={inputText}
+										outline={inputOutline}
+										id={`${name}_${key}`}
+										type='text'
+										defaultValue={formData[key] || ''}
+										placeholder={placeholder[key] || ''}
+										textClass={inputTextClass[key]}
+										isRequiredMessage="Campo requerido"
+										onChange={(e) => handleChange(e, key)}
+										onHandleBlur={(e) => handleBlur(e, key)}
+										isUpperCase={isUpperCase.includes(key)}
+										isLowerCase={isLowerCase.includes(key)}
+										isReadOnly={isReadOnly.includes(key)}
+										isRequired={isRequired.includes(key)}
+										isDisabled={isDisabled.includes(key)}
+										data={types[key].data}
 									/>
 								)}
 								{fieldType === 'autocomplete' && (
