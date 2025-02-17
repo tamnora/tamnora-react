@@ -1229,7 +1229,7 @@ const AutoForm = ({
 							{textSubmit}
 						</Button>
 					)}
-					{showDelete && onDelete && idSelected > 0 && (
+					{showDelete && onDelete && (idSelected > 0 || idSelected != '') && (
 						<Button radius='rounded-xl' addClassNames='w-full md:w-auto' color={deleteColor} id={`${name}_delete`} type="button" name='delete' variant={buttonVariant} size={buttonSize} onClick={handleDelete}>
 							{deleteText}
 						</Button>

@@ -67,7 +67,7 @@ const InputCurrency = ({
     const handleDecimalChange = (e) => {
       const value = e.target.value.replace(/\D/g, '');
       setDecimalPart(value);
-      updateValue(integerPart, value);
+    //   updateValue(integerPart, value);
     };
 
     const updateValue = (integer, decimal) => {
@@ -258,7 +258,7 @@ const InputCurrency = ({
                             {startContent}
                         </div>
                     }
-                    <div className='text-zinc-400 select-none w-full'>{currency}</div>
+                    <div className='text-zinc-400 select-none w-fit'>{currency}</div>
                     <input
                         ref={integerInputRef}
                         type="text"

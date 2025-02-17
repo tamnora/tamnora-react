@@ -959,8 +959,9 @@ export function formatNumber(str, options = { dec: 2, leng: 'es', symb: '', type
 
 }
 
-export function formatDate(valor = null, separador = '-') {
-  if (valor == null) return null 
+export function formatDate(value = null, separador = '-') {
+  if (value == null) return null 
+  let valor = String(value);
   let myDate;
   let sep = separador || '-';
 

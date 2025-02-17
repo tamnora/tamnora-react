@@ -366,7 +366,30 @@ const AutoTable = ({
                   </td>
                 </tr>
               )}
-              {/* Fila de acción para nuevo registro (condicional) */}
+  {rowFooter &&
+                <tr className={classFooter ? classFooter : styleRowFooter}>
+                  {showRowSelection && showIconSelection && <td></td>}
+                  {effectiveColumns.map((column, index) => {
+                    if (!isHidden.includes(column)) return (
+                      <td
+                        key={column + index}
+                        className={`${tdPadding}  ${isWrap.includes(column)? '': 'md:whitespace-nowrap'} ${getColumnAlignmentClass(column)}`}
+
+                        style={{ width: columnWidths ? columnWidths[column] : 'auto' }}>
+                        {renderCellFooter(column)}
+                      </td>
+                    )
+                  }
+                  )}
+                  {extraColumns && extraColumns.map((col, indexExtra) => (
+                    <td
+                      key={`extrafooter-${indexExtra}`}
+                      className={`${tdPadding}  ${isWrap.includes(col)? '': 'md:whitespace-nowrap'} ${getColumnAlignmentClass(col)}`}
+                    >
+                      {renderCellFooter(col)}
+                    </td>
+                  ))}
+                </tr>}
   {onAddNewRow && (
     <tr
       className={`${styleRow} ${tr2} cursor-pointer hover:bg-zinc-300/50 dark:hover:bg-zinc-700/50`}

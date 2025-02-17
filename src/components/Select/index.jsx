@@ -82,6 +82,14 @@ export function Select({
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, []);
 
+  useEffect(()=>{
+    setSelectedValue(value)
+  }, [value])
+
+  useEffect(()=>{
+    setSelectedValue(defaultValue)
+  }, [defaultValue])
+
   useEffect(() => {
     setHighlightedIndex(-1);
   }, [showOptions]);
