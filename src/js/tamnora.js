@@ -587,11 +587,10 @@ export async function dbSelect(type, sql) {
   }
 }
 
-export async function runSQL(sql) {
-  let datos = {
-    token: '?',
-    tsql: encodeTmn(sql)
-  };
+export async function runSQL(input) {
+  if (typeof input !== 'string') {
+    throw new Error('La entrada debe ser una cadena de texto');
+}
 
   try {
     let resp;
@@ -603,33 +602,21 @@ export async function runSQL(sql) {
         })
       });
     } else {
-      resp = await fetch(`${SERVER}/tsql`, {
+      resp = await fetch(`${SERVER}/run-code`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          data: datos
-        })
+        body: JSON.stringify({ input: input })
       });
     }
 
     const result = await resp.json();
-
-    const newResult = result.map((obj) => {
-      // return convertirClavesAMinusculas(obj)
-      return convertirClavesAMinusculasYFormatoFecha(obj)
-    })
-
-
-    return newResult;
+    return result;
 
   } catch (error) {
-    console.log(error)
-    console.log(informe)
-    console.log(datos)
-    const err = [{ resp: 'error', msgError: 'Error en la conexión a la base de datos.' }];
-    return err;
+    console.error('Error: ' + error.message);
+    return [{ resp: 'error', msgError: error.message }];
   }
 }
 

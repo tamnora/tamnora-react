@@ -1,6 +1,6 @@
 {
   "name": "tamnora-react",
-  "version": "1.2.49",
+  "version": "1.2.50",
   "main": "src/index.js",
   "repository": {
     "type": "git",
@@ -13,5 +13,14 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "tailwindcss": "^3.3.0"
+  },
+  "devDependencies": { 
+    "vite": "^5.0.12",      
+    "@vitejs/plugin-react": "^4.2.1"  
+  },
+  "scripts": {
+    "dev": "cd dev-app && vite dev",
+    "build": "cd dev-app && vite build",
+    "preview": "cd dev-app && vite preview"   
   }
 }
