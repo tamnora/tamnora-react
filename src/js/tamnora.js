@@ -587,7 +587,7 @@ export async function dbSelect(type, sql) {
   }
 }
 
-export async function runSQL(input) {
+export async function runCode(input) {
   if (typeof input !== 'string') {
     throw new Error('La entrada debe ser una cadena de texto');
 }
@@ -597,9 +597,10 @@ export async function runSQL(input) {
     if (TYPE_SERVER == 'php') {
       resp = await fetch(`${SERVER}/tsql.php`, {
         method: 'POST',
-        body: JSON.stringify({
-          data: datos
-        })
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ input: input })
       });
     } else {
       resp = await fetch(`${SERVER}/run-code`, {
@@ -689,7 +690,7 @@ export async function structure(type, name) {
   }
 }
 
-export async function runCode(input) {
+export async function runCodeOld(input) {
   if (typeof input !== 'string') {
     throw new Error('La entrada debe ser una cadena de texto');
   }

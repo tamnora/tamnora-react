@@ -1,6 +1,6 @@
 
 // Exportaciones de Tamnora
-export { inServer, typeServer, formatDate, originServer, runCode, structure, dbSelect, pesos, formatNumber, formatNumberArray, currency, defaultClass, handleStructure, typeToType, setStructure, dataTableRunCode, runCodeStruc, toggleClass} from './js/tamnora.js';
+export { inServer, typeServer, formatDate, originServer, runCode, runCodeOld, structure, dbSelect, pesos, formatNumber, formatNumberArray, currency, defaultClass, handleStructure, typeToType, setStructure, dataTableRunCode, runCodeStruc, toggleClass} from './js/tamnora.js';
 import './main.css';
 
 export { Alert } from './components/Alert/index.jsx';
@@ -15,14 +15,14 @@ export { Button } from './components/Button.jsx';
 export { Card, CardBody } from './components/Card.jsx';
 export { Checkbox } from './components/Checkbox.jsx';
 export { CheckboxGroup } from './components/CheckboxGroup.jsx';
-export { DataList } from './components/DataList.jsx'
+export { DataList } from './components/DataList.jsx';
 export { Dropdown } from './components/Dropdown.jsx';
 export { GoTo } from './components/GoTo.jsx'
 export { Input } from './components/Input.jsx';
-export { InputAutocomplete } from './components/InputAutocomplete.jsx'
+export { InputAutocomplete } from './components/InputAutocomplete.jsx';
 export { InputContable } from './components/InputContable.jsx'
 export { InputCurrency } from './components/InputCurrency.jsx';
-export { InputCurrency2 } from './components/InputCurrency2.jsx'
+export { InputCurrency2 } from './components/InputCurrency2.jsx';
 export { InputFormat } from './components/InputFormat.jsx';
 export { InputOptions } from './components/InputOptions.jsx';
 export { InputSelect } from './components/InputSelect.jsx';
