@@ -595,7 +595,7 @@ export async function runCode(input) {
   try {
     let resp;
     if (TYPE_SERVER == 'php') {
-      resp = await fetch(`${SERVER}/tsql.php`, {
+      resp = await fetch(`${SERVER}/run-code`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -948,7 +948,7 @@ export function formatNumber(str, options = { dec: 2, leng: 'es', symb: '', type
 }
 
 export function formatDate(value = null, separador = '-') {
-  if (value == null) return null 
+  if (value == null) return null
   let valor = String(value);
   let myDate;
   let sep = separador || '-';
@@ -986,7 +986,13 @@ export function formatDate(value = null, separador = '-') {
     'Dic'
   ];
 
-  if (typeof valor == 'string') {
+  if (value instanceof Date) { // ¡Condición más específica para objetos Date!
+    myDate = value;
+  } else if (typeof value == 'string') { // Manejo de cadenas como antes
+    let valor = String(value); // Mantener la conversión a String aquí
+    let exp = /^\d{2,4}\-\d{1,2}\-\d{1,2}\s\d{1,2}\:\d{1,2}\:\d{1,2}$/gm;
+    let exp2 = /^\d{2,4}\-\d{1,2}\-\d{1,2}$/gm;
+
     if (valor.match(exp)) {
       myDate = new Date(valor);
     } else if (valor.match(exp2)) {
@@ -994,7 +1000,10 @@ export function formatDate(value = null, separador = '-') {
     } else {
       return 'El valor es incorrecto';
     }
+  } else {
+    return 'parametro incorrecto';
   }
+
 
 
 
