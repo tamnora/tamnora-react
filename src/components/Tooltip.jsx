@@ -17,7 +17,7 @@ const Tooltip = ({
   const colorClasses = {
     default: 'bg-white/30 dark:bg-black/20 text-black dark:text-white',
     primary: 'bg-blue-600 text-white',
-    secondary: 'bg-gray-600 text-white',
+    secondary: 'bg-zinc-600 text-white',
     success: 'bg-green-600 text-white',
     warning: 'bg-yellow-600 text-white',
     danger: 'bg-red-600 text-white'

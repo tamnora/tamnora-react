@@ -507,7 +507,7 @@ export function InputSelect({
         </div>
       )}
       {description && (
-        <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+        <span className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
           {description}
         </span>
       )}

@@ -92,7 +92,12 @@ function isDivTallerThanViewport() {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Escape' && !isKeyboardDismissDisabled) {
+    if (
+      e.key === 'Escape' &&
+      !isKeyboardDismissDisabled &&
+      modalRef.current &&
+      modalRef.current.contains(document.activeElement)
+    ) {
       handleClose();
       if (handleModal) {
         handleModal();
@@ -166,7 +171,9 @@ function isDivTallerThanViewport() {
     <div className={wrapperClasses} onClick={handleBackdropClose}>
       <div
         id={name}
+        name={name}
         ref={modalRef}
+        tabIndex="-1"
         className={baseClasses}
         onClick={(e) => e.stopPropagation()}
       >
