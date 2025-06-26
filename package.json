@@ -1,7 +1,21 @@
 {
   "name": "tamnora-react",
-  "version": "1.2.52",
-  "main": "src/index.js",
+  "version": "1.3.00",
+  "main": "dist/tamnora-react.umd.js",
+  "module": "dist/tamnora-react.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/tamnora-react.es.js",
+      "require": "./dist/tamnora-react.umd.js"
+    },
+    "./utils": {
+      "import": "./dist/tamnora-utils.es.js",
+      "require": "./dist/tamnora-utils.umd.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/tamnora/tamnora-react"
@@ -14,13 +28,13 @@
     "react-dom": "^18.0.0",
     "tailwindcss": "^3.3.0"
   },
-  "devDependencies": { 
-    "vite": "^5.0.12",      
-    "@vitejs/plugin-react": "^4.2.1"  
+  "devDependencies": {
+    "vite": "^5.0.12",
+    "@vitejs/plugin-react": "^4.2.1"
   },
   "scripts": {
     "dev": "cd dev-app && vite dev",
-    "build": "cd dev-app && vite build",
-    "preview": "cd dev-app && vite preview"   
+    "build": "vite build",
+    "preview": "cd dev-app && vite preview"
   }
 }

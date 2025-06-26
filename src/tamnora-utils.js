@@ -1,0 +1,1 @@
+export { inServer, typeServer, formatDate, originServer, runCode, runCodeOld, structure, dbSelect, pesos, formatNumber, formatNumberArray, currency, defaultClass, handleStructure, typeToType, setStructure, dataTableRunCode, runCodeStruc, toggleClass} from './js/tamnora.js';

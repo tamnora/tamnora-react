@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { inputColor, inputOutline } from '../js/tamnora';
+import { inputColor, inputOutline } from '../../js/tamnora';
 
 const InputContable = ({
   children,

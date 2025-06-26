@@ -1,5 +1,5 @@
 import React from 'react';
-import {ShimmerBox} from './ShimmerBox';
+import {ShimmerBox} from '../ShimmerBox/index.jsx';
 
 const DataListItem = ({ label, value, loading, classShimmer = 'h-[14px] my-[3px] w-24' }) => {
   return (

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Checkbox } from './Checkbox';
+import { Checkbox } from '../Checkbox/index.jsx';
 
 const CheckboxGroup = ({ options, color = 'blue', classContainer = 'flex gap-2',  size = 'sm', withBorder = false, withBackground = false, onChange }) => {
   const [valores, setValores] = useState(options);

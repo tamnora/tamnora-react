@@ -1,6 +1,6 @@
 
 import React from "react";
-import {ShimmerBox} from "../Components/ShimmerBox";
+import {ShimmerBox} from "../ShimmerBox/index.jsx";
 
 const TableShimmer = ({ columns, rowCount }) => {
   // Genera filas de datos dinámicamente (puedes personalizar esto)

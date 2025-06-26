@@ -1,19 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Textarea } from './Textarea';
-import { Input } from './Input';
-import { InputCurrency } from './InputCurrency'
-import { Select } from './Select';
-import { Button } from './Button';
-import { InputCurrency2 } from './InputCurrency2';
-import { Switch } from './Switch';
-import { Checkbox } from './Checkbox';
-import { InputToggle } from './InputToggle';
-import { InputOptions } from './InputOptions';
-import { InputAutocomplete } from './InputAutocomplete';
-import { InputSpace } from './InputSpace';
-import { InputFormat } from './InputFormat';
-import { InputSelect } from './InputSelect';
-import { InputContable } from './InputContable';
+import { Textarea } from '../Textarea/index.jsx';
+import { Input } from '../Input/index.jsx';
+import { InputCurrency } from '../InputCurrency/index.jsx'
+import { Select } from '../Select/index.jsx';
+import { Button } from '../Button/index.jsx';
+import { InputCurrency2 } from '../InputCurrency2/index.jsx';
+import { Switch } from '../Switch/index.jsx';
+import { Checkbox } from '../Checkbox/index.jsx';
+import { InputToggle } from '../InputToggle/index.jsx';
+import { InputOptions } from '../InputOptions/index.jsx';
+import { InputAutocomplete } from '../InputAutocomplete/index.jsx';
+import { InputSpace } from '../InputSpace/index.jsx';
+import { InputFormat } from '../InputFormat/index.jsx';
+import { InputSelect } from '../InputSelect/index.jsx';
+import { InputContable } from '../InputContable/index.jsx';
 
 const AutoForm = ({
 	idSelected,
