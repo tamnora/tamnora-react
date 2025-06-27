@@ -34,18 +34,17 @@ export function InputSelect({
   evalResult = true,
   evalColorTrue = '',
   evalColorFalse = 'red',
-  regex,
   ...props
 }) {
   const [focused, setFocused] = useState(false);
-  const [internalValue, setInternalValue] = useState(defaultValue || '');
-  const [internalLabel, setInternalLabel] = useState('');
+  const [inputValue, setInputValue] = useState(defaultValue || '');
   const [hasBeenFocused, setHasBeenFocused] = useState(false);
   const [requiredMessage, setRequiredMessage] = useState('');
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [showOptions, setShowOptions] = useState(false);
-  const [optionSelected, setOptionSelected] = useState({});
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  
+  
 
   const inputRef = useRef(null);
   const optionRefs = useRef([]);
@@ -53,85 +52,42 @@ export function InputSelect({
   if (!evalColorTrue) evalColorTrue = color;
   if (!evalColorFalse) evalColorFalse = 'red';
 
-  function formatText(text) {
-    let formatValue = (text || '').replace(regex, '');
-    return formatValue;
-  }
-
   useEffect(() => {
-    initValues(defaultValue);
-  }, [defaultValue]);
-
-  useEffect(() => {
-    if (internalLabel !== undefined) {
-      filterOptions(internalLabel);
+    const selectedOption = options.find(option => option.value === defaultValue);
+    if (selectedOption) {
+      setInputValue(selectedOption.label);
     }
-  }, [internalLabel, options]);
+  }, [defaultValue, options]);
+
+  
+
+  
+
+  
 
 
 
-  const handleDivClick = () => {
-    setFocused(true);
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  };
+  
 
   const handleInputChange = (e) => {
-    let newValue = e.target.value;
-    let normalizedValue = newValue.trim().toLowerCase();
+    const newValue = e.target.value;
+    setInputValue(newValue);
 
-    if (regex) {
-      newValue = formatText(newValue);
-    }
-
-    let textValue = '';
-    let selectOpt = {};
-
-    if (options.length > 0) {
-      options.forEach(option => {
-        if (option.label === normalizedValue) {
-          textValue = option.label;
-          selectOpt = option;
-        }
-      });
-    }
-
-    setOptionSelected(selectOpt);
-
-    if (isUpperCase) {
-      newValue = newValue.toUpperCase();
-      e.target.value = newValue;
-    }
-    if (isLowerCase) {
-      newValue = newValue.toLowerCase();
-      e.target.value = newValue;
-    }
-
-
-    setInternalLabel(newValue);
-    setInternalValue(newValue);
-    const arrOptions = filterOptions(newValue);
-
-    if (newValue && arrOptions.length > 0) {
+    if (newValue) {
+      const filtered = options.filter(option =>
+        option.label.toLowerCase().startsWith(newValue.toLowerCase())
+      );
+      setFilteredOptions(filtered);
       setShowOptions(true);
+      setHighlightedIndex(-1); // Reset highlighted index on new input
     } else {
+      setFilteredOptions([]);
       setShowOptions(false);
     }
 
-    const matchedOption = arrOptions.find(option => option.label === newValue);
-    
-
     if (onChange) {
-      if (filteredOptions.length > 0) {
-        if (matchedOption) {
-          onChange({ target: { value: matchedOption.label, option: matchedOption } });
-        } else {
-          onChange({ target: { value: newValue, option: {} } });
-        }
-      } else {
-        onChange({ target: { value: newValue, option: {} } });
-      }
+      const matchedOption = options.find(option => option.label === newValue);
+      onChange({ target: { value: newValue, option: matchedOption || {} } });
     }
   };
 
@@ -157,28 +113,27 @@ export function InputSelect({
       if (highlightedIndex >= 0 && highlightedIndex < filteredOptions.length) {
         selectOption(filteredOptions[highlightedIndex]);
       }
-
     } else if (e.key === 'Tab') {
       setShowOptions(false);
       setFocused(false);
     }
   };
 
+  
+
   const selectOption = (option) => {
-    setInternalValue(option.label)
-    setInternalLabel(option.label);
+    setInputValue(option.label);
     setShowOptions(false);
     if (onChange) {
-      onChange({ target: { value: option.label, option: option } });
+      onChange({ target: { value: option.value, option: option } });
     }
     if (onHandleBlur) {
-      onHandleBlur({ target: { value: option.label, option: option } });
+      onHandleBlur({ target: { value: option.value, option: option } });
     }
   };
 
-  const handleKeyDown = (e) => {
-    navigateOptions(e);
-  };
+  
+  
 
   const handleFocus = () => {
     setFocused(true);
@@ -190,7 +145,14 @@ export function InputSelect({
     setFocused(false);
     setShowOptions(false);
     if (onHandleBlur) {
-      onHandleBlur({ target: { value: internalValue, option: optionSelected } });
+      const matchedOption = options.find(option => option.label.toLowerCase().startsWith(inputValue.toLowerCase()));
+      if (matchedOption) {
+        setInputValue(matchedOption.label);
+        onHandleBlur({ target: { value: matchedOption.value, option: matchedOption } });
+      } else {
+        setInputValue(defaultValue);
+        onHandleBlur({ target: { value: defaultValue, option: {} } });
+      }
     }
   };
 
@@ -206,43 +168,15 @@ export function InputSelect({
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, []);
 
-  useEffect(() => {
-    setHighlightedIndex(-1);
-  }, [showOptions]);
+  
 
-  const filterOptions = (inputValue) => {
-    let resultOptions = [];
-    if (inputValue) {
-      const normalizedInput = (inputValue || '').trim().toLowerCase();
-      const filtered = options.filter(option => option.label.toLowerCase().includes(normalizedInput));
-      setFilteredOptions(filtered);
-      resultOptions = filtered;
-    } else {
-      setFilteredOptions([]);
-    }
-    return resultOptions
-  };
+  
 
-  const initValues = (value) => {
-    let textLabel = '';
-
-    if (options.length > 0) {
-      options.forEach(option => {
-        if (option.label == value) {
-          textLabel = option.label;
-        }
-      });
-    }
-    setInternalValue(value);
-    setInternalLabel(textLabel)
-
-
-    inputRef.current.value = textLabel;
-  };
+  
 
   const inputProps = {
     role: "autocomplete",
-    value: internalLabel,
+    value: inputValue,
     placeholder,
     ref: baseRef || inputRef,
     required: isRequired,
@@ -251,7 +185,7 @@ export function InputSelect({
     onFocus: handleFocus,
     onBlur: handleBlur,
     onChange: handleInputChange,
-    onKeyDown: handleKeyDown, // Add onKeyDown event listener
+    onKeyDown: navigateOptions,
     tabIndex: (isReadOnly || isDisabled) ? -1 : 0,
     ...props
   };
@@ -274,11 +208,11 @@ export function InputSelect({
   };
 
   const requiredStyles = () => {
-    if (isRequired && hasBeenFocused && internalLabel === '') {
+    if (isRequired && hasBeenFocused && inputValue === '') {
       if (variant === 'underlined') {
         return '';
       } else {
-        if (internalValue == 0 && internalLabel != '') {
+        if (inputValue == 0 && inputValue != '') {
           return 'outline outline-emerald-600/50 dark:outline-emerald-800 outline-offset-1';
         } else {
           return 'outline outline-red-600/50 dark:outline-red-800 outline-offset-1';
@@ -288,12 +222,12 @@ export function InputSelect({
   };
 
   const renderNuevo = () => {
-    if (internalValue == 0 && internalLabel != '' && labelPlacement == 'inside') {
+    if (inputValue == 0 && inputValue != '' && labelPlacement == 'inside') {
       return (
         <span className="absolute top-1 right-1 bg-emerald-600 text-emerald-100 text-xs px-1.5 py-[0.5px] rounded-full ">Nuevo</span>
       );
     }
-    if (internalValue == 0 && internalLabel != '' && labelPlacement == 'outside') {
+    if (inputValue == 0 && inputValue != '' && labelPlacement == 'outside') {
       return (
         <span className="absolute right-0 top-[-22px] bg-emerald-600 text-emerald-100 text-xs px-1.5 rounded-full">Nuevo</span>
       );
@@ -454,7 +388,7 @@ export function InputSelect({
           {label} {isRequired && <span className="text-red-400">*</span>}
         </label>
       )}
-      <div onClick={handleDivClick} className={evalActive ? (evalResult ? containerEvalTrue : containerEvalFalse) : containerClassNames}>
+      <div className={evalActive ? (evalResult ? containerEvalTrue : containerEvalFalse) : containerClassNames}>
         {renderNuevo()}
         {labelPlacement === 'inside' && label && (
           <>
@@ -497,11 +431,12 @@ export function InputSelect({
               <li
                 key={option.value}
                 ref={el => optionRefs.current[index] = el}
-                className={`flex justify-between items-center cursor-pointer px-2 py-1.5 hover:bg-zinc-200 rounded-lg dark:hover:bg-zinc-700 ${highlightedIndex === index ? 'bg-zinc-200 dark:bg-zinc-700' : ''} ${internalValue === option.value ? ' text-sky-700 dark:text-sky-500' : ''}`}
-                onMouseDown={() => selectOption(option)}
+                className={`flex justify-between items-center cursor-pointer px-2 py-1.5 hover:bg-zinc-200 rounded-lg dark:hover:bg-zinc-700 ${inputValue === option.value ? ' text-sky-700 dark:text-sky-500' : ''}`}
+                onClick={() => selectOption(option)}
               >
                 {option.label}
               </li>
+                
             ))}
           </ul>
         </div>
