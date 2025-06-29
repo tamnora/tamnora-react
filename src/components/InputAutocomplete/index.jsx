@@ -181,7 +181,12 @@ export function InputAutocomplete({
   };
 
   const handleKeyDown = (e) => {
-    navigateOptions(e);
+    if (e.keyCode === 13) { // Enter key
+      e.preventDefault();
+      navigateOptions(e);
+    } else {
+      navigateOptions(e);
+    }
   };
 
   const handleFocus = () => {

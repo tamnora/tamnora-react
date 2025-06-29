@@ -77,6 +77,8 @@ export function InputSelect({
       const filtered = options.filter(option =>
         option.label.toLowerCase().startsWith(newValue.toLowerCase())
       );
+
+      console.log('Filtered options:', filtered);
       setFilteredOptions(filtered);
       setShowOptions(true);
       setHighlightedIndex(-1); // Reset highlighted index on new input
@@ -92,6 +94,9 @@ export function InputSelect({
   };
 
   const navigateOptions = (e) => {
+    if( e.keyCode == 13) {
+      e.preventDefault();
+    }
     if (!showOptions) return;
 
     if (e.key === 'ArrowDown') {
