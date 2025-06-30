@@ -1,6 +1,6 @@
 {
   "name": "tamnora-react",
-  "version": "1.3.02",
+  "version": "1.3.03",
   "main": "dist/tamnora-react.umd.js",
   "module": "dist/tamnora-react.es.js",
   "exports": {
