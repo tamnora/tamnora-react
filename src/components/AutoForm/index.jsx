@@ -623,7 +623,6 @@ const AutoForm = ({
 				if (typeElement != 'button') {
 					const role1 = document.activeElement.role || '';
 					if (role1 === 'autocomplete') {
-						console.log('Es autocomplete');
 						// e.preventDefault();
 						setTimeout(() => {
 							let nextIndex = index + 1;
@@ -1052,10 +1051,10 @@ const AutoForm = ({
 								{fieldType === 'switch' && (
 									<Switch
 										label={names[key] || key}
-										labelPlacement={labelPlacement}
+										labelPlacement={types[key].labelPlacement ? types[key].labelPlacement : labelPlacement}
 										radius={inputRadius}
 										variant={inputVariant}
-										color='emerald'
+										color={types[key].color ? types[key].color : 'blue'}
 										id={`${name}_${key}`}
 										defaultValue={formData[key] || 0}
 										onChange={(e) => handleChange(e, key)}
