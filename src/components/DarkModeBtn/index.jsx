@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react';
 import { MoonIcon } from './MoonIcon';
 import { SunIcon } from './SunIcon';
 
-export function DarkModeBtn() {
+export function DarkModeBtn({
+  bgColor = 'bg-white dark:bg-zinc-800',
+  textColor = 'text-zinc-800 dark:text-zinc-200',
+}) {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
 
   useEffect(() => {
@@ -17,7 +20,7 @@ export function DarkModeBtn() {
   return (
     <button 
       onClick={() => setDarkMode(!darkMode)}
-      className='bg-emerald-900 hover:bg-emerald-950 text-white p-1.5 rounded-full transition-colors duration-200 h-fit w-fit'>
+      className={`p-1.5 rounded-full transition-colors duration-200 h-fit w-fit ${bgColor} ${textColor}`}>
       {darkMode ? <SunIcon /> : <MoonIcon />}
     </button>
   );

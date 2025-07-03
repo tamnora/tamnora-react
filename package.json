@@ -29,12 +29,15 @@
     "tailwindcss": "^3.3.0"
   },
   "devDependencies": {
-    "vite": "^5.0.12",
-    "@vitejs/plugin-react": "^4.2.1"
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.0.12"
   },
   "scripts": {
     "dev": "cd dev-app && vite dev",
     "build": "vite build",
     "preview": "cd dev-app && vite preview"
+  },
+  "dependencies": {
+    "react-router-dom": "^7.6.3"
   }
 }
